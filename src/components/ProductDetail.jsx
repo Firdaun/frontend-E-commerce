@@ -55,7 +55,7 @@ export default function ProductDetail() {
     const navigate = useNavigate()
     const isMobile = useIsMobile()
 
-    const { data: product, isLoading } = useQuery({
+    const { data: product, isLoading, isError} = useQuery({
         queryKey: ['product', id],
         queryFn: () => getProductbyId(id)
     })
@@ -64,6 +64,12 @@ export default function ProductDetail() {
     const [quantity, setQuantity] = useState(1)
     const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
     const [selectedToppings, setSelectedToppings] = useState([])
+
+    useEffect(() => {
+        if (product && product.spice_level) {
+            setSpiceLevel(product.spice_level)
+        }
+    }, [product])
     
     const toggleTopping = (topping) => {
         setSelectedToppings(prev =>
@@ -71,7 +77,69 @@ export default function ProductDetail() {
         )
     }
 
-    if (!product) return
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
+                <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap animate-pulse">
+                    
+                    {/* Skeleton Gambar (Kiri) */}
+                    <div className="w-full md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] aspect-square bg-gray-800 rounded-3xl mb-6 md:mb-0" />
+
+                    {/* Skeleton Detail (Kanan) */}
+                    <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] flex flex-col gap-6 pt-5 md:pt-0">
+                        {/* Harga & Judul */}
+                        <div>
+                            <div className="h-8 bg-gray-800 rounded-lg w-1/3 mb-4" />
+                            <div className="h-10 bg-gray-800 rounded-lg w-3/4 mb-4" />
+                            <div className="space-y-2">
+                                <div className="h-4 bg-gray-800 rounded w-full" />
+                                <div className="h-4 bg-gray-800 rounded w-5/6" />
+                                <div className="h-4 bg-gray-800 rounded w-4/6" />
+                            </div>
+                        </div>
+
+                        <div className="border-b border-gray-800" />
+
+                        {/* Level Pedas */}
+                        <div>
+                            <div className="h-6 bg-gray-800 rounded w-1/4 mb-4" />
+                            <div className="flex space-x-3">
+                                {[1, 2, 3, 4, 5].map(i => (
+                                    <div key={i} className="w-12 h-12 bg-gray-800 rounded-xl" />
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="border-b border-gray-800 hidden md:block" />
+
+                        {/* Topping */}
+                        <div>
+                            <div className="h-6 bg-gray-800 rounded w-1/3 mb-4" />
+                            <div className="grid grid-cols-2 gap-3 md:gap-4">
+                                {[1, 2, 3, 4].map(i => (
+                                    <div key={i} className="h-13 bg-gray-800 rounded-xl" />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Tombol Beli */}
+                        <div className="mt-auto pt-4 flex space-x-3">
+                            <div className="h-14 bg-gray-800 rounded-xl flex-1" />
+                            <div className="w-17 h-14 bg-gray-800 rounded-xl shrink-0" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    if (isError || !product) {
+        return (
+            <div className="min-h-screen bg-gray-900 flex items-center justify-center text-white">
+                <p>Produk tidak ditemukan atau terjadi kesalahan.</p>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
@@ -140,7 +208,7 @@ export default function ProductDetail() {
                         initial={{ opacity: 0, y: isMobile ? 20 : 0 , x: isMobile ? 0 : 20 }}
                         animate={{ opacity: 1, y: 0, x: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="w-full hidden xl:block pt-3">
+                        className="w-full hidden xl:block pt-3">
                         <div className="space-y-3 md:space-y-5">
                             <div className="space-y-3 md:space-y-5">
                                 <h3 className="text-white font-bold">Topping Tambahan (Opsional)</h3>
@@ -191,7 +259,11 @@ export default function ProductDetail() {
                         </div>
                     </motion.div>
                 </div>
-                <div className="w-[95%] mx-auto md:w-full block xl:hidden pt-3">
+                <motion.div 
+                    initial={{ opacity: 0, y: isMobile ? 20 : 0 , x: isMobile ? 0 : 20 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="w-[95%] mx-auto md:w-full block xl:hidden pt-3">
                     <div className="space-y-3 md:space-y-5">
                         <div className="space-y-3 md:space-y-5">
                             <h3 className="text-white font-bold">Topping Tambahan (Opsional)</h3>
@@ -240,7 +312,7 @@ export default function ProductDetail() {
                             </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
             </div>
         </div>

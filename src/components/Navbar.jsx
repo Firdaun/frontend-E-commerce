@@ -14,7 +14,7 @@ export default function Navbar() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800"
         >
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-7xl w-[95%] mx-auto">
                 <div className="flex justify-between items-center h-15">
 
                     <motion.div
@@ -31,7 +31,7 @@ export default function Navbar() {
                             <motion.a
                                 key={item}
                                 href="#"
-                                whileHover={{ scale: 1.1, color: "#f97316" }} // #f97316 adalah orange-500
+                                whileHover={{ scale: 1.1, color: "#f97316" }}
                                 className="text-gray-300 font-medium transition-colors"
                             >
                                 {item}
