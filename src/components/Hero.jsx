@@ -1,0 +1,108 @@
+import { motion } from "framer-motion"
+import { ArrowRight, Flame } from "lucide-react"
+
+export default function Hero() {
+    // VARIANT ANIMASI: Ini resep rahasia untuk membuat animasi beruntun (stagger)
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        show: {
+            opacity: 1,
+            transition: {
+                staggerChildren: 0.2 // Jeda 0.2 detik untuk setiap elemen anak
+            }
+        }
+    }
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 30 },
+        show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
+    }
+
+    return (
+        // pt-28 agar tidak tertutup oleh Navbar yang fixed
+        <section className="relative pt-25 pb-16 md:pt-36 md:pb-24 overflow-hidden">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+                {/* Layout Grid: Kiri untuk Teks, Kanan untuk Gambar */}
+                <div className="grid md:grid-cols-2 gap-10 items-center">
+
+                    {/* BAGIAN KIRI: Teks & Tombol */}
+                    <motion.div
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate="show"
+                        className="text-center md:text-left"
+                    >
+                        <motion.div variants={itemVariants} className="inline-flex items-center space-x-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full mb-3 border border-red-500/20">
+                            <Flame size={20} className="animate-pulse" />
+                            <span className="font-semibold tracking-wide text-xs md:text-ms">LEVEL PEDAS BISA DIATUR!</span>
+                        </motion.div>
+
+                        <motion.h1 variants={itemVariants} className="text-4xl md:text-7xl font-black text-white mb-3 leading-tight">
+                            Seblak <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">Hot Jeletot</span> <br />
+                            Bikin Nagih.
+                        </motion.h1>
+
+                        <motion.p variants={itemVariants} className="text-sm text-gray-400 mb-6 max-w-lg mx-auto md:mx-0 leading-relaxed">
+                            Nikmati perpaduan kerupuk kenyal dan kuah kental yang gurih! Berani coba level 5?
+                        </motion.p>
+
+                        <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
+                            <button className="w-full sm:w-auto bg-linear-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white px-8 py-4 rounded-full font-bold text-lg transition-transform transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg shadow-red-500/30">
+                                <span>Pesan Sekarang</span>
+                                <ArrowRight size={20} />
+                            </button>
+                            <button className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 px-8 py-4 rounded-full font-bold text-lg transition-colors">
+                                Lihat Menu
+                            </button>
+                        </motion.div>
+                    </motion.div>
+
+                    <div className="flex justify-center relative order-first md:order-0">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                            animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                            transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
+                            className="w-[70%] relative"
+                        >
+                            <div className="absolute inset-0 bg-linear-to-tr from-orange-500 to-red-600 rounded-full blur-3xl opacity-20 animate-pulse"></div>
+
+                            <img
+                                src="https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=1000&auto=format&fit=crop"
+                                alt="Semangkuk Seblak"
+                                className="relative z-10 w-full mx-auto rounded-full object-cover aspect-square shadow-2xl border-4 border-gray-800"
+                            />
+
+                        </motion.div>
+                        <motion.div
+                            initial={{opacity: 0, x: 30}}
+                            animate={{opacity: 1, x: 0}}
+                            transition={{duration: 0.5, ease: "easeOut", delay: 1}}
+                            className="absolute right-0 -bottom-10 z-20"
+
+                        >
+                            <motion.div
+                                animate={{ y: [0, -8, 0] }}
+                                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                className="bg-gray-800 border border-gray-700 p-3 rounded-2xl shadow-xl flex items-center space-x-3"
+                            >
+                                <div className="bg-green-500/20 py-1 px-1.5 rounded-full">
+                                    <span className="text-base">🌶️</span>
+                                </div>
+                                <div>
+                                    <p className="text-white font-bold text-xs">Best Seller</p>
+                                    <p className="text-gray-400 text-xs">Seblak Ceker Level 3</p>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            {/* Efek Gradien di Latar Belakang (Bawah) */}
+            <div className="absolute bottom-0 left-0 right-0 h-32 bg-linear-to-t from-gray-900 to-transparent z-0"></div>
+        </section>
+    )
+}
