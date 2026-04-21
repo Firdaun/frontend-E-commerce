@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
-import { ShoppingCart, ShoppingBag, ArrowLeft, Flame, Plus, Minus, Check } from "lucide-react"
+import { ShoppingCart, ShoppingBag, Flame, Plus, Minus, Check } from "lucide-react"
 
 const dummyProduct = [
     {
@@ -10,7 +10,7 @@ const dummyProduct = [
         price: 25000,
         description: "Nikmati sensasi pedas nendang dari kuah kencur asli berpadu dengan ceker ayam montok yang direbus perlahan hingga lepas dari tulangnya.",
         image_url: "https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=1000&auto=format&fit=crop",
-        toppings: ["Telur Puyuh", "Dumpling Keju", "Enoki", "Pilus Cikur"],
+        toppings: ["Telur Puyuh", "Ceker", "Jamur Enoki", "Ayam"],
         spiceLevels: 2
     },
     {
@@ -48,73 +48,123 @@ export default function ProductDetail() {
 
     return (
         <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
-            <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="relative md:rounded-3xl overflow-hidden border border-gray-800 shadow-2xl"
-            >
-                <img
-                    src={dummyProduct[0].image_url}
-                    alt={dummyProduct[0].variant}
-                    className="w-full object-cover aspect-square md:aspect-4/3 lg:aspect-square"
-                />
-            </motion.div>
+            <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap">
 
-            <div className="grid w-[95%] max-w-7xl mx-auto lg:grid-cols-2 gap-12 items-start">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
-                    className="flex flex-col gap-3 h-full pt-5"
+                    transition={{ duration: 0.5, ease: 'easeOut' }}
+                    className="relative md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] xl:h-162 md:rounded-3xl overflow-hidden border border-gray-800 shadow-2xl"
                 >
-                    <div className="flex gap-1 flex-col">
-                        <div className="order-2">
-                            <h1 className="text-2xl md:text-5xl font-black text-white">
+                    <img
+                        src={dummyProduct[0].image_url}
+                        alt={dummyProduct[0].variant}
+                        className="w-full object-cover h-full aspect-square"
+                    />
+                </motion.div>
+
+                <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)]">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                        className="flex flex-col gap-3"
+                    >
+                        <div className="flex md:gap-2 flex-col">
+                            <div className="text-3xl md:text-4xl py-3 text-seblak-gradient font-black">
+                                Rp {dummyProduct[0].price.toLocaleString('id-ID')}
+                            </div>
+                            <h1 className="text-2xl md:text-3xl font-black text-white">
                                 {dummyProduct[0].variant}
                             </h1>
-
                             <p className="text-gray-400 text-md leading-5">
                                 {dummyProduct[0].description}
                             </p>
                         </div>
 
-                        <div className="text-3xl order-1 text-orange-500 font-black">
-                            Rp {dummyProduct[0].price.toLocaleString('id-ID')}
+                        <div className="border-b border-gray-800" />
+
+                        <div className="space-y-3 md:space-y-5">
+                            <h3 className="text-white font-bold flex items-center space-x-1">
+                                <Flame size={20} className="text-orange-500 -translate-y-0.5" />
+                                <span>Pilih Level Pedas</span>
+                            </h3>
+                            <div className="flex space-x-3">
+                                {spiceLevels.map((level) => (
+                                    <motion.button
+                                        key={level.level}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => setSpiceLevel(level.level)}
+                                        className={`w-12 h-12 rounded-xl font-bold ${spiceLevel === level.level
+                                            ? 'bg-linear-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-red-500/30 border-none'
+                                            : 'bg-gray-800 text-gray-400 border border-gray-700 hover:border-orange-500'
+                                            }`}
+                                    >
+                                        {level.level}
+                                    </motion.button>
+                                ))}
+                            </div>
+                            <p className="text-sm text-gray-500">
+                                Level terpilih: <span className="font-medium text-white">{spiceLevels[spiceLevel - 1].label}</span>
+                            </p>
+                        </div>
+                    </motion.div>
+                    <div className="w-full hidden xl:block  pt-3">
+                        <div className="space-y-3 md:space-y-5">
+                            <div className="space-y-3 md:space-y-5">
+                                <h3 className="text-white font-bold">Topping Tambahan (Opsional)</h3>
+                                <div className="grid grid-cols-2 gap-3 md:gap-4">
+                                    {dummyProduct[0].toppings.map((topping) => (
+                                        <motion.button
+                                            key={topping}
+                                            whileTap={{ scale: 0.95 }}
+                                            onClick={() => toggleTopping(topping)}
+                                            className={`flex items-center justify-between p-3 rounded-xl border transition-colors ${selectedToppings.includes(topping)
+                                                ? 'bg-orange-500/10 border-orange-500 text-orange-500'
+                                                : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500'
+                                                }`}
+                                        >
+                                            <span className="text-sm font-medium">{topping}</span>
+                                            {selectedToppings.includes(topping) && <Check size={16} />}
+                                        </motion.button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div className="border-b border-gray-800" />
+
+                            <div className="space-y-3 md:space-y-5">
+                                <div className="flex items-center space-x-4">
+                                    <span className="text-white font-bold">Jumlah:</span>
+                                    <div className="flex items-center bg-gray-800 rounded-xl border border-gray-700">
+                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                            <Minus size={18} />
+                                        </motion.button>
+                                        <span className="w-12 text-center text-white font-bold">{quantity}</span>
+                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(quantity + 1)} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                            <Plus size={18} />
+                                        </motion.button>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center space-x-3">
+                                    <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
+                                        <ShoppingBag size={24} />
+                                        <span>Beli</span>
+                                    </motion.button>
+                                    <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                        <ShoppingCart size={24} />
+                                    </motion.button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div className="border-b border-gray-800" />
-
-                    <div className="space-y-3">
-                        <h3 className="text-white font-bold flex items-center space-x-1">
-                            <Flame size={20} className="text-orange-500 -translate-y-0.5" />
-                            <span>Pilih Level Pedas</span>
-                        </h3>
-                        <div className="flex space-x-3">
-                            {spiceLevels.map((level) => (
-                                <button
-                                    key={level.level}
-                                    onClick={() => setSpiceLevel(level.level)}
-                                    className={`w-12 h-12 rounded-xl font-bold transition-all ${spiceLevel === level.level
-                                        ? 'bg-linear-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-red-500/30 border-none'
-                                        : 'bg-gray-800 text-gray-400 border border-gray-700 hover:border-orange-500'
-                                        }`}
-                                >
-                                    {level.level}
-                                </button>
-                            ))}
-                        </div>
-                        <p className="text-sm text-gray-500">
-                            Level terpilih: <span className="font-medium text-white">{spiceLevels[spiceLevel - 1].label}</span>
-                        </p>
-                    </div>
-
-
-                    <div className="space-y-3">
-                        <div className="space-y-3">
+                </div>
+                <div className="w-[95%] mx-auto md:w-full block xl:hidden pt-3">
+                    <div className="space-y-3 md:space-y-5">
+                        <div className="space-y-3 md:space-y-5">
                             <h3 className="text-white font-bold">Topping Tambahan (Opsional)</h3>
-                            <div className="grid grid-cols-2 gap-3">
+                            <div className="grid grid-cols-2 gap-3 md:gap-4">
                                 {dummyProduct[0].toppings.map((topping) => (
                                     <motion.button
                                         key={topping}
@@ -134,33 +184,33 @@ export default function ProductDetail() {
 
                         <div className="border-b border-gray-800" />
 
-                        <div className="space-y-3">
+                        <div className="space-y-3 md:space-y-5">
                             <div className="flex items-center space-x-4">
                                 <span className="text-white font-bold">Jumlah:</span>
                                 <div className="flex items-center bg-gray-800 rounded-xl border border-gray-700">
-                                    <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                    <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                         <Minus size={18} />
                                     </motion.button>
                                     <span className="w-12 text-center text-white font-bold">{quantity}</span>
-                                    <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(quantity + 1)} className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                    <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(quantity + 1)} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                         <Plus size={18} />
                                     </motion.button>
                                 </div>
                             </div>
 
                             <div className="flex items-center space-x-3">
-                                <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-linear-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
+                                <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
                                     <ShoppingBag size={24} />
                                     <span>Beli</span>
                                 </motion.button>
-                                <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 shrink-0 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
                                     <ShoppingCart size={24} />
                                 </motion.button>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                </motion.div>
             </div>
         </div>
     )

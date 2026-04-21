@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+@utility bg-seblak-gradient {
+    background-image: linear-gradient(to right, var(--color-orange-500), var(--color-red-600));
+}
+
+@utility text-seblak-gradient {
+    background-image: linear-gradient(to right, var(--color-orange-500), var(--color-red-600));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
