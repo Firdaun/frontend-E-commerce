@@ -1,7 +1,9 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ShoppingCart, ShoppingBag, Flame, Plus, Minus, Check } from "lucide-react"
+import { getProductbyId } from "../utils/productApi.js"
+import { useQuery } from "@tanstack/react-query"
 
 const dummyProduct = [
     {
@@ -32,53 +34,78 @@ const spiceLevels = [
     { level: 5, label: "Hot Jeletot", color: "bg-red-700" }
 ]
 
+export function useIsMobile(){
+    const [isMobile, setIsMobile] = useState(false)
+    useEffect(() => {
+        const checkScreenSize = () => {
+            setIsMobile(window.innerWidth < 768)
+        }
+
+        checkScreenSize()
+        window.addEventListener('resize', checkScreenSize)
+
+        return () => window.removeEventListener('resize', checkScreenSize)
+    }, [])
+    
+    return isMobile
+}
+
 export default function ProductDetail() {
     const { id } = useParams()
     const navigate = useNavigate()
+    const isMobile = useIsMobile()
 
+    const { data: product, isLoading } = useQuery({
+        queryKey: ['product', id],
+        queryFn: () => getProductbyId(id)
+    })
+    
+    
     const [quantity, setQuantity] = useState(1)
-    const [spiceLevel, setSpiceLevel] = useState(dummyProduct[0].spiceLevels)
+    const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
     const [selectedToppings, setSelectedToppings] = useState([])
-
+    
     const toggleTopping = (topping) => {
         setSelectedToppings(prev =>
             prev.includes(topping) ? prev.filter(t => t !== topping) : [...prev, topping]
         )
     }
 
+    if (!product) return
+
     return (
         <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
             <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap">
 
                 <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, y: isMobile ? -20 : 0 , x: isMobile ? 0 : -20 }}
+                    animate={{ opacity: 1, y: 0, x: 0 }}
                     transition={{ duration: 0.5, ease: 'easeOut' }}
                     className="relative md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] xl:h-162 md:rounded-3xl overflow-hidden border border-gray-800 shadow-2xl"
                 >
                     <img
-                        src={dummyProduct[0].image_url}
-                        alt={dummyProduct[0].variant}
+                        src={product.image_url}
+                        alt={product.variant}
                         className="w-full object-cover h-full aspect-square"
                     />
                 </motion.div>
 
                 <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)]">
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
+                        initial={{ opacity: 0, y: isMobile ? 20 : 0 , x: isMobile ? 0 : 20 }}
+                        animate={{ opacity: 1, y: 0, x: 0 }}
                         transition={{ duration: 0.5, ease: "easeOut" }}
                         className="flex flex-col gap-3"
                     >
                         <div className="flex md:gap-2 flex-col">
                             <div className="text-3xl md:text-4xl py-3 text-seblak-gradient font-black">
-                                Rp {dummyProduct[0].price.toLocaleString('id-ID')}
+                                Rp {product.price.toLocaleString('id-ID')}
                             </div>
                             <h1 className="text-2xl md:text-3xl font-black text-white">
-                                {dummyProduct[0].variant}
+                                {product.variant}
                             </h1>
                             <p className="text-gray-400 text-md leading-5">
-                                {dummyProduct[0].description}
+                                {product.description}
                             </p>
                         </div>
 
@@ -105,11 +132,15 @@ export default function ProductDetail() {
                                 ))}
                             </div>
                             <p className="text-sm text-gray-500">
-                                Level terpilih: <span className="font-medium text-white">{spiceLevels[spiceLevel - 1].label}</span>
+                                Level terpilih: <span className="font-medium text-white">{spiceLevels[spiceLevel - 1]?.label}</span>
                             </p>
                         </div>
                     </motion.div>
-                    <div className="w-full hidden xl:block  pt-3">
+                    <motion.div 
+                        initial={{ opacity: 0, y: isMobile ? 20 : 0 , x: isMobile ? 0 : 20 }}
+                        animate={{ opacity: 1, y: 0, x: 0 }}
+                        transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="w-full hidden xl:block pt-3">
                         <div className="space-y-3 md:space-y-5">
                             <div className="space-y-3 md:space-y-5">
                                 <h3 className="text-white font-bold">Topping Tambahan (Opsional)</h3>
@@ -158,7 +189,7 @@ export default function ProductDetail() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
                 <div className="w-[95%] mx-auto md:w-full block xl:hidden pt-3">
                     <div className="space-y-3 md:space-y-5">
