@@ -1,18 +1,43 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
+import { Link } from "react-router-dom"
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
+    const navRef = useRef(null)
 
     const cartCount = 3
+    const MotionLink = motion.create(Link)
+    const navLinks = [
+        { name: 'Beranda', path: '/' },
+        { name: 'Menu Seblak', path: '/menu' },
+        { name: 'Promo', path: '/promo' },
+        { name: 'Kontak', path: '/kontak' },
+    ]
+
+    useEffect(() => {
+        if (!isOpen) return
+        const handleClickOutside = (event) => {
+            if (navRef.current && !navRef.current.contains(event.target)) {
+                setIsOpen(false)
+            }
+        }
+
+        document.addEventListener('pointerdown', handleClickOutside)
+
+        return () => {
+            document.removeEventListener("pointerdown", handleClickOutside)
+        }
+    }, [isOpen])
 
     return (
         <motion.nav
+            ref={navRef}
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="fixed top-0 left-0 right-0 z-50 bg-gray-900/95 backdrop-blur-sm border-b border-gray-800"
+            className="fixed top-0 left-0 right-0 z-50 bg-gray-900 backdrop-blur-sm border-b border-gray-800"
         >
             <div className="max-w-7xl w-[95%] mx-auto">
                 <div className="flex justify-between items-center h-15">
@@ -27,15 +52,15 @@ export default function Navbar() {
                     </motion.div>
 
                     <div className="hidden md:flex items-center space-x-8">
-                        {['Beranda', 'Menu Seblak', 'Promo', 'Kontak'].map((item) => (
-                            <motion.a
-                                key={item}
-                                href="#"
+                        {navLinks.map((link) => (
+                            <MotionLink
+                                key={link.name}
+                                to={link.path}
                                 whileHover={{ scale: 1.1, color: "#f97316" }}
                                 className="text-gray-300 font-medium transition-colors"
                             >
-                                {item}
-                            </motion.a>
+                                {link.name}
+                            </MotionLink>
                         ))}
                     </div>
 
@@ -82,13 +107,19 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-gray-900 overflow-hidden"
+                        className="md:hidden overflow-hidden"
                     >
                         <div className="px-4 pt-2 pb-6 space-y-2">
-                            {['Beranda', 'Menu Seblak', 'Promo', 'Kontak'].map((item) => (
-                                <a key={item} href="#" className="block text-gray-300 hover:text-orange-500 py-2 font-medium">
-                                    {item}
-                                </a>
+                            {navLinks.map((link) => (
+                                <MotionLink
+                                    onClick={() => setIsOpen(false)}
+                                    key={link.name}
+                                    to={link.path}
+                                    whileHover={{ scale: 1.1, color: "#f97316" }}
+                                    className="text-gray-300 block py-2 font-medium transition-colors"
+                                >
+                                    {link.name}
+                                </MotionLink>
                             ))}
                             <div className="pt-4 border-t border-gray-800 flex items-center justify-between">
                                 <button className="flex items-center space-x-2 text-gray-300">

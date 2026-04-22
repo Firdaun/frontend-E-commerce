@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { ShoppingCart, ShoppingBag, Flame, Plus, Minus, Check } from "lucide-react"
 import { getProductbyId } from "../utils/productApi.js"
 import { useQuery } from "@tanstack/react-query"
+import { useIsMobile } from "../hooks/isMobile.js"
 
 const dummyProduct = [
     {
@@ -33,22 +34,6 @@ const spiceLevels = [
     { level: 4, label: "Sangat Pedas", color: "bg-red-600" },
     { level: 5, label: "Hot Jeletot", color: "bg-red-700" }
 ]
-
-export function useIsMobile(){
-    const [isMobile, setIsMobile] = useState(false)
-    useEffect(() => {
-        const checkScreenSize = () => {
-            setIsMobile(window.innerWidth < 768)
-        }
-
-        checkScreenSize()
-        window.addEventListener('resize', checkScreenSize)
-
-        return () => window.removeEventListener('resize', checkScreenSize)
-    }, [])
-    
-    return isMobile
-}
 
 export default function ProductDetail() {
     const { id } = useParams()
@@ -82,12 +67,9 @@ export default function ProductDetail() {
             <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
                 <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap animate-pulse">
                     
-                    {/* Skeleton Gambar (Kiri) */}
-                    <div className="w-full md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] aspect-square bg-gray-800 rounded-3xl mb-6 md:mb-0" />
+                    <div className="w-full md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] lg:rounded-3xl aspect-square bg-gray-800 mb-6 md:mb-0" />
 
-                    {/* Skeleton Detail (Kanan) */}
                     <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] flex flex-col gap-6 pt-5 md:pt-0">
-                        {/* Harga & Judul */}
                         <div>
                             <div className="h-8 bg-gray-800 rounded-lg w-1/3 mb-4" />
                             <div className="h-10 bg-gray-800 rounded-lg w-3/4 mb-4" />
@@ -100,7 +82,6 @@ export default function ProductDetail() {
 
                         <div className="border-b border-gray-800" />
 
-                        {/* Level Pedas */}
                         <div>
                             <div className="h-6 bg-gray-800 rounded w-1/4 mb-4" />
                             <div className="flex space-x-3">
@@ -112,7 +93,6 @@ export default function ProductDetail() {
 
                         <div className="border-b border-gray-800 hidden md:block" />
 
-                        {/* Topping */}
                         <div>
                             <div className="h-6 bg-gray-800 rounded w-1/3 mb-4" />
                             <div className="grid grid-cols-2 gap-3 md:gap-4">
@@ -122,7 +102,6 @@ export default function ProductDetail() {
                             </div>
                         </div>
 
-                        {/* Tombol Beli */}
                         <div className="mt-auto pt-4 flex space-x-3">
                             <div className="h-14 bg-gray-800 rounded-xl flex-1" />
                             <div className="w-17 h-14 bg-gray-800 rounded-xl shrink-0" />
@@ -144,7 +123,6 @@ export default function ProductDetail() {
     return (
         <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
             <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap">
-
                 <motion.div
                     initial={{ opacity: 0, y: isMobile ? -20 : 0 , x: isMobile ? 0 : -20 }}
                     animate={{ opacity: 1, y: 0, x: 0 }}
@@ -157,7 +135,6 @@ export default function ProductDetail() {
                         className="w-full object-cover h-full aspect-square"
                     />
                 </motion.div>
-
                 <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)]">
                     <motion.div
                         initial={{ opacity: 0, y: isMobile ? 20 : 0 , x: isMobile ? 0 : 20 }}
@@ -176,9 +153,7 @@ export default function ProductDetail() {
                                 {product.description}
                             </p>
                         </div>
-
                         <div className="border-b border-gray-800" />
-
                         <div className="space-y-3 md:space-y-5">
                             <h3 className="text-white font-bold flex items-center space-x-1">
                                 <Flame size={20} className="text-orange-500 -translate-y-0.5" />
@@ -229,9 +204,7 @@ export default function ProductDetail() {
                                     ))}
                                 </div>
                             </div>
-
                             <div className="border-b border-gray-800" />
-
                             <div className="space-y-3 md:space-y-5">
                                 <div className="flex items-center space-x-4">
                                     <span className="text-white font-bold">Jumlah:</span>
@@ -245,7 +218,6 @@ export default function ProductDetail() {
                                         </motion.button>
                                     </div>
                                 </div>
-
                                 <div className="flex items-center space-x-3">
                                     <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
                                         <ShoppingBag size={24} />
@@ -284,9 +256,7 @@ export default function ProductDetail() {
                                 ))}
                             </div>
                         </div>
-
                         <div className="border-b border-gray-800" />
-
                         <div className="space-y-3 md:space-y-5">
                             <div className="flex items-center space-x-4">
                                 <span className="text-white font-bold">Jumlah:</span>
@@ -300,7 +270,6 @@ export default function ProductDetail() {
                                     </motion.button>
                                 </div>
                             </div>
-
                             <div className="flex items-center space-x-3">
                                 <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
                                     <ShoppingBag size={24} />
@@ -313,7 +282,6 @@ export default function ProductDetail() {
                         </div>
                     </div>
                 </motion.div>
-
             </div>
         </div>
     )

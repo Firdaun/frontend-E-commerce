@@ -1,14 +1,15 @@
 import { motion } from "framer-motion"
 import { ArrowRight, Flame } from "lucide-react"
+import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
 
 export default function Hero() {
-    // VARIANT ANIMASI: Ini resep rahasia untuk membuat animasi beruntun (stagger)
+    const isFirstVisit = useIsFirstVisit()
     const containerVariants = {
         hidden: { opacity: 0 },
         show: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2 // Jeda 0.2 detik untuk setiap elemen anak
+                staggerChildren: 0.2
             }
         }
     }
@@ -19,17 +20,14 @@ export default function Hero() {
     }
 
     return (
-        // pt-28 agar tidak tertutup oleh Navbar yang fixed
         <section className="relative pt-25 pb-16 md:pt-36 md:pb-24 overflow-hidden">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-                {/* Layout Grid: Kiri untuk Teks, Kanan untuk Gambar */}
                 <div className="grid md:grid-cols-2 gap-10 items-center">
 
-                    {/* BAGIAN KIRI: Teks & Tombol */}
                     <motion.div
                         variants={containerVariants}
-                        initial="hidden"
+                        initial={isFirstVisit ? "hidden" : false}
                         animate="show"
                         className="text-center md:text-left"
                     >
@@ -60,7 +58,7 @@ export default function Hero() {
 
                     <div className="flex justify-center relative order-first md:order-0">
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                            initial={isFirstVisit ? { opacity: 0, scale: 0.8, rotate: -10 } : false}
                             animate={{ opacity: 1, scale: 1, rotate: 0 }}
                             transition={{ duration: 1, ease: "easeOut", delay: 0.4 }}
                             className="w-[70%] relative"
@@ -75,7 +73,7 @@ export default function Hero() {
 
                         </motion.div>
                         <motion.div
-                            initial={{opacity: 0, x: 30}}
+                            initial={isFirstVisit ? {opacity: 0, x: 30} : false}
                             animate={{opacity: 1, x: 0}}
                             transition={{duration: 0.5, ease: "easeOut", delay: 1}}
                             className="absolute right-0 -bottom-10 z-20"
