@@ -64,23 +64,23 @@ export default function Navbar() {
                         ))}
                     </div>
 
-                    <div className="hidden md:flex items-center space-x-6">
-                        <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="relative text-gray-300 hover:text-orange-500 transition-colors"
-                        >
-                            <ShoppingCart size={24} />
-                            <motion.span
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1 }}
-                                className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                            >
-                                {cartCount}
-                            </motion.span>
-                        </motion.button>
-                    </div>
                     <div className="flex gap-5">
+                        <div className="hidden md:flex items-center space-x-6">
+                            <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                className="relative text-gray-300 hover:text-orange-500 transition-colors"
+                            >
+                                <ShoppingCart size={24} />
+                                <motion.span
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                                >
+                                    {cartCount}
+                                </motion.span>
+                            </motion.button>
+                        </div>
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
@@ -110,7 +110,7 @@ export default function Navbar() {
                         exit={{ opacity: 0, height: 0 }}
                         className="md:hidden overflow-hidden"
                     >
-                        <div className="px-4 pt-2 pb-6 space-y-2">
+                        <div className="pt-2 pb-6 space-y-2">
                             {navLinks.map((link) => (
                                 <MotionLink
                                     onClick={() => setIsOpen(false)}

@@ -83,7 +83,7 @@ export default function Menu() {
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 onClick={() => navigate(`/product/${product.id}`)}
-                                className="bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-xl group cursor-pointer"
+                                className="flex flex-col h-full bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-xl group cursor-pointer"
                             >
                                 <div className="relative overflow-hidden">
                                     <img
@@ -96,8 +96,8 @@ export default function Menu() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col p-2 md:p-4">
-                                    <div className="flex-1 mb-3">
+                                <div className="flex flex-col flex-1 p-3 md:p-4">
+                                    <div className="mb-3">
                                         <h3 className="text-lg font-bold text-white">{product.variant}</h3>
                                         <p className="text-gray-400 text-sm line-clamp-2">
                                             {product.description}

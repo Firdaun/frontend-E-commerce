@@ -20,10 +20,10 @@ export default function Hero() {
     }
 
     return (
-        <section className="relative pt-25 md:pt-30 pb-20">
-            <div className="max-w-7xl w-[95%] mx-auto flex xl:min-h-screen relative z-10">
+        <section className="relative pt-25 md:pt-30 pb-20 xl:min-h-screen">
+            <div className="max-w-7xl w-[95%] mx-auto flex relative z-10">
 
-                <div className="grid md:grid-cols-2 gap-10 items-center">
+                <div className="grid md:grid-cols-2 items-center">
 
                     <motion.div
                         variants={containerVariants}
@@ -36,8 +36,8 @@ export default function Hero() {
                             <span className="font-semibold tracking-wide text-xs xl:text-sm ">LEVEL PEDAS BISA DIATUR!</span>
                         </motion.div>
 
-                        <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-3 leading-tight">
-                            Seblak <span className="text-transparent bg-clip-text bg-seblak-gradient">Hot Jeletot</span> <br />
+                        <motion.h1 variants={itemVariants} className="text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-white mb-3 leading-tight">
+                            Seblak <span className="text-transparent bg-clip-text whitespace-nowrap bg-seblak-gradient">Hot Jeletot</span> <br />
                             Bikin Nagih.
                         </motion.h1>
 
@@ -68,7 +68,7 @@ export default function Hero() {
                             <img
                                 src="https://images.unsplash.com/photo-1555126634-323283e090fa?q=80&w=1000&auto=format&fit=crop"
                                 alt="Semangkuk Seblak"
-                                className="relative w-full mx-auto rounded-full aspect-square shadow-2xl border-4 border-gray-800"
+                                className="relative w-full mx-auto object-cover rounded-full aspect-square shadow-2xl border-4 border-gray-800"
                             />
 
                         </motion.div>
