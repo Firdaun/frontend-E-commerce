@@ -42,7 +42,9 @@ export default function ProductDetail() {
 
     const { data: product, isLoading, isError} = useQuery({
         queryKey: ['product', id],
-        queryFn: () => getProductbyId(id)
+        queryFn: () => getProductbyId(id),
+        staleTime: 1000 * 60 * 15,
+        gcTime: 1000 * 60 * 30
     })
     
     
@@ -121,7 +123,7 @@ export default function ProductDetail() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
+        <div className="min-h-screen bg-gray-950 pt-15 md:pt-24 pb-12">
             <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap">
                 <motion.div
                     initial={{ opacity: 0, y: isMobile ? -20 : 0 , x: isMobile ? 0 : -20 }}
@@ -153,7 +155,7 @@ export default function ProductDetail() {
                                 {product.description}
                             </p>
                         </div>
-                        <div className="border-b border-gray-800" />
+                        <div className="border-b border-gray-900" />
                         <div className="space-y-3 md:space-y-5">
                             <h3 className="text-white font-bold flex items-center space-x-1">
                                 <Flame size={20} className="text-orange-500 -translate-y-0.5" />
@@ -167,7 +169,7 @@ export default function ProductDetail() {
                                         onClick={() => setSpiceLevel(level.level)}
                                         className={`w-12 h-12 rounded-xl font-bold ${spiceLevel === level.level
                                             ? 'bg-linear-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-red-500/30 border-none'
-                                            : 'bg-gray-800 text-gray-400 border border-gray-700 hover:border-orange-500'
+                                            : 'bg-gray-900 text-gray-500 border border-gray-800 hover:border-orange-500'
                                             }`}
                                     >
                                         {level.level}
@@ -204,11 +206,11 @@ export default function ProductDetail() {
                                     ))}
                                 </div>
                             </div>
-                            <div className="border-b border-gray-800" />
+                            <div className="border-b border-gray-900" />
                             <div className="space-y-3 md:space-y-5">
                                 <div className="flex items-center space-x-4">
                                     <span className="text-white font-bold">Jumlah:</span>
-                                    <div className="flex items-center bg-gray-800 rounded-xl border border-gray-700">
+                                    <div className="flex items-center bg-gray-900 rounded-xl border border-gray-700">
                                         <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                             <Minus size={18} />
                                         </motion.button>
@@ -221,7 +223,7 @@ export default function ProductDetail() {
                                 <div className="flex items-center space-x-3">
                                     <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
                                         <ShoppingBag size={24} />
-                                        <span>Beli</span>
+                                        <span>Beli Sekarang</span>
                                     </motion.button>
                                     <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
                                         <ShoppingCart size={24} />
@@ -247,7 +249,7 @@ export default function ProductDetail() {
                                         onClick={() => toggleTopping(topping)}
                                         className={`flex items-center justify-between p-3 rounded-xl border transition-colors ${selectedToppings.includes(topping)
                                             ? 'bg-orange-500/10 border-orange-500 text-orange-500'
-                                            : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500'
+                                            : 'bg-gray-900 border-gray-800 text-gray-500'
                                             }`}
                                     >
                                         <span className="text-sm font-medium">{topping}</span>
@@ -256,11 +258,11 @@ export default function ProductDetail() {
                                 ))}
                             </div>
                         </div>
-                        <div className="border-b border-gray-800" />
+                        <div className="border-b border-gray-900" />
                         <div className="space-y-3 md:space-y-5">
                             <div className="flex items-center space-x-4">
                                 <span className="text-white font-bold">Jumlah:</span>
-                                <div className="flex items-center bg-gray-800 rounded-xl border border-gray-700">
+                                <div className="flex items-center bg-gray-900 rounded-xl border border-gray-800">
                                     <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                         <Minus size={18} />
                                     </motion.button>
@@ -273,9 +275,9 @@ export default function ProductDetail() {
                             <div className="flex items-center space-x-3">
                                 <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
                                     <ShoppingBag size={24} />
-                                    <span>Beli</span>
+                                    <span>Beli Sekarang</span>
                                 </motion.button>
-                                <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
                                     <ShoppingCart size={24} />
                                 </motion.button>
                             </div>

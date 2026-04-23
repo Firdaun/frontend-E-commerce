@@ -37,7 +37,7 @@ export default function Navbar() {
             initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="fixed top-0 left-0 right-0 z-50 bg-gray-900 backdrop-blur-sm border-b border-gray-800"
+            className="fixed top-0 left-0 right-0 z-50 bg-gray-950 border-b border-gray-800"
         >
             <div className="max-w-7xl w-[95%] mx-auto">
                 <div className="flex justify-between items-center h-15">
@@ -57,7 +57,7 @@ export default function Navbar() {
                                 key={link.name}
                                 to={link.path}
                                 whileHover={{ scale: 1.1, color: "#f97316" }}
-                                className="text-gray-300 font-medium transition-colors"
+                                className="text-gray-300 text-sm font-medium transition-colors"
                             >
                                 {link.name}
                             </MotionLink>
@@ -79,24 +79,25 @@ export default function Navbar() {
                                 {cartCount}
                             </motion.span>
                         </motion.button>
-
+                    </div>
+                    <div className="flex gap-5">
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.9 }}
-                            className="flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-full font-medium transition-colors"
+                            className="flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
                         >
-                            <User size={18} />
+                            <User size={16} />
                             <span>Login</span>
                         </motion.button>
-                    </div>
 
-                    <div className="md:hidden flex items-center">
-                        <button
-                            onClick={() => setIsOpen(!isOpen)}
-                            className="text-gray-300 hover:text-orange-500"
-                        >
-                            {isOpen ? <X size={28} /> : <Menu size={28} />}
-                        </button>
+                        <div className="md:hidden flex items-center">
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="text-gray-300 hover:text-orange-500"
+                            >
+                                {isOpen ? <X size={28} /> : <Menu size={28} />}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,18 +117,16 @@ export default function Navbar() {
                                     key={link.name}
                                     to={link.path}
                                     whileHover={{ scale: 1.1, color: "#f97316" }}
-                                    className="text-gray-300 block py-2 font-medium transition-colors"
+                                    className="text-gray-300 block text-sm py-2 text-center font-medium transition-colors"
                                 >
                                     {link.name}
                                 </MotionLink>
                             ))}
-                            <div className="pt-4 border-t border-gray-800 flex items-center justify-between">
+                            <div className="pt-4 border-t border-gray-800 flex items-center justify-center">
                                 <button className="flex items-center space-x-2 text-gray-300">
                                     <ShoppingCart size={24} />
-                                    <span>Keranjang ({cartCount})</span>
-                                </button>
-                                <button className="bg-orange-600 text-white px-4 py-2 rounded-full font-medium">
-                                    Login
+                                    keranjang
+                                    <span>({cartCount})</span>
                                 </button>
                             </div>
                         </div>
