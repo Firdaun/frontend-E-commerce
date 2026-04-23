@@ -18,7 +18,7 @@ export default function Menu() {
     // const products = []
 
     return (
-        <section className="py-10 border-t border-gray-800">
+        <section className="py-20 border-t border-gray-800">
             <div className="max-w-7xl w-[95%] mx-auto">
 
                 <motion.div
@@ -27,15 +27,15 @@ export default function Menu() {
                     viewport={{ once: true }}
                     className="text-center mb-10"
                 >
-                    <h2 className="text-3xl lg:text-5xl font-black text-white mb-4">
+                    <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-white mb-4">
                         Pilih <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">Menu Favoritmu</span>
                     </h2>
-                    <p className="text-gray-400 max-w-2xl text-sm mx-auto">
+                    <p className="text-gray-400 max-w-2xl text-sm xl:text-base mx-auto">
                         Semua varian dimasak dadakan dengan rempah kencur asli dan cabai segar.
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-2 md::grid-cols-3 gap-3 md:gap-4">
+                <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4">
                     {isLoading ? (
                         <div className="col-span-full py-20 flex justify-center items-center min-h-[50vh]">
                             <Loader2 className="animate-spin text-orange-500" size={48} />
