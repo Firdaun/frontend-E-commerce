@@ -31,7 +31,7 @@ export default function Hero() {
                         animate="show"
                         className="text-center md:text-left"
                     >
-                        <motion.div variants={itemVariants} className="inline-flex items-center space-x-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full mb-3 border border-red-500/20">
+                        <motion.div variants={itemVariants} className="inline-flex mt-10 md:mt-0 items-center space-x-2 bg-red-500/10 text-red-500 px-4 py-2 rounded-full mb-3 border border-red-500/20">
                             <Flame size={20} className="animate-pulse" />
                             <span className="font-semibold tracking-wide text-xs xl:text-sm ">LEVEL PEDAS BISA DIATUR!</span>
                         </motion.div>
@@ -50,7 +50,7 @@ export default function Hero() {
                                 <span>Pesan Sekarang</span>
                                 <ArrowRight size={20} />
                             </button>
-                            <button className="w-full sm:w-auto bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 px-5 py-3 lg:px-8 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-colors">
+                            <button className="w-full sm:w-auto bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-5 py-3 lg:px-8 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-colors">
                                 Lihat Menu
                             </button>
                         </motion.div>
@@ -82,14 +82,14 @@ export default function Hero() {
                             <motion.div
                                 animate={{ y: [0, -8, 0] }}
                                 transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
-                                className="bg-gray-900 border border-gray-800 p-3 rounded-2xl shadow-xl flex items-center space-x-3"
+                                className="bg-gray-900 border border-gray-800 p-3 2xl:p-4 rounded-2xl shadow-xl flex items-center space-x-3"
                             >
-                                <div className="bg-green-500/20 py-1 px-1.5 lg:px-1.75 rounded-full">
-                                    <span className="text-base lg:text-lg">🌶️</span>
+                                <div className="bg-green-500/20 py-1 px-1.5 lg:px-1.75 2xl:py-1.5 rounded-full">
+                                    <span className="text-base lg:text-lg 2xl:text-2xl">🌶️</span>
                                 </div>
                                 <div>
-                                    <p className="text-white font-bold text-xs lg:text-sm">Best Seller</p>
-                                    <p className="text-gray-400 text-xs">Seblak Ceker Level 3</p>
+                                    <p className="text-white font-bold text-xs lg:text-sm 2xl:text-base">Best Seller</p>
+                                    <p className="text-gray-400 text-xs 2xl:text-sm">Seblak Ceker Level 3</p>
                                 </div>
                             </motion.div>
                         </motion.div>

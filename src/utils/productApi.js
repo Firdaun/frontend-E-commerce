@@ -27,5 +27,4 @@ export const getProductbyId = async (id) => {
         console.error("Error di productApi:", error);
         throw error
     }
-
 }

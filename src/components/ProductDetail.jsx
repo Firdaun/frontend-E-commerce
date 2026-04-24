@@ -66,47 +66,47 @@ export default function ProductDetail() {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen bg-gray-900 pt-15 md:pt-24 pb-12">
+            <div className="min-h-screen bg-gray-950 pt-15 md:pt-24 pb-12">
                 <div className="flex justify-between md:max-w-7xl md:w-[95%] mx-auto flex-wrap animate-pulse">
                     
-                    <div className="w-full md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] lg:rounded-3xl aspect-square bg-gray-800 mb-6 md:mb-0" />
+                    <div className="w-full md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] lg:rounded-3xl aspect-square bg-gray-900 mb-6 md:mb-0" />
 
                     <div className="w-[95%] mx-auto md:mx-0 md:w-[calc(50%-10px)] xl:w-[calc(50%-20px)] flex flex-col gap-6 pt-5 md:pt-0">
                         <div>
-                            <div className="h-8 bg-gray-800 rounded-lg w-1/3 mb-4" />
-                            <div className="h-10 bg-gray-800 rounded-lg w-3/4 mb-4" />
+                            <div className="h-8 bg-gray-900 rounded-lg w-1/3 mb-4" />
+                            <div className="h-10 bg-gray-900 rounded-lg w-3/4 mb-4" />
                             <div className="space-y-2">
-                                <div className="h-4 bg-gray-800 rounded w-full" />
-                                <div className="h-4 bg-gray-800 rounded w-5/6" />
-                                <div className="h-4 bg-gray-800 rounded w-4/6" />
+                                <div className="h-4 bg-gray-900 rounded w-full" />
+                                <div className="h-4 bg-gray-900 rounded w-5/6" />
+                                <div className="h-4 bg-gray-900 rounded w-4/6" />
                             </div>
                         </div>
 
-                        <div className="border-b border-gray-800" />
+                        <div className="border-b border-gray-900" />
 
                         <div>
-                            <div className="h-6 bg-gray-800 rounded w-1/4 mb-4" />
+                            <div className="h-6 bg-gray-900 rounded w-1/4 mb-4" />
                             <div className="flex space-x-3">
                                 {[1, 2, 3, 4, 5].map(i => (
-                                    <div key={i} className="w-12 h-12 bg-gray-800 rounded-xl" />
+                                    <div key={i} className="w-12 h-12 bg-gray-900 rounded-xl" />
                                 ))}
                             </div>
                         </div>
 
-                        <div className="border-b border-gray-800 hidden md:block" />
+                        <div className="border-b border-gray-900 hidden md:block" />
 
                         <div>
-                            <div className="h-6 bg-gray-800 rounded w-1/3 mb-4" />
+                            <div className="h-6 bg-gray-900 rounded w-1/3 mb-4" />
                             <div className="grid grid-cols-2 gap-3 md:gap-4">
                                 {[1, 2, 3, 4].map(i => (
-                                    <div key={i} className="h-13 bg-gray-800 rounded-xl" />
+                                    <div key={i} className="h-13 bg-gray-900 rounded-xl" />
                                 ))}
                             </div>
                         </div>
 
                         <div className="mt-auto pt-4 flex space-x-3">
-                            <div className="h-14 bg-gray-800 rounded-xl flex-1" />
-                            <div className="w-17 h-14 bg-gray-800 rounded-xl shrink-0" />
+                            <div className="h-14 bg-gray-900 rounded-xl flex-1" />
+                            <div className="w-17 h-14 bg-gray-900 rounded-xl shrink-0" />
                         </div>
                     </div>
                 </div>
@@ -197,7 +197,7 @@ export default function ProductDetail() {
                                             onClick={() => toggleTopping(topping)}
                                             className={`flex items-center justify-between p-3 rounded-xl border transition-colors ${selectedToppings.includes(topping)
                                                 ? 'bg-orange-500/10 border-orange-500 text-orange-500'
-                                                : 'bg-gray-800 border-gray-700 text-gray-400 hover:border-gray-500'
+                                                : 'bg-gray-900 border-gray-800 text-gray-500 hover:border-gray-700'
                                                 }`}
                                         >
                                             <span className="text-sm font-medium">{topping}</span>
@@ -225,7 +225,7 @@ export default function ProductDetail() {
                                         <ShoppingBag size={24} />
                                         <span>Beli Sekarang</span>
                                     </motion.button>
-                                    <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-800 hover:bg-gray-700 border border-gray-600 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                    <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
                                         <ShoppingCart size={24} />
                                     </motion.button>
                                 </div>

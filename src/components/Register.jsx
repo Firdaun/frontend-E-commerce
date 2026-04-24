@@ -1,0 +1,161 @@
+import { useState } from "react"
+import { motion } from "framer-motion"
+import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+
+export default function Register() {
+    const navigate = useNavigate()
+    const [showPassword, setShowPassword] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        password: ""
+    })
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value })
+    }
+
+    const handleRegister = (e) => {
+        e.preventDefault()
+        setIsLoading(true)
+
+        // Simulasi Register
+        setTimeout(() => {
+            setIsLoading(false)
+            alert(`Akun berhasil dibuat untuk: ${formData.name}`)
+            navigate('/login') // Arahkan ke login setelah daftar
+        }, 1500)
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+            
+            {/* Efek Cahaya Background */}
+            <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-orange-600/20 rounded-full blur-[100px]"></div>
+            <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-red-600/20 rounded-full blur-[100px]"></div>
+
+            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+                <button 
+                    onClick={() => navigate(-1)}
+                    className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
+                >
+                    <ArrowLeft size={20} />
+                </button>
+                
+                <motion.div
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center"
+                >
+                    <h2 className="text-3xl font-black text-white">
+                        Daftar <span className="text-transparent bg-clip-text bg-seblak-gradient">Akun Baru</span>
+                    </h2>
+                    <p className="mt-2 text-sm text-gray-400">
+                        Bergabunglah untuk menikmati seblak terpedas di kota!
+                    </p>
+                </motion.div>
+            </div>
+
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
+            >
+                <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
+                    <form className="space-y-5" onSubmit={handleRegister}>
+                        
+                        {/* Input Nama */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300">Nama Lengkap</label>
+                            <div className="mt-1 relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <User className="h-5 w-5 text-gray-500" />
+                                </div>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    required
+                                    value={formData.name}
+                                    onChange={handleChange}
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    placeholder="Fahrul"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Input Email */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300">Alamat Email</label>
+                            <div className="mt-1 relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Mail className="h-5 w-5 text-gray-500" />
+                                </div>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    required
+                                    value={formData.email}
+                                    onChange={handleChange}
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    placeholder="nama@email.com"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Input Password */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-300">Password</label>
+                            <div className="mt-1 relative">
+                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-gray-500" />
+                                </div>
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    required
+                                    value={formData.password}
+                                    onChange={handleChange}
+                                    className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    placeholder="••••••••"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-300"
+                                >
+                                    {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Tombol Register */}
+                        <div className="pt-2">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                type="submit"
+                                disabled={isLoading}
+                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                                {isLoading ? <Loader2 className="animate-spin h-5 w-5" /> : "Daftar Sekarang"}
+                            </motion.button>
+                        </div>
+                    </form>
+
+                    <div className="mt-6 text-center">
+                        <p className="text-sm text-gray-400">
+                            Sudah punya akun?{' '}
+                            <button onClick={() => navigate('/login')} className="font-bold text-orange-500 hover:text-orange-400 transition-colors">
+                                Masuk di sini
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </motion.div>
+        </div>
+    )
+}

@@ -1,20 +1,23 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
+const MotionLink = motion.create(Link)
+const navLinks = [
+    { name: 'Beranda', path: '/' },
+    { name: 'Menu Seblak', path: '/menu' },
+    { name: 'Promo', path: '/promo' },
+    { name: 'Kontak', path: '/kontak' },
+]
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
 
+    const { pathname } = useLocation()
+
+
     const cartCount = 3
-    const MotionLink = motion.create(Link)
-    const navLinks = [
-        { name: 'Beranda', path: '/' },
-        { name: 'Menu Seblak', path: '/menu' },
-        { name: 'Promo', path: '/promo' },
-        { name: 'Kontak', path: '/kontak' },
-    ]
 
     useEffect(() => {
         if (!isOpen) return
@@ -31,6 +34,12 @@ export default function Navbar() {
         }
     }, [isOpen])
 
+    const hiddenPages = ['/login', '/register']
+
+    if (hiddenPages.includes(pathname)) {
+        return null
+    }
+
     return (
         <motion.nav
             ref={navRef}
@@ -43,7 +52,6 @@ export default function Navbar() {
                 <div className="flex justify-between items-center h-15">
 
                     <motion.div
-                        whileHover={{ scale: 1.05 }}
                         className="flex items-center cursor-pointer"
                     >
                         <span className="text-xl font-black text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">
@@ -56,8 +64,7 @@ export default function Navbar() {
                             <MotionLink
                                 key={link.name}
                                 to={link.path}
-                                whileHover={{ scale: 1.1, color: "#f97316" }}
-                                className="text-gray-300 text-sm font-medium transition-colors"
+                                className="hover:text-orange-500 duration-300 text-gray-300 text-sm font-medium transition-colors"
                             >
                                 {link.name}
                             </MotionLink>
@@ -66,29 +73,32 @@ export default function Navbar() {
 
                     <div className="flex gap-5">
                         <div className="hidden md:flex items-center space-x-6">
-                            <motion.button
-                                whileHover={{ scale: 1.1 }}
-                                whileTap={{ scale: 0.9 }}
-                                className="relative text-gray-300 hover:text-orange-500 transition-colors"
-                            >
-                                <ShoppingCart size={24} />
-                                <motion.span
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                            <Link to='/cart'>
+                                <motion.button
+                                    whileTap={{ scale: 0.9 }}
+                                    className="cursor-pointer relative text-gray-300 hover:text-orange-500 transition-colors"
                                 >
-                                    {cartCount}
-                                </motion.span>
-                            </motion.button>
+                                    <ShoppingCart size={24} />
+                                    <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                                    >
+                                        {cartCount}
+                                    </motion.span>
+                                </motion.button>
+                            </Link>
                         </div>
-                        <motion.button
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
-                            className="flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
-                        >
-                            <User size={16} />
-                            <span>Login</span>
-                        </motion.button>
+
+                        <Link to='/login'>
+                            <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                className="cursor-pointer flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
+                            >
+                                <User size={16} />
+                                <span>Login</span>
+                            </motion.button>
+                        </Link>
 
                         <div className="md:hidden flex items-center">
                             <button
@@ -116,8 +126,7 @@ export default function Navbar() {
                                     onClick={() => setIsOpen(false)}
                                     key={link.name}
                                     to={link.path}
-                                    whileHover={{ scale: 1.1, color: "#f97316" }}
-                                    className="text-gray-300 block text-sm py-2 text-center font-medium transition-colors"
+                                    className="text-gray-300 block text-sm py-2 text-center font-medium"
                                 >
                                     {link.name}
                                 </MotionLink>

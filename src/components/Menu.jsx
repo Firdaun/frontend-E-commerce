@@ -104,12 +104,12 @@ export default function Menu() {
                                         </p>
                                     </div>
                                     <div className="flex gap-2 mt-auto">
-                                        <button className="w-full bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-0 rounded-xl font-bold transition-transform transform active:scale-95 flex items-center justify-center space-x-1 shadow-lg shadow-red-500/20">
+                                        <button className="w-full cursor-pointer bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-0 rounded-xl font-bold transition-transform transform active:scale-95 flex items-center justify-center space-x-1 shadow-lg shadow-red-500/20">
                                             <ShoppingBag size={15} />
                                             <span>Beli</span>
                                         </button>
                                         <div>
-                                            <button onClick={(e) => e.stopPropagation()} className="w-10.5 bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-orange-500 text-gray-300 hover:text-orange-500 py-3 rounded-full font-bold transition-colors transform active:scale-95 flex items-center justify-center">
+                                            <button onClick={(e) => e.stopPropagation()} className="w-10.5 cursor-pointer bg-gray-800 hover:bg-gray-700 border border-gray-700 hover:border-orange-500 text-gray-300 hover:text-orange-500 py-3 rounded-full font-bold transition-colors transform active:scale-95 flex items-center justify-center">
                                                 <ShoppingCart size={15} />
                                             </button>
                                         </div>

@@ -7,6 +7,9 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop.jsx'
 import Navbar from './components/Navbar.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
+import Cart from './components/Cart.jsx'
+import Login from './components/Login.jsx'
+import Register from './components/Register.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +36,9 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
 
       </BrowserRouter>
