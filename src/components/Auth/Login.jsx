@@ -1,15 +1,15 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
-import { useNavigate } from "react-router-dom"
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
 
-export default function Register() {
+export default function Login() {
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
+
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
         password: ""
     })
@@ -18,79 +18,58 @@ export default function Register() {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
-    const handleRegister = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault()
         setIsLoading(true)
 
-        // Simulasi Register
         setTimeout(() => {
             setIsLoading(false)
-            alert(`Akun berhasil dibuat untuk: ${formData.name}`)
-            navigate('/login') // Arahkan ke login setelah daftar
+            alert(`Berhasil login dengan email: ${formData.email}`)
+            navigate('/')
         }, 1500)
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-            
-            {/* Efek Cahaya Background */}
-            <div className="absolute top-[-10%] right-[-10%] w-96 h-96 bg-orange-600/20 rounded-full blur-[100px]"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-96 h-96 bg-red-600/20 rounded-full blur-[100px]"></div>
-
+        <>
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-                <button 
+                <button
                     onClick={() => navigate(-1)}
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />
                 </button>
-                
+
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
                     className="text-center"
                 >
                     <h2 className="text-3xl font-black text-white">
-                        Daftar <span className="text-transparent bg-clip-text bg-seblak-gradient">Akun Baru</span>
+                        Selamat Datang di <br />
+                        <span className="text-transparent bg-clip-text bg-seblak-gradient">Seblak Hot Jeletot</span>
                     </h2>
                     <p className="mt-2 text-sm text-gray-400">
-                        Bergabunglah untuk menikmati seblak terpedas di kota!
+                        Masuk untuk mulai memesan seblak favoritmu
                     </p>
                 </motion.div>
             </div>
 
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
                 className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
             >
                 <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
-                    <form className="space-y-5" onSubmit={handleRegister}>
-                        
-                        {/* Input Nama */}
-                        <div>
-                            <label className="block text-sm font-medium text-gray-300">Nama Lengkap</label>
-                            <div className="mt-1 relative">
-                                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <User className="h-5 w-5 text-gray-500" />
-                                </div>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-                                    placeholder="Fahrul"
-                                />
-                            </div>
-                        </div>
+                    <form className="space-y-6" onSubmit={handleLogin}>
 
                         {/* Input Email */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300">Alamat Email</label>
-                            <div className="mt-1 relative">
+                            <label className="block text-sm font-medium text-gray-300">
+                                Alamat Email
+                            </label>
+                            <div className="mt-2 relative rounded-xl shadow-xs">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Mail className="h-5 w-5 text-gray-500" />
                                 </div>
@@ -100,7 +79,7 @@ export default function Register() {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="nama@email.com"
                                 />
                             </div>
@@ -108,8 +87,10 @@ export default function Register() {
 
                         {/* Input Password */}
                         <div>
-                            <label className="block text-sm font-medium text-gray-300">Password</label>
-                            <div className="mt-1 relative">
+                            <label className="block text-sm font-medium text-gray-300">
+                                Password
+                            </label>
+                            <div className="mt-2 relative rounded-xl shadow-xs">
                                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <Lock className="h-5 w-5 text-gray-500" />
                                 </div>
@@ -119,7 +100,7 @@ export default function Register() {
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
-                                    className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="••••••••"
                                 />
                                 <button
@@ -132,30 +113,55 @@ export default function Register() {
                             </div>
                         </div>
 
-                        {/* Tombol Register */}
-                        <div className="pt-2">
+                        {/* Lupa Password & Ingat Saya */}
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center">
+                                <input
+                                    id="remember-me"
+                                    name="remember-me"
+                                    type="checkbox"
+                                    className="h-4 w-4 bg-gray-950 border-gray-700 rounded text-orange-500 focus:ring-orange-500"
+                                />
+                                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-400">
+                                    Ingat saya
+                                </label>
+                            </div>
+
+                            <div className="text-sm">
+                                <a href="#" className="font-medium text-orange-500 hover:text-orange-400 transition-colors">
+                                    Lupa password?
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Tombol Submit */}
+                        <div>
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={isLoading}
-                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                {isLoading ? <Loader2 className="animate-spin h-5 w-5" /> : "Daftar Sekarang"}
+                                {isLoading ? (
+                                    <Loader2 className="animate-spin h-5 w-5 text-white" />
+                                ) : (
+                                    "Masuk"
+                                )}
                             </motion.button>
                         </div>
                     </form>
 
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-400">
-                            Sudah punya akun?{' '}
-                            <button onClick={() => navigate('/login')} className="font-bold text-orange-500 hover:text-orange-400 transition-colors">
-                                Masuk di sini
-                            </button>
+                            Belum punya akun?{' '}
+                            <Link to='/register' className="font-bold text-orange-500 hover:text-orange-400 transition-colors">
+                                Daftar sekarang
+                            </Link>
                         </p>
                     </div>
                 </div>
             </motion.div>
-        </div>
+        </>
     )
 }

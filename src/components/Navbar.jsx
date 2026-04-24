@@ -14,9 +14,6 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
 
-    const { pathname } = useLocation()
-
-
     const cartCount = 3
 
     useEffect(() => {
@@ -33,12 +30,6 @@ export default function Navbar() {
             document.removeEventListener("pointerdown", handleClickOutside)
         }
     }, [isOpen])
-
-    const hiddenPages = ['/login', '/register']
-
-    if (hiddenPages.includes(pathname)) {
-        return null
-    }
 
     return (
         <motion.nav
