@@ -32,12 +32,12 @@ export default function Login() {
     return (
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-                <button
-                    onClick={() => navigate(-1)}
+                <Link
+                    to='/'
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />
-                </button>
+                </Link>
 
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}

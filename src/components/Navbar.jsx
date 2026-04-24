@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
 import { Link, useLocation } from "react-router-dom"
+import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
 const MotionLink = motion.create(Link)
 const navLinks = [
     { name: 'Beranda', path: '/' },
@@ -13,6 +14,7 @@ const navLinks = [
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
+    const isFirstVisit = useIsFirstVisit()
 
     const cartCount = 3
 
@@ -34,7 +36,7 @@ export default function Navbar() {
     return (
         <motion.nav
             ref={navRef}
-            initial={{ y: -100, opacity: 0 }}
+            initial={isFirstVisit ? { y: -100, opacity: 0 } : false}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="fixed top-0 left-0 right-0 z-50 bg-gray-950 border-b border-gray-800"
