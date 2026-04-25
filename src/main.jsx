@@ -8,10 +8,11 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import Navbar from './components/Navbar.jsx'
 import ProductDetail from './components/ProductDetail.jsx'
 import Cart from './components/Cart.jsx'
-import Login from './components/Auth/Login.jsx'
-import Register from './components/Auth/Register.jsx'
-import AuthLayout from './components/Auth/AuthLayout.jsx'
+import Login from './components/auth/Login.jsx'
+import Register from './components/auth/Register.jsx'
+import AuthLayout from './components/auth/AuthLayout.jsx'
 import Layout from './components/Layout.jsx'
+import VerifikasiOtp from './components/auth/VerifikasiOtp.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,28 +23,32 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (error, query) => {
-      console.error("🚨 GLOBAL ERROR TERDETEKSI:", error.message)
-      console.error("🔍 Query Key yang bermasalah:", query.queryKey)
+      console.error('🚨 GLOBAL ERROR TERDETEKSI:', error.message)
+      console.error('🔍 Query Key yang bermasalah:', query.queryKey)
     }
   })
 })
-
+import { Toaster } from 'sonner'
+import Profile from './components/Profile.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+      <Toaster richColors theme="dark" position="top-center" />
         <ScrollToTop />
 
         <Routes>
           <Route element={<Layout/> }>
-            <Route path="/" element={<App />} />
-            <Route path="/product/:id" element={<ProductDetail />} />
-            <Route path="/cart" element={<Cart />} />
+            <Route path='/' element={<App />} />
+            <Route path='/product/:id' element={<ProductDetail />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/profile' element={<Profile/>}/>
           </Route>
 
           <Route element={<AuthLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/verifikasi' element={<VerifikasiOtp/>}/>
           </Route>
         </Routes>
 

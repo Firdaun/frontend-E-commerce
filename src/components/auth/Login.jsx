@@ -1,12 +1,16 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+import { login } from "../../utils/authApi.js"
 
 export default function Login() {
     const navigate = useNavigate()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const emailRef = useRef(null)
+    const passwordRef = useRef(null)
 
 
     const [formData, setFormData] = useState({
@@ -15,18 +19,33 @@ export default function Login() {
     })
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
     const handleLogin = (e) => {
         e.preventDefault()
+        if (!formData.email || !formData.password) {
+            if (!formData.email) return emailRef.current.focus()
+            if (!formData.password) return passwordRef.current.focus()
+            return
+        }
+
         setIsLoading(true)
 
-        setTimeout(() => {
+        const eksekusiApi = login(formData).finally(() => {
             setIsLoading(false)
-            alert(`Berhasil login dengan email: ${formData.email}`)
-            navigate('/')
-        }, 1500)
+        })
+        toast.promise(eksekusiApi, {
+            loading: 'Memproses...',
+            success: (result) => {
+                localStorage.setItem('token', result.data.token)
+                setTimeout(() => navigate('/'), 1000)
+                return 'Login berhasil'
+            },
+            error: (e) => {
+                return e.message
+            }
+        })
     }
 
     return (

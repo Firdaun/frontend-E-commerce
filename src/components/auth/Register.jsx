@@ -1,51 +1,74 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
+import { registerUser } from "../../utils/authApi.js"
+import { toast } from "sonner"
 
 export default function Register() {
+    const nameRef = useRef(null)
+    const emailRef = useRef(null)
+    const passwordRef = useRef(null)
     const navigate = useNavigate()
+    const location = useLocation()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
 
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: ""
-    })
+    const [formData, setFormData] = useState(
+        location.state?.savedFormData || {
+            name: "",
+            email: "",
+            password: ""
+        }
+    )
 
     const handleChange = (e) => {
         setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
-    
 
-    const handleRegister = (e) => {
+
+    const handleRegister = async (e) => {
         e.preventDefault()
+        if (!formData.email || !formData.password || !formData.name) {
+            if (!formData.email) return emailRef.current.focus()
+            if (!formData.password) return passwordRef.current.focus()
+            if (!formData.name) return nameRef.current.focus()
+            return
+        }
+
         setIsLoading(true)
 
-        // Simulasi Register
-        setTimeout(() => {
-            setIsLoading(false)
-            alert(`Akun berhasil dibuat untuk: ${formData.name}`)
-            navigate('/login') // Arahkan ke login setelah daftar
-        }, 1500)
+        const eksekusiApi = registerUser(formData).finally(() => {
+            setIsLoading(false) 
+        })
+
+        toast.promise(eksekusiApi, {
+            loading: 'Mendaftarkan akun...',
+            success: () => {
+                navigate('/verifikasi', { state: { savedFormData: formData } })
+                return 'Pendaftaran berhasil! Cek email untuk OTP.'
+            },
+            error: (e) => {
+                return e.message
+            }
+        })
     }
 
     return (
         <>
-            
+
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-                <Link 
+                <Link
                     to='/'
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />
                 </Link>
-                
+
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{duration: 0.5}}
+                    transition={{ duration: 0.5 }}
                     className="text-center"
                 >
                     <h2 className="text-3xl font-black text-white">
@@ -57,15 +80,15 @@ export default function Register() {
                 </motion.div>
             </div>
 
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{duration: 0.5, delay: 0.1 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
                 className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
             >
                 <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
                     <form className="space-y-5" onSubmit={handleRegister}>
-                        
+
                         {/* Input Nama */}
                         <div>
                             <label className="block text-sm font-medium text-gray-300">Nama Lengkap</label>
@@ -74,6 +97,7 @@ export default function Register() {
                                     <User className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
+                                    ref={nameRef}
                                     type="text"
                                     name="name"
                                     required
@@ -93,6 +117,7 @@ export default function Register() {
                                     <Mail className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
+                                    ref={emailRef}
                                     type="email"
                                     name="email"
                                     required
@@ -112,6 +137,7 @@ export default function Register() {
                                     <Lock className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
+                                    ref={passwordRef}
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     required
