@@ -11,11 +11,15 @@ const navLinks = [
     { name: 'Kontak', path: '/kontak' },
 ]
 
-export default function Navbar() {
+export default function Navbar(user) {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
     const isFirstVisit = useIsFirstVisit()
-
+    const firstName = user.user?.name
+    // console.log('log di navbar user', );
+    
+    const apakahUdhLogin= user.isLoggedIn
+    
     const cartCount = 3
 
     useEffect(() => {
@@ -83,13 +87,13 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-                        <Link to='/login'>
+                        <Link to={!apakahUdhLogin ? '/login' : '/profile'}>
                             <motion.button
                                 whileTap={{ scale: 0.9 }}
                                 className="cursor-pointer flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
                             >
                                 <User size={16} />
-                                <span>Login</span>
+                                <span>{apakahUdhLogin ? firstName : 'login'}</span>
                             </motion.button>
                         </Link>
 
