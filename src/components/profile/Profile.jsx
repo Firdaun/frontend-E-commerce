@@ -32,7 +32,6 @@ export default function Profile() {
 
     const handleSaveProfile = async (e) => {
         e.preventDefault()
-        toast.success("Mencoba menyimpan data...")
         setIsEditingProfile(false)
         setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
     }
@@ -86,6 +85,7 @@ export default function Profile() {
 
                     <div className="lg:w-2/3">
                         {!isEditingProfile ? renderContent() : <EditingTab
+                            user={user}
                             handleCancel={handleCancel}
                             handleSaveProfile={handleSaveProfile}
                             profileFormData={profileFormData}
