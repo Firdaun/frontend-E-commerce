@@ -13,6 +13,8 @@ import Register from './components/auth/Register.jsx'
 import AuthLayout from './components/auth/AuthLayout.jsx'
 import Layout from './components/Layout.jsx'
 import VerifikasiOtp from './components/auth/VerifikasiOtp.jsx'
+import { Toaster } from 'sonner'
+import Profile from './components/profile/Profile.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,8 +30,6 @@ const queryClient = new QueryClient({
     }
   })
 })
-import { Toaster } from 'sonner'
-import Profile from './components/Profile.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
