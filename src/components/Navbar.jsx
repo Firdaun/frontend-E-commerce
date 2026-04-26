@@ -15,11 +15,13 @@ export default function Navbar(user) {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
     const isFirstVisit = useIsFirstVisit()
-    const firstName = user.user?.name
-    // console.log('log di navbar user', );
-    
-    const apakahUdhLogin= user.isLoggedIn
-    
+    const firstName = () => {
+        if (!apakahUdhLogin) return 'login'
+        return user.user?.name || 'ERROR'
+    }
+
+    const apakahUdhLogin = user.isLoggedIn
+
     const cartCount = 3
 
     useEffect(() => {
@@ -93,7 +95,7 @@ export default function Navbar(user) {
                                 className="cursor-pointer flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
                             >
                                 <User size={16} />
-                                <span>{apakahUdhLogin ? firstName : 'login'}</span>
+                                <span>{firstName()}</span>
                             </motion.button>
                         </Link>
 

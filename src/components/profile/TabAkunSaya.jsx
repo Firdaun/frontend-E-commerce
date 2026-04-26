@@ -18,14 +18,14 @@ export default function TabAkunSaya({ user, setIsEditingProfile}) {
                         <div className="absolute top-0 right-0 w-16 h-16 bg-gray-800/30 rounded-bl-full group-hover:bg-orange-500/10 transition-colors"></div>
                         <User size={18} className="text-gray-600 mb-3" />
                         <p className="text-xs text-gray-500 mb-1">Nama Lengkap</p>
-                        <p className="text-base font-bold text-white truncate">{user.name}</p>
+                        <p className="text-base font-bold text-white truncate">{user?.name}</p>
                     </div>
 
                     <div className="p-5 bg-gray-900/40 border border-gray-800/60 rounded-2xl relative overflow-hidden group hover:border-gray-700 transition-colors">
                         <div className="absolute top-0 right-0 w-16 h-16 bg-gray-800/30 rounded-bl-full group-hover:bg-orange-500/10 transition-colors"></div>
                         <Mail size={18} className="text-gray-600 mb-3" />
                         <p className="text-xs text-gray-500 mb-1">Alamat Email</p>
-                        <p className="text-base font-bold text-white truncate">{user.email}</p>
+                        <p className="text-base font-bold text-white truncate">{user?.email}</p>
                     </div>
 
                     <div className="p-5 bg-gray-900/40 border border-gray-800/60 rounded-2xl relative overflow-hidden group hover:border-gray-700 transition-colors">
@@ -33,7 +33,7 @@ export default function TabAkunSaya({ user, setIsEditingProfile}) {
                         <Calendar size={18} className="text-gray-600 mb-3" />
                         <p className="text-xs text-gray-500 mb-1">Tanggal Bergabung</p>
                         <p className="text-base font-bold text-white">
-                            {new Date(user.createdAt).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
+                            {new Date(user?.createdAt).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })}
                         </p>
                     </div>
 
@@ -60,8 +60,8 @@ export default function TabAkunSaya({ user, setIsEditingProfile}) {
                     </div>
                     <div className="overflow-hidden">
                         <p className="text-[10px] sm:text-xs text-gray-500 mb-1 uppercase font-semibold">Nomor WhatsApp</p>
-                        {user.no_wa ? (
-                            <p className="text-base sm:text-lg font-bold text-white truncate">{user.no_wa}</p>
+                        {user?.no_wa ? (
+                            <p className="text-base sm:text-lg font-bold text-white truncate">{user?.no_wa}</p>
                         ) : (
                             <p className="text-xs sm:text-sm text-gray-600 italic mt-1">Belum ditambahkan</p>
                         )}
@@ -74,7 +74,7 @@ export default function TabAkunSaya({ user, setIsEditingProfile}) {
                     </div>
                     <div>
                         <p className="text-[10px] sm:text-xs text-gray-500 mb-1 uppercase font-semibold">Alamat Utama</p>
-                        {user.address ? (
+                        {user?.address ? (
                             <p className="text-sm sm:text-base font-medium text-white leading-relaxed">{user.address}</p>
                         ) : (
                             <p className="text-xs sm:text-sm text-gray-600 italic mt-1">Alamat pengiriman belum di atur</p>

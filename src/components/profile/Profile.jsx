@@ -21,16 +21,6 @@ export default function Profile() {
         address: user?.address || ""
     })
 
-    useEffect(() => {
-        if (user) {
-            setProfileFormData({
-                name: user.name || "",
-                no_wa: user.no_wa || "",
-                address: user.address || ""
-            })
-        }
-    }, [user])
-
     const handleProfileChange = (e) => {
         setProfileFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
@@ -44,23 +34,13 @@ export default function Profile() {
         e.preventDefault()
         toast.success("Mencoba menyimpan data...")
         setIsEditingProfile(false)
-        console.log(profileFormData)
         setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
-
     }
-
-    useEffect(() => {
-        if (isError) {
-            toast.error("Sesi telah habis atau Anda belum login.")
-            localStorage.removeItem('token')
-            navigate('/login')
-        }
-    }, [isError, navigate])
 
     const handleLogout = () => {
         localStorage.removeItem('token')
         toast.success("Berhasil keluar dari akun!")
-        navigate('/login')
+        // navigate('/login')
     }
 
     if (isLoading) {
@@ -88,7 +68,6 @@ export default function Profile() {
                 />
         }
     }
-console.log(isEditingProfile);
 
 
     return (
@@ -96,15 +75,22 @@ console.log(isEditingProfile);
             <div className="max-w-7xl mx-auto w-[95%] ">
                 <div className="text-white flex flex-col lg:flex-row gap-5 justify-between">
 
-                    <ProfileSidebar arrayItems={menuItems} user={user} handleLogout={handleLogout} activeTab={activeTab} setActiveTab={setActiveTab} handleCancel={handleCancel} />
+                    <ProfileSidebar
+                        arrayItems={menuItems}
+                        user={user}
+                        handleLogout={handleLogout}
+                        activeTab={activeTab}
+                        setActiveTab={setActiveTab}
+                        handleCancel={handleCancel}
+                    />
 
                     <div className="lg:w-2/3">
-                            {!isEditingProfile ? renderContent() :   <EditingTab
-                                                                        handleCancel={handleCancel}
-                                                                        handleSaveProfile={handleSaveProfile}
-                                                                        profileFormData={profileFormData}
-                                                                        handleProfileChange={handleProfileChange}
-                                                                    />}
+                        {!isEditingProfile ? renderContent() : <EditingTab
+                            handleCancel={handleCancel}
+                            handleSaveProfile={handleSaveProfile}
+                            profileFormData={profileFormData}
+                            handleProfileChange={handleProfileChange}
+                        />}
                     </div>
                 </div>
             </div>

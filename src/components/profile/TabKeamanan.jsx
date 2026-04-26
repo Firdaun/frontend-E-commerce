@@ -45,7 +45,7 @@ export default function TabKeamanan({ user }) {
                     <div className="p-4 bg-orange-500/5 border border-orange-500/10 rounded-2xl flex items-center justify-between">
                         <div className="w-full overflow-hidden">
                             <p className="text-[10px] sm:text-xs text-orange-500 font-bold uppercase mb-1">Email Saat Ini</p>
-                            <p className="text-white font-medium text-sm sm:text-base truncate">{user.email}</p>
+                            <p className="text-white font-medium text-sm sm:text-base truncate">{user?.email}</p>
                         </div>
                     </div>
 
