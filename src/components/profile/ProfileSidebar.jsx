@@ -34,7 +34,7 @@ export default function ProfileSidebar(items) {
                     {items.arrayItems?.map((item) => (
                         <button
                             key={item.id}
-                            onClick={() => items.setActiveTab(item.id)}
+                            onClick={() => {items.setActiveTab(item.id); items.handleCancel()}}
                             className={`whitespace-nowrap cursor-pointer justify-center w-full flex items-center lg:justify-between px-4 py-3 rounded-xl font-bold transition-all duration-300 ${items.activeTab === item.id
                                 ? "bg-orange-500/10 text-orange-500 border border-orange-500/20"
                                 : "text-gray-500 hover:bg-white/5 hover:text-white border border-transparent"

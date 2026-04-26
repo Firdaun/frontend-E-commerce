@@ -7,6 +7,7 @@ import { toast } from "sonner"
 import ProfileSidebar from "./ProfileSidebar.jsx"
 import TabAkunSaya from "./TabAkunSaya.jsx"
 import TabKeamanan from "./TabKeamanan.jsx"
+import EditingTab from "./EditingTab.jsx"
 
 export default function Profile() {
     const navigate = useNavigate()
@@ -34,10 +35,18 @@ export default function Profile() {
         setProfileFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
+    const handleCancel = () => {
+        setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
+        setIsEditingProfile(false)
+    }
+
     const handleSaveProfile = async (e) => {
         e.preventDefault()
         toast.success("Mencoba menyimpan data...")
         setIsEditingProfile(false)
+        console.log(profileFormData)
+        setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
+
     }
 
     useEffect(() => {
@@ -71,29 +80,31 @@ export default function Profile() {
     const renderContent = () => {
         switch (activeTab) {
             case 'keamanan':
-                return <TabKeamanan user={user}/>
+                return <TabKeamanan user={user} />
             case 'akunSaya':
-                return <TabAkunSaya user={user}
-                    isEditingProfile={isEditingProfile}
+                return <TabAkunSaya
+                    user={user}
                     setIsEditingProfile={setIsEditingProfile}
-                    handleSaveProfile={handleSaveProfile}
-                    profileFormData={profileFormData}
-                    handleProfileChange={handleProfileChange}
                 />
         }
     }
+console.log(isEditingProfile);
+
 
     return (
         <div className="min-h-screen bg-gray-950 pt-28 sm:pt-32 pb-20">
             <div className="max-w-7xl mx-auto w-[95%] ">
                 <div className="text-white flex flex-col lg:flex-row gap-5 justify-between">
 
-                    <ProfileSidebar arrayItems={menuItems} user={user} handleLogout={handleLogout} activeTab={activeTab} setActiveTab={setActiveTab} />
+                    <ProfileSidebar arrayItems={menuItems} user={user} handleLogout={handleLogout} activeTab={activeTab} setActiveTab={setActiveTab} handleCancel={handleCancel} />
 
                     <div className="lg:w-2/3">
-                        <AnimatePresence mode="wait">
-                            {renderContent()}
-                        </AnimatePresence>
+                            {!isEditingProfile ? renderContent() :   <EditingTab
+                                                                        handleCancel={handleCancel}
+                                                                        handleSaveProfile={handleSaveProfile}
+                                                                        profileFormData={profileFormData}
+                                                                        handleProfileChange={handleProfileChange}
+                                                                    />}
                     </div>
                 </div>
             </div>
