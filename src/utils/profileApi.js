@@ -28,14 +28,15 @@ export const getCurrentUser = async () => {
     }
 }
 
-export const updateProfile = async () => {
+export const updateProfile = async (formData) => {
     try {
         const response = await fetch(`${BASE_URL}/users/current`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
                 'x-api-key': `Bearer ${token}`
-            }
+            },
+            body: JSON.stringify(formData)
         })
 
         const result = await response.json()

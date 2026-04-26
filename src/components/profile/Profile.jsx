@@ -8,11 +8,13 @@ import ProfileSidebar from "./ProfileSidebar.jsx"
 import TabAkunSaya from "./TabAkunSaya.jsx"
 import TabKeamanan from "./TabKeamanan.jsx"
 import EditingTab from "./EditingTab.jsx"
+import { updateProfile } from "../../utils/profileApi.js"
+import { useMutation } from "@tanstack/react-query"
 
 export default function Profile() {
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('akunSaya')
-    const { user, isLoading, isError } = useOutletContext()
+    const { user, isLoading, isError, refreshUser } = useOutletContext()
     const [isEditingProfile, setIsEditingProfile] = useState(false)
 
     const [profileFormData, setProfileFormData] = useState({
@@ -26,14 +28,33 @@ export default function Profile() {
     }
 
     const handleCancel = () => {
-        setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
         setIsEditingProfile(false)
     }
 
+
+    const updateMutation = useMutation({
+        mutationFn: updateProfile
+    })
+
     const handleSaveProfile = async (e) => {
         e.preventDefault()
-        setIsEditingProfile(false)
-        setProfileFormData(prev => ({ ...prev, no_wa: '', address: '' }))
+        toast.promise(
+            new Promise((resolve, reject) => {
+                updateMutation.mutate(profileFormData, {
+                    onSuccess: async (data) => {
+                        await refreshUser()
+                        setIsEditingProfile(false)
+                        resolve(data)
+                    },
+                    onError: (error) => reject(error)
+                })
+            }),
+            {
+                loading: 'Menyimpan profile...',
+                success: (data) => data.message,
+                error: (error) => error.message
+            }
+        )
     }
 
     const handleLogout = () => {
@@ -68,7 +89,6 @@ export default function Profile() {
         }
     }
 
-
     return (
         <div className="min-h-screen bg-gray-950 pt-28 sm:pt-32 pb-20">
             <div className="max-w-7xl mx-auto w-[95%] ">
@@ -85,7 +105,6 @@ export default function Profile() {
 
                     <div className="lg:w-2/3">
                         {!isEditingProfile ? renderContent() : <EditingTab
-                            user={user}
                             handleCancel={handleCancel}
                             handleSaveProfile={handleSaveProfile}
                             profileFormData={profileFormData}
