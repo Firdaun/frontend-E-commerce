@@ -1,13 +1,15 @@
 // src/profile/ProfileSidebar.jsx
 import { motion } from "framer-motion"
 import { User, Lock, Bell, ShieldCheck, ChevronRight, LogOut } from "lucide-react"
+import { useIsMobile } from "../../hooks/isMobile.js";
 
 export default function ProfileSidebar(items) {
-    
+    const isMobile = useIsMobile()
     return (
         <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: isMobile ? -10 : 0, x: !isMobile ? -10 : 0}}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.2 }}
             className="lg:w-1/3"
         >
             <div className="flex flex-col items-center lg:items-start text-center lg:text-left">

@@ -1,8 +1,8 @@
 const BASE_URL = import.meta.env.VITE_API_URL
 const token = localStorage.getItem('token')
-if (!token) {
-    throw new Error("Token tidak ditemukan. Silakan login kembali.")
-}
+// if (!token) {
+//     throw new Error("Token tidak ditemukan. Silakan login kembali.")
+// }
 
 export const getCurrentUser = async () => {
     try {

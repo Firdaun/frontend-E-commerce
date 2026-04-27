@@ -17,18 +17,18 @@ export default function TabKeamanan({ user }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                     <div className="space-y-2 md:col-span-2">
                         <label className="text-xs sm:text-sm text-gray-400">Password Saat Ini</label>
-                        <input type="password" placeholder="••••••••" className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
+                        <input type="password" placeholder="••••••••" className="w-full bg-gray-950 border border-gray-900 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
                     </div>
                     <div className="space-y-2">
                         <label className="text-xs sm:text-sm text-gray-400">Password Baru</label>
-                        <input type="password" placeholder="Minimal 6 karakter" className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
+                        <input type="password" placeholder="Minimal 6 karakter" className="w-full bg-gray-950 border border-gray-900 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
                     </div>
                     <div className="space-y-2">
                         <label className="text-xs sm:text-sm text-gray-400">Konfirmasi Password Baru</label>
-                        <input type="password" placeholder="Ulangi password" className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
+                        <input type="password" placeholder="Ulangi password" className="w-full bg-gray-950 border border-gray-900 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
                     </div>
                     <div className="md:col-span-2 pt-2">
-                        <button className="cursor-pointer flex items-center justify-center space-x-2 bg-gray-800 hover:bg-gray-700 w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold transition-colors">
+                        <button className="cursor-pointer flex items-center justify-center space-x-2 bg-gray-900 hover:bg-gray-700 w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold transition-colors">
                             <Save size={18} />
                             <span>Simpan Password</span>
                         </button>
@@ -52,11 +52,11 @@ export default function TabKeamanan({ user }) {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                         <div className="space-y-2">
                             <label className="text-xs sm:text-sm text-gray-400">Alamat Email Baru</label>
-                            <input type="email" placeholder="nama-baru@email.com" className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
+                            <input type="email" placeholder="nama-baru@email.com" className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
                         </div>
                         <div className="space-y-2">
                             <label className="text-xs sm:text-sm text-gray-400">Konfirmasi Password</label>
-                            <input type="password" placeholder="Masukkan password saat ini" className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
+                            <input type="password" placeholder="Masukkan password saat ini" className="w-full bg-gray-950 border border-gray-800 rounded-xl px-4 py-3 text-sm focus:border-orange-500 focus:outline-none transition-colors" />
                         </div>
                     </div>
                     <div className="pt-2">

@@ -92,9 +92,9 @@ export default function Navbar(user) {
                         <Link to={!apakahUdhLogin ? '/login' : '/profile'}>
                             <motion.button
                                 whileTap={{ scale: 0.9 }}
-                                className="cursor-pointer flex items-center text-sm space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
+                                className="cursor-pointer flex items-center text-sm space-x-1 bg-orange-600 hover:bg-orange-700 text-white px-4 py-1.5 rounded-full font-medium transition-colors"
                             >
-                                <User size={16} />
+                                <User size={16} className="-translate-y-0.5" />
                                 <span>{firstName()}</span>
                             </motion.button>
                         </Link>

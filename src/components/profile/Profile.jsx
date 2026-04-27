@@ -17,30 +17,18 @@ export default function Profile() {
     const { user, isLoading, isError, refreshUser } = useOutletContext()
     const [isEditingProfile, setIsEditingProfile] = useState(false)
 
-    const [profileFormData, setProfileFormData] = useState({
-        name: user?.name || "",
-        no_wa: user?.no_wa || "",
-        address: user?.address || ""
-    })
-
-    const handleProfileChange = (e) => {
-        setProfileFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-    }
-
     const handleCancel = () => {
         setIsEditingProfile(false)
     }
-
 
     const updateMutation = useMutation({
         mutationFn: updateProfile
     })
 
-    const handleSaveProfile = async (e) => {
-        e.preventDefault()
+    const handleSaveProfile = async (formData) => {
         toast.promise(
             new Promise((resolve, reject) => {
-                updateMutation.mutate(profileFormData, {
+                updateMutation.mutate(formData, {
                     onSuccess: async (data) => {
                         await refreshUser()
                         setIsEditingProfile(false)
@@ -60,7 +48,7 @@ export default function Profile() {
     const handleLogout = () => {
         localStorage.removeItem('token')
         toast.success("Berhasil keluar dari akun!")
-        // navigate('/login')
+        navigate('/login')
     }
 
     if (isLoading) {
@@ -107,8 +95,8 @@ export default function Profile() {
                         {!isEditingProfile ? renderContent() : <EditingTab
                             handleCancel={handleCancel}
                             handleSaveProfile={handleSaveProfile}
-                            profileFormData={profileFormData}
-                            handleProfileChange={handleProfileChange}
+                            user={user}
+                            isPending={updateMutation.isPending}
                         />}
                     </div>
                 </div>
