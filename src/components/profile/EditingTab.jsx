@@ -1,6 +1,8 @@
 import { Save, X } from "lucide-react"
+import { motion } from "framer-motion"
 
 export default function EditingTab({ handleCancel, handleSaveProfile, isPending, register, handleSubmit, errors }) {
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}

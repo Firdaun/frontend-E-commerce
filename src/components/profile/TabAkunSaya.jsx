@@ -1,5 +1,5 @@
-import { AnimatePresence } from "framer-motion"
-import { Calendar, Edit, Mail, MapPin, Phone, Save, User, X } from "lucide-react"
+import { motion } from "framer-motion"
+import { Calendar, Edit, Mail, MapPin, Phone, User, X } from "lucide-react"
 
 
 export default function TabAkunSaya({ user, setIsEditingProfile}) {

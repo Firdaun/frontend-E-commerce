@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import { Mail, Save } from "lucide-react"
 
 export default function TabKeamanan({ user, onSubmitPassword, isPending, registerPassword, handleSubmitPassword, errorsPassword, watch }) {
