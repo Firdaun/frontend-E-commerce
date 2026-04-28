@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { AnimatePresence } from "framer-motion"
 import { Calendar, Edit, Loader2, Lock, Mail, MapPin, Phone, Save, User, X } from "lucide-react"
 import { useNavigate, useOutletContext } from "react-router-dom"
 import { toast } from "sonner"
@@ -7,7 +6,7 @@ import ProfileSidebar from "./ProfileSidebar.jsx"
 import TabAkunSaya from "./TabAkunSaya.jsx"
 import TabKeamanan from "./TabKeamanan.jsx"
 import EditingTab from "./EditingTab.jsx"
-import { updatePassword, updateProfile } from "../../utils/profileApi.js"
+import { updateEmail, updatePassword, updateProfile, verifyUpdateEmail } from "../../utils/profileApi.js"
 import { useMutation } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 
@@ -16,11 +15,13 @@ export default function Profile() {
     const [activeTab, setActiveTab] = useState('akunSaya')
     const { user, isLoading, refreshUser } = useOutletContext()
     const [isEditingProfile, setIsEditingProfile] = useState(false)
+    const [isOtpMode, setIsOtpMode] = useState(false)
 
     const handleCancel = () => {
         setIsEditingProfile(false)
     }
 
+    // update profile
     const { register, handleSubmit, formState: { errors } } = useForm({
         values: {
             name: user?.name,
@@ -53,6 +54,7 @@ export default function Profile() {
         )
     }
 
+    // update password
     const {
         register: registerPassword,
         handleSubmit: handleSubmitPassword,
@@ -83,6 +85,76 @@ export default function Profile() {
                 loading: 'Memperbarui password...',
                 success: (data) => data.message,
                 error: (error) => error.message
+            }
+        )
+    }
+
+    // register email
+    const {
+        register: registerEmail,
+        handleSubmit: handleSubmitEmail,
+        formState: { errors: errorsEmail },
+        reset: resetEmail
+    } = useForm()
+
+    const emailMutation = useMutation({
+        mutationFn: updateEmail
+    })
+
+    const onSubmitEmail = (data) => {
+        toast.promise(
+            new Promise((resolve, reject) => {
+                emailMutation.mutate({
+                    new_email: data.newEmail,
+                    password: data.passwordForEmail
+                }, {
+                    onSuccess: async (res) => {
+                        setIsOtpMode(true) 
+                        resolve(res)
+                    },
+                    onError: (err) => reject(err)
+                })
+            }),
+            {
+                loading: 'Memperbarui email...',
+                success: (data) => data.message || 'Email berhasil diperbarui!',
+                error: (error) => error.message || 'Gagal memperbarui email'
+            }
+        )
+    }
+
+    // otp
+    const {
+        register: registerOtp,
+        handleSubmit: handleSubmitOtp,
+        formState: { errors: errorsOtp },
+        reset: resetOtp
+    } = useForm()
+
+    const otpMutation = useMutation({
+        mutationFn: verifyUpdateEmail
+    })
+
+    const onSubmitOtp = (data) => {
+        toast.promise(
+            new Promise((resolve, reject) => {
+                otpMutation.mutate({
+                    code: data.otp
+                }, {
+                    onSuccess: async (res) => {
+                        await refreshUser()
+                        resetEmail()
+                        resetOtp()
+                        setIsOtpMode(false)
+                        resolve(res)
+                    },
+                    onError: (err) => reject(err)
+                })
+            }),
+            {
+                loading: 'Memverifikasi OTP...',
+                success: (res) => res.message,
+                error: (error) => error.message || 'OTP salah atau kadaluarsa'
             }
         )
     }
@@ -118,6 +190,20 @@ export default function Profile() {
                     handleSubmitPassword={handleSubmitPassword}
                     errorsPassword={errorsPassword}
                     watch={watch}
+
+                    onSubmitEmail={onSubmitEmail}
+                    isEmailPending={emailMutation.isPending}
+                    registerEmail={registerEmail}
+                    handleSubmitEmail={handleSubmitEmail}
+                    errorsEmail={errorsEmail}
+
+                    isOtpMode={isOtpMode}
+                    setIsOtpMode={setIsOtpMode}
+                    onSubmitOtp={onSubmitOtp}
+                    isOtpPending={otpMutation.isPending}
+                    registerOtp={registerOtp}
+                    handleSubmitOtp={handleSubmitOtp}
+                    errorsOtp={errorsOtp}
                 />
             case 'akunSaya':
                 return <TabAkunSaya

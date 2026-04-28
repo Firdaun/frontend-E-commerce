@@ -72,3 +72,45 @@ export const updatePassword = async (pw) => {
         throw e
     }
 }
+
+export const updateEmail = async (data) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/current/email/request`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(data)
+        })
+
+        const result = await response.json()
+
+        if (!response.ok) {
+            throw new Error(result.errors)
+        }
+
+        return result
+    } catch (e) {
+        console.error("Error di userApi (updateEmail):", e.message)
+        throw e
+    }
+}
+
+export const verifyUpdateEmail = async (data) => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/current/email/verify`, {
+            method: 'PATCH',
+            headers: getAuthHeaders(),
+            body: JSON.stringify(data)
+        })
+
+        const result = await response.json()
+
+        if (!response.ok) {
+            throw new Error(result.errors)
+        }
+
+        return result
+    } catch (e) {
+        console.error("Error di userApi (verifyUpdateEmail):", e.message)
+        throw e
+    }
+}

@@ -7,10 +7,10 @@ export const getProducts = async () => {
             throw new Error("Gagal mengambil data produk")
         }
         const result = await response.json()
-        return result.data || []
+        return result.data
     } catch (e) {
         console.error("Error di productApi:", e.message)
-        throw e.message
+        throw e
     }
 }
 
@@ -22,9 +22,9 @@ export const getProductbyId = async (id) => {
         }
         const result = await response.json()
 
-        return result.data || []
+        return result.data
     } catch (e) {
         console.error("Error di productApi:", e.message)
-        throw e.message
+        throw e
     }
 }

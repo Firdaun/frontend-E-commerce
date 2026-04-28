@@ -2,7 +2,6 @@ import { Save, X } from "lucide-react"
 import { motion } from "framer-motion"
 
 export default function EditingTab({ handleCancel, handleSaveProfile, isPending, register, handleSubmit, errors }) {
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -56,6 +55,7 @@ export default function EditingTab({ handleCancel, handleSaveProfile, isPending,
                 <div className="pt-2 flex justify-end">
                     <button
                         type="submit"
+                        disabled={isPending}
                         className="cursor-pointer flex items-center justify-center space-x-2 bg-seblak-gradient hover:opacity-90 w-full sm:w-auto px-6 py-3 rounded-xl text-sm font-bold transition-opacity"
                     >
                         <Save size={18} />
