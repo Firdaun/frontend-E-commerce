@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { toast } from "sonner"
 import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
 const MotionLink = motion.create(Link)
 const navLinks = [
@@ -12,6 +13,7 @@ const navLinks = [
 ]
 
 export default function Navbar(user) {
+    const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
     const isFirstVisit = useIsFirstVisit()
@@ -21,8 +23,17 @@ export default function Navbar(user) {
         return user.user?.name || 'ERROR'
     }
 
-
     const cartCount = 3
+
+    const handleCartClick = (e) => {
+        if (e) e.preventDefault()
+        if (!apakahUdhLogin) {
+            toast.error("Ups! Kamu harus login dulu untuk melihat keranjang 🛒")
+            navigate('/login')
+        } else {
+            navigate('/cart')
+        }
+    }
 
     useEffect(() => {
         if (!isOpen) return
@@ -72,21 +83,20 @@ export default function Navbar(user) {
 
                     <div className="flex gap-5">
                         <div className="hidden md:flex items-center space-x-6">
-                            <Link to='/cart'>
-                                <motion.button
-                                    whileTap={{ scale: 0.9 }}
-                                    className="cursor-pointer relative text-gray-300 hover:text-orange-500 transition-colors"
+                            <motion.button
+                                onClick={handleCartClick}
+                                whileTap={{ scale: 0.9 }}
+                                className="cursor-pointer relative text-gray-300 hover:text-orange-500 transition-colors"
+                            >
+                                <ShoppingCart size={24} />
+                                <motion.span
+                                    initial={{ scale: 0 }}
+                                    animate={{ scale: 1 }}
+                                    className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
                                 >
-                                    <ShoppingCart size={24} />
-                                    <motion.span
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                                    >
-                                        {cartCount}
-                                    </motion.span>
-                                </motion.button>
-                            </Link>
+                                    {cartCount}
+                                </motion.span>
+                            </motion.button>
                         </div>
 
                         <Link to={!apakahUdhLogin ? '/login' : '/profile'}>
@@ -131,10 +141,12 @@ export default function Navbar(user) {
                                 </MotionLink>
                             ))}
                             <div className="pt-4 border-t border-gray-800 flex items-center justify-center">
-                                <button className="flex items-center space-x-2 text-gray-300">
+                                <button
+                                    onClick={() => { setIsOpen(false); handleCartClick(); }}
+                                    className="flex items-center space-x-2 text-gray-300 hover:text-orange-500 transition-colors cursor-pointer"
+                                >
                                     <ShoppingCart size={24} />
-                                    keranjang
-                                    <span>({cartCount})</span>
+                                    <span>keranjang ({cartCount})</span>
                                 </button>
                             </div>
                         </div>

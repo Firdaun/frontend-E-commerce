@@ -170,12 +170,17 @@ export default function Profile() {
         toast.promise(
             new Promise((resolve, reject) => {
                 logoutMutation.mutate(undefined, {
-                    onSuccess: async (res) => {
-                        localStorage.removeItem('token')
-                        await queryClient.cancelQueries({ queryKey: ['user'] })
-                        queryClient.setQueryData(['user'], null)
-                        resolve(res)
+                    onSuccess: (res) => {
+                        // 1. Pindah ke halaman Home dulu
                         navigate('/')
+                        
+                        // 2. Hapus token dan cache di antrean berikutnya (setelah pindah halaman selesai)
+                        setTimeout(async () => {
+                            localStorage.removeItem('token')
+                            await queryClient.cancelQueries({ queryKey: ['user'] })
+                            queryClient.setQueryData(['user'], null)
+                            resolve(res)
+                        }, 40)
                     },
                     onError: (err) => reject(err)
                 })

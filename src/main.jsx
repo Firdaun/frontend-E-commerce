@@ -15,6 +15,8 @@ import Layout from './components/Layout.jsx'
 import VerifikasiOtp from './components/auth/VerifikasiOtp.jsx'
 import { Toaster } from 'sonner'
 import Profile from './components/profile/Profile.jsx'
+import ProtectedRoute from './components/ProtectedRoute.jsx'
+import GuestRoute from './components/GuestRoute.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,21 +36,25 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-      <Toaster richColors theme="dark" position="top-center" />
+        <Toaster richColors theme="dark" position="top-center" />
         <ScrollToTop />
 
         <Routes>
-          <Route element={<Layout/> }>
+          <Route element={<Layout />}>
             <Route path='/' element={<App />} />
             <Route path='/product/:id' element={<ProductDetail />} />
-            <Route path='/cart' element={<Cart />} />
-            <Route path='/profile' element={<Profile/>}/>
+            <Route element={<ProtectedRoute />}>
+              <Route path='/cart' element={<Cart />} />
+              <Route path='/profile' element={<Profile />} />
+            </Route>
           </Route>
 
-          <Route element={<AuthLayout />}>
-            <Route path='/login' element={<Login />} />
-            <Route path='/register' element={<Register />} />
-            <Route path='/verifikasi' element={<VerifikasiOtp/>}/>
+          <Route element={<GuestRoute />}>
+            <Route element={<AuthLayout />}>
+              <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
+              <Route path='/verifikasi' element={<VerifikasiOtp />} />
+            </Route>
           </Route>
         </Routes>
 
