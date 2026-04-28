@@ -1,4 +1,3 @@
-import { motion } from "framer-motion"
 import { ShoppingCart, Flame, ShoppingBag, Loader2, AlertTriangle, RefreshCw, PackageOpen } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
@@ -9,13 +8,12 @@ export default function Menu() {
     const isFirstVisit = useIsFirstVisit()
     const navigate = useNavigate()
 
-    const { data: products, isLoading, isError, error } = useQuery({
+    const { data: products, isLoading, isError } = useQuery({
         queryKey: ['products'],
         queryFn: getProducts,
         staleTime: 1000 * 60 * 15,
         gcTime: 1000 * 60 * 30
     })
-    // const products = []
 
     return (
         <section className="py-20 border-t border-gray-800">

@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import { Calendar, Edit, Mail, MapPin, Phone, Save, User, X } from "lucide-react"
 
 

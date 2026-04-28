@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { motion } from "framer-motion"
+import { useParams } from "react-router-dom"
 import { ShoppingCart, ShoppingBag, Flame, Plus, Minus, Check } from "lucide-react"
 import { getProductbyId } from "../utils/productApi.js"
 import { useQuery } from "@tanstack/react-query"
@@ -37,8 +36,10 @@ const spiceLevels = [
 
 export default function ProductDetail() {
     const { id } = useParams()
-    const navigate = useNavigate()
     const isMobile = useIsMobile()
+    const [quantity, setQuantity] = useState(1)
+    const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
+    const [selectedToppings, setSelectedToppings] = useState([])
 
     const { data: product, isLoading, isError} = useQuery({
         queryKey: ['product', id],
@@ -46,11 +47,6 @@ export default function ProductDetail() {
         staleTime: 1000 * 60 * 15,
         gcTime: 1000 * 60 * 30
     })
-    
-    
-    const [quantity, setQuantity] = useState(1)
-    const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
-    const [selectedToppings, setSelectedToppings] = useState([])
 
     useEffect(() => {
         if (product && product.spice_level) {

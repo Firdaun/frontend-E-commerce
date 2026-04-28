@@ -13,7 +13,7 @@ export const registerUser = async (data) => {
         const result = await response.json()
 
         if (!response.ok) {
-            throw new Error(result.errors || "Terjadi kesalahan pada server");
+            throw new Error(result.errors || "Terjadi kesalahan pada server")
         }
 
         return result
@@ -37,7 +37,7 @@ export const verifyEmail = async (data) => {
         const result = await response.json()
 
         if (!response.ok) {
-            throw new Error(result.errors || "Terjadi kesalahan pada server");
+            throw new Error(result.errors || "Terjadi kesalahan pada server")
         }
 
         return result
@@ -60,7 +60,7 @@ export const login = async (data) => {
         const result = await response.json()
 
         if (!response.ok) {
-            throw new Error(result.errors || "Terjadi kesalahan pada server");
+            throw new Error(result.errors || "Terjadi kesalahan pada server")
         }
 
         return result

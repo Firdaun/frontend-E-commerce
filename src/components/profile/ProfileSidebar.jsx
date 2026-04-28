@@ -1,5 +1,4 @@
 // src/profile/ProfileSidebar.jsx
-import { motion } from "framer-motion"
 import { User, Lock, Bell, ShieldCheck, ChevronRight, LogOut } from "lucide-react"
 import { useIsMobile } from "../../hooks/isMobile.js";
 

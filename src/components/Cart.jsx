@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion"
+import { AnimatePresence } from "framer-motion"
 import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, ReceiptText } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react"

@@ -1,6 +1,5 @@
-// src/profile/Profile.jsx
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { AnimatePresence } from "framer-motion"
 import { Calendar, Edit, Loader2, Lock, Mail, MapPin, Phone, Save, User, X } from "lucide-react"
 import { useNavigate, useOutletContext } from "react-router-dom"
 import { toast } from "sonner"
@@ -8,18 +7,27 @@ import ProfileSidebar from "./ProfileSidebar.jsx"
 import TabAkunSaya from "./TabAkunSaya.jsx"
 import TabKeamanan from "./TabKeamanan.jsx"
 import EditingTab from "./EditingTab.jsx"
-import { updateProfile } from "../../utils/profileApi.js"
+import { updatePassword, updateProfile } from "../../utils/profileApi.js"
 import { useMutation } from "@tanstack/react-query"
+import { useForm } from "react-hook-form"
 
 export default function Profile() {
     const navigate = useNavigate()
     const [activeTab, setActiveTab] = useState('akunSaya')
-    const { user, isLoading, isError, refreshUser } = useOutletContext()
+    const { user, isLoading, refreshUser } = useOutletContext()
     const [isEditingProfile, setIsEditingProfile] = useState(false)
 
     const handleCancel = () => {
         setIsEditingProfile(false)
     }
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        values: {
+            name: user?.name,
+            no_wa: user?.no_wa,
+            address: user?.address
+        }
+    })
 
     const updateMutation = useMutation({
         mutationFn: updateProfile
@@ -39,6 +47,40 @@ export default function Profile() {
             }),
             {
                 loading: 'Menyimpan profile...',
+                success: (data) => data.message,
+                error: (error) => error.message
+            }
+        )
+    }
+
+    const {
+        register: registerPassword,
+        handleSubmit: handleSubmitPassword,
+        formState: { errors: errorsPassword },
+        watch,
+        reset
+    } = useForm()
+
+    const passwordMutation = useMutation({
+        mutationFn: updatePassword
+    })
+
+    const onSubmitPassword = (data) => {
+        toast.promise(
+            new Promise((resolve, reject) => {
+                passwordMutation.mutate({
+                    old_password: data.currentPassword,
+                    new_password: data.newPassword
+                }, {
+                    onSuccess: (res) => {
+                        reset()
+                        resolve(res)
+                    },
+                    onError: (err) => reject(err)
+                })
+            }),
+            {
+                loading: 'Memperbarui password...',
                 success: (data) => data.message,
                 error: (error) => error.message
             }
@@ -68,7 +110,15 @@ export default function Profile() {
     const renderContent = () => {
         switch (activeTab) {
             case 'keamanan':
-                return <TabKeamanan user={user} />
+                return <TabKeamanan
+                    user={user}
+                    onSubmitPassword={onSubmitPassword}
+                    isPending={passwordMutation.isPending}
+                    registerPassword={registerPassword}
+                    handleSubmitPassword={handleSubmitPassword}
+                    errorsPassword={errorsPassword}
+                    watch={watch}
+                />
             case 'akunSaya':
                 return <TabAkunSaya
                     user={user}
@@ -95,8 +145,10 @@ export default function Profile() {
                         {!isEditingProfile ? renderContent() : <EditingTab
                             handleCancel={handleCancel}
                             handleSaveProfile={handleSaveProfile}
-                            user={user}
                             isPending={updateMutation.isPending}
+                            register={register}
+                            handleSubmit={handleSubmit}
+                            errors={errors}
                         />}
                     </div>
                 </div>

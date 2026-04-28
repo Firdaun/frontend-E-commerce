@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
-import { Link, useLocation } from "react-router-dom"
+import { Link } from "react-router-dom"
 import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
 const MotionLink = motion.create(Link)
 const navLinks = [

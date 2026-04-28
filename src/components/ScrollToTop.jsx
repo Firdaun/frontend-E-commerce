@@ -5,9 +5,8 @@ export default function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    // Memaksa browser kembali ke koordinat 0 (paling atas) dan 0 (paling kiri)
     window.scrollTo(0, 0);
-  }, [pathname]); // Kode ini akan jalan setiap kali 'pathname' (URL) berubah
+  }, [pathname])
 
-  return null; // Komponen ini tidak perlu menampilkan apa-apa di layar
+  return null
 }

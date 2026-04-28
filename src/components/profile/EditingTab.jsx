@@ -1,20 +1,6 @@
 import { Save, X } from "lucide-react"
-import { motion } from "framer-motion"
-import { useForm } from "react-hook-form"
 
-export default function EditingTab({ user, handleCancel, handleSaveProfile, isPending }) {
-    const { register, handleSubmit, formState: { errors } } = useForm({
-        values: {
-            name: user?.name,
-            no_wa: user?.no_wa,
-            address: user?.address
-        }
-    })
-
-    const onSubmit = (data) => {
-        handleSaveProfile(data)
-    }
-
+export default function EditingTab({ handleCancel, handleSaveProfile, isPending, register, handleSubmit, errors }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -31,7 +17,7 @@ export default function EditingTab({ user, handleCancel, handleSaveProfile, isPe
                 </button>
             </div>
             <form
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(handleSaveProfile)}
                 className="p-5 sm:p-6 bg-gray-900/60 border border-orange-500/30 rounded-2xl space-y-4 sm:space-y-6 shadow-[0_0_30px_rgba(249,115,22,0.05)]"
             >
                 <div className="space-y-2">

@@ -1,7 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
 import { getCurrentUser } from "../utils/profileApi.js";
 
 export default function Layout() {
