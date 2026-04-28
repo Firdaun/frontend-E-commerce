@@ -15,12 +15,12 @@ export default function Navbar(user) {
     const [isOpen, setIsOpen] = useState(false)
     const navRef = useRef(null)
     const isFirstVisit = useIsFirstVisit()
+    const apakahUdhLogin = user.isLoggedIn
     const firstName = () => {
         if (!apakahUdhLogin) return 'login'
         return user.user?.name || 'ERROR'
     }
 
-    const apakahUdhLogin = user.isLoggedIn
 
     const cartCount = 3
 

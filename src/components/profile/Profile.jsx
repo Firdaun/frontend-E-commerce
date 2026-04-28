@@ -1,21 +1,24 @@
 import { useState } from "react"
-import { Calendar, Edit, Loader2, Lock, Mail, MapPin, Phone, Save, User, X } from "lucide-react"
+import { Loader2, Lock, User } from "lucide-react"
 import { useNavigate, useOutletContext } from "react-router-dom"
 import { toast } from "sonner"
 import ProfileSidebar from "./ProfileSidebar.jsx"
+import LogoutConfirmModal from "./LogoutConfirmModal.jsx"
 import TabAkunSaya from "./TabAkunSaya.jsx"
 import TabKeamanan from "./TabKeamanan.jsx"
 import EditingTab from "./EditingTab.jsx"
-import { updateEmail, updatePassword, updateProfile, verifyUpdateEmail } from "../../utils/profileApi.js"
-import { useMutation } from "@tanstack/react-query"
+import { logout, updateEmail, updatePassword, updateProfile, verifyUpdateEmail } from "../../utils/profileApi.js"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useForm } from "react-hook-form"
 
 export default function Profile() {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const [activeTab, setActiveTab] = useState('akunSaya')
     const { user, isLoading, refreshUser } = useOutletContext()
     const [isEditingProfile, setIsEditingProfile] = useState(false)
     const [isOtpMode, setIsOtpMode] = useState(false)
+    const [showLogoutModal, setShowLogoutModal] = useState(false)
 
     const handleCancel = () => {
         setIsEditingProfile(false)
@@ -159,10 +162,30 @@ export default function Profile() {
         )
     }
 
+    const logoutMutation = useMutation({
+        mutationFn: logout
+    })
+
     const handleLogout = () => {
-        localStorage.removeItem('token')
-        toast.success("Berhasil keluar dari akun!")
-        navigate('/login')
+        toast.promise(
+            new Promise((resolve, reject) => {
+                logoutMutation.mutate(undefined, {
+                    onSuccess: async (res) => {
+                        localStorage.removeItem('token')
+                        await queryClient.cancelQueries({ queryKey: ['user'] })
+                        queryClient.setQueryData(['user'], null)
+                        resolve(res)
+                        navigate('/')
+                    },
+                    onError: (err) => reject(err)
+                })
+            }),
+            {
+                loading: 'Sedang logout...',
+                success: (res) => res.message || 'Berhasil logout!',
+                error: (error) => error.message || 'Gagal logout'
+            }
+        )
     }
 
     if (isLoading) {
@@ -221,10 +244,21 @@ export default function Profile() {
                     <ProfileSidebar
                         arrayItems={menuItems}
                         user={user}
-                        handleLogout={handleLogout}
+                        handleLogout={() => setShowLogoutModal(true)}
                         activeTab={activeTab}
                         setActiveTab={setActiveTab}
                         handleCancel={handleCancel}
+                        logoutPending={logoutMutation.isPending}
+                    />
+
+                    <LogoutConfirmModal
+                        isOpen={showLogoutModal}
+                        onClose={() => setShowLogoutModal(false)}
+                        onConfirm={() => {
+                            setShowLogoutModal(false)
+                            handleLogout()
+                        }}
+                        isPending={logoutMutation.isPending}
                     />
 
                     <div className="lg:w-2/3">

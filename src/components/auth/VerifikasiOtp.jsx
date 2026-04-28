@@ -1,6 +1,6 @@
 import { useRef, useState } from "react"
 import { motion } from "framer-motion"
-import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
+import { Loader2 } from "lucide-react"
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { verifyEmail } from "../../utils/authApi.js"

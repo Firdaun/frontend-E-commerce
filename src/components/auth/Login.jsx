@@ -4,9 +4,11 @@ import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import { login } from "../../utils/authApi.js"
+import { useQueryClient } from "@tanstack/react-query"
 
 export default function Login() {
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
     const [showPassword, setShowPassword] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const emailRef = useRef(null)
@@ -39,6 +41,7 @@ export default function Login() {
             loading: 'Memproses...',
             success: (result) => {
                 localStorage.setItem('token', result.data.token)
+                queryClient.invalidateQueries({ queryKey: ['user'] })
                 setTimeout(() => navigate('/'), 1000)
                 return 'Login berhasil'
             },

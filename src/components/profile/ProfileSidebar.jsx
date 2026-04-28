@@ -1,6 +1,5 @@
-// src/profile/ProfileSidebar.jsx
 import { motion } from "framer-motion"
-import { User, Lock, Bell, ShieldCheck, ChevronRight, LogOut } from "lucide-react"
+import { ShieldCheck, ChevronRight, LogOut } from "lucide-react"
 import { useIsMobile } from "../../hooks/isMobile.js";
 
 export default function ProfileSidebar(items) {
@@ -51,7 +50,8 @@ export default function ProfileSidebar(items) {
                         </button>
                     ))}
                     <button
-                        // onClick={items.handleLogout}
+                        onClick={items.handleLogout}
+                        disabled={items.logoutPending}
                         className="whitespace-nowrap hover:bg-white/5 w-full text-xs md:text-sm cursor-pointer font-bold text-red-500 hover:text-red-400 transition-colors flex items-center justify-center lg:justify-start px-4.5 py-4 bg-red-500/10 lg:bg-transparent rounded-xl lg:rounded-xl"
                     >
                         <LogOut size={16} className="mr-2" />

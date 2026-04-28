@@ -22,7 +22,6 @@ export const getCurrentUser = async () => {
         if (!response.ok) {
             throw new Error(result.errors || "Gagal mengambil data profil")
         }
-        
 
         return result.data
     } catch (e) {
@@ -111,6 +110,26 @@ export const verifyUpdateEmail = async (data) => {
         return result
     } catch (e) {
         console.error("Error di userApi (verifyUpdateEmail):", e.message)
+        throw e
+    }
+}
+
+export const logout = async () => {
+    try {
+        const response = await fetch(`${BASE_URL}/users/logout`, {
+            method: 'DELETE',
+            headers: getAuthHeaders()
+        })
+
+        const result = await response.json()
+
+        if (!response.ok) {
+            throw new Error(result.errors)
+        }
+
+        return result
+    } catch (e) {
+        console.error("Error di userApi (logout):", e.message)
         throw e
     }
 }
