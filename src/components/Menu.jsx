@@ -1,5 +1,5 @@
 import { motion } from "framer-motion"
-import { ShoppingCart, Flame, ShoppingBag, Loader2, AlertTriangle, RefreshCw, PackageOpen } from "lucide-react"
+import { ShoppingCart, ShoppingBag, Loader2, AlertTriangle, PackageOpen } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { getProducts } from "../utils/productApi.js"

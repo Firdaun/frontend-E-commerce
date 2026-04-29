@@ -1,58 +1,11 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Lock, User, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
-import { Link, useLocation, useNavigate } from "react-router-dom"
-import { registerUser } from "../../utils/authApi.js"
-import { toast } from "sonner"
+import { Link, useOutletContext } from "react-router-dom"
 
 export default function Register() {
-    const nameRef = useRef(null)
-    const emailRef = useRef(null)
-    const passwordRef = useRef(null)
-    const navigate = useNavigate()
-    const location = useLocation()
+    const { handleRegister, errorsRegister, registerForm, handleSubmitRegister, pendingRegister } = useOutletContext()
     const [showPassword, setShowPassword] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-
-    const [formData, setFormData] = useState(
-        location.state?.savedFormData || {
-            name: "",
-            email: "",
-            password: ""
-        }
-    )
-
-    const handleChange = (e) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-    }
-
-
-    const handleRegister = async (e) => {
-        e.preventDefault()
-        if (!formData.email || !formData.password || !formData.name) {
-            if (!formData.email) return emailRef.current.focus()
-            if (!formData.password) return passwordRef.current.focus()
-            if (!formData.name) return nameRef.current.focus()
-            return
-        }
-
-        setIsLoading(true)
-
-        const eksekusiApi = registerUser(formData).finally(() => {
-            setIsLoading(false) 
-        })
-
-        toast.promise(eksekusiApi, {
-            loading: 'Mendaftarkan akun...',
-            success: () => {
-                navigate('/verifikasi', { state: { savedFormData: formData } })
-                return 'Pendaftaran berhasil! Cek email untuk OTP.'
-            },
-            error: (e) => {
-                return e.message
-            }
-        })
-    }
 
     return (
         <>
@@ -87,7 +40,7 @@ export default function Register() {
                 className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
             >
                 <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
-                    <form className="space-y-5" onSubmit={handleRegister}>
+                    <form className="space-y-5" onSubmit={handleSubmitRegister(handleRegister)}>
 
                         {/* Input Nama */}
                         <div>
@@ -97,15 +50,12 @@ export default function Register() {
                                     <User className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
-                                    ref={nameRef}
                                     type="text"
-                                    name="name"
-                                    required
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="Fahrul"
+                                    {...registerForm('name', {required: 'Nama lengkap wajib diisi'})}
                                 />
+                                {errorsRegister.name && <p className="absolute text-xs text-red-500 mt-1">{errorsRegister.name.message}</p>}
                             </div>
                         </div>
 
@@ -117,15 +67,12 @@ export default function Register() {
                                     <Mail className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
-                                    ref={emailRef}
                                     type="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="nama@email.com"
+                                    {...registerForm('email', {required: 'Email wajib diisi'})}
                                 />
+                                {errorsRegister.email && <p className="absolute text-xs text-red-500 mt-1">{errorsRegister.email.message}</p>}
                             </div>
                         </div>
 
@@ -137,15 +84,12 @@ export default function Register() {
                                     <Lock className="h-5 w-5 text-gray-500" />
                                 </div>
                                 <input
-                                    ref={passwordRef}
                                     type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    required
-                                    value={formData.password}
-                                    onChange={handleChange}
-                                    className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
+                                    className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="••••••••"
+                                    {...registerForm('password', {required: 'Password wajib diisi'})}
                                 />
+                                {errorsRegister.password && <p className="absolute text-xs text-red-500 mt-1">{errorsRegister.password.message}</p>}
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -162,10 +106,10 @@ export default function Register() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
-                                disabled={isLoading}
-                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                disabled={pendingRegister}
+                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${pendingRegister ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                {isLoading ? <Loader2 className="animate-spin h-5 w-5" /> : "Daftar Sekarang"}
+                                {pendingRegister ? <Loader2 className="animate-spin h-5 w-5" /> : "Daftar Sekarang"}
                             </motion.button>
                         </div>
                     </form>

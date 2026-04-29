@@ -1,14 +1,11 @@
 import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { Loader2 } from "lucide-react"
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom"
-import { toast } from "sonner"
-import { verifyEmail } from "../../utils/authApi.js"
+import { Link, Navigate, useLocation, useOutletContext } from "react-router-dom"
 
 export default function VerifikasiOtp() {
-    const navigate = useNavigate()
+    const { handleVerify, pendingVerify } = useOutletContext()
     const location = useLocation()
-    const [isLoading, setIsLoading] = useState(false)
     const [otp, setOtp] = useState(new Array(6).fill(""))
     const inputRefs = useRef([])
 
@@ -62,29 +59,14 @@ export default function VerifikasiOtp() {
         inputRefs.current[focusIndex].focus()
     }
 
-    const handleVerify = async (e) => {
+    const handleVerifySubmit = (e) => {
         e.preventDefault()
 
         const otpValue = otp.join('')
-
-        setIsLoading(true)
-        const payload = {
+        
+        handleVerify({
             email: emailUser,
             code: otpValue
-        }
-        const eksekusiOtp = verifyEmail(payload).finally(() => {
-            setIsLoading(false)
-        })
-
-        toast.promise(eksekusiOtp, {
-            loading: 'Memverifikasi...',
-            success: (data) => {
-                setTimeout(() => navigate('/login'), 1000)
-                return `Email terverifikasi, silahkan login`
-            },
-            error: (e) => {
-                return e.message
-            }
         })
     }
 
@@ -114,7 +96,7 @@ export default function VerifikasiOtp() {
                 className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
             >
                 <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
-                    <form className="space-y-5" onSubmit={handleVerify}>
+                    <form className="space-y-5" onSubmit={handleVerifySubmit}>
 
 
                         <div className="flex justify-center gap-2 sm:gap-3">
@@ -146,10 +128,10 @@ export default function VerifikasiOtp() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
-                                disabled={isLoading || otp.join("").length < 6}
-                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${isLoading || otp.join("").length < 6 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                disabled={pendingVerify || otp.join("").length < 6}
+                                className={`w-full flex justify-center py-3 px-4 rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient transition-all ${pendingVerify || otp.join("").length < 6 ? 'opacity-50 cursor-not-allowed' : ''}`}
                             >
-                                {isLoading ? <Loader2 className="animate-spin h-5 w-5" /> : "Verifikasi Sekarang"}
+                                {pendingVerify ? <Loader2 className="animate-spin h-5 w-5" /> : "Verifikasi Sekarang"}
                             </motion.button>
                         </div>
                         <div className="text-center text-sm">

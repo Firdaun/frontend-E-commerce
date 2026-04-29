@@ -37,7 +37,7 @@ export default function Profile() {
         mutationFn: updateProfile
     })
 
-    const handleSaveProfile = async (formData) => {
+    const handleSaveProfile = (formData) => {
         toast.promise(
             new Promise((resolve, reject) => {
                 updateMutation.mutate(formData, {
@@ -111,7 +111,7 @@ export default function Profile() {
                     new_email: data.newEmail,
                     password: data.passwordForEmail
                 }, {
-                    onSuccess: async (res) => {
+                    onSuccess: (res) => {
                         setIsOtpMode(true) 
                         resolve(res)
                     },
@@ -176,8 +176,9 @@ export default function Profile() {
                             localStorage.removeItem('token')
                             await queryClient.cancelQueries({ queryKey: ['user'] })
                             queryClient.setQueryData(['user'], null)
+                            queryClient.removeQueries({ queryKey: ['cart'] })
                             resolve(res)
-                        }, 40)
+                        }, 300)
                     },
                     onError: (err) => reject(err)
                 })

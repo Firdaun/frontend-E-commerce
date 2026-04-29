@@ -1,55 +1,11 @@
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { motion } from "framer-motion"
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Loader2 } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
-import { toast } from "sonner"
-import { login } from "../../utils/authApi.js"
-import { useQueryClient } from "@tanstack/react-query"
+import { Link, useOutletContext } from "react-router-dom"
 
 export default function Login() {
-    const navigate = useNavigate()
-    const queryClient = useQueryClient()
+    const { handleLogin, errorsLogin, loginForm, handleSubmitLogin, pendingLogin } = useOutletContext()
     const [showPassword, setShowPassword] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const emailRef = useRef(null)
-    const passwordRef = useRef(null)
-
-
-    const [formData, setFormData] = useState({
-        email: "",
-        password: ""
-    })
-
-    const handleChange = (e) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-    }
-
-    const handleLogin = (e) => {
-        e.preventDefault()
-        if (!formData.email || !formData.password) {
-            if (!formData.email) return emailRef.current.focus()
-            if (!formData.password) return passwordRef.current.focus()
-            return
-        }
-
-        setIsLoading(true)
-
-        const eksekusiApi = login(formData).finally(() => {
-            setIsLoading(false)
-        })
-        toast.promise(eksekusiApi, {
-            loading: 'Memproses...',
-            success: (result) => {
-                localStorage.setItem('token', result.data.token)
-                queryClient.invalidateQueries({ queryKey: ['user'] })
-                setTimeout(() => navigate('/'), 1000)
-                return 'Login berhasil'
-            },
-            error: (e) => {
-                return e.message
-            }
-        })
-    }
 
     return (
         <>
@@ -84,7 +40,7 @@ export default function Login() {
                 className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10"
             >
                 <div className="bg-gray-900 py-8 px-4 shadow-2xl border border-gray-800 sm:rounded-3xl sm:px-10">
-                    <form className="space-y-6" onSubmit={handleLogin}>
+                    <form className="space-y-6" onSubmit={handleSubmitLogin(handleLogin)}>
 
                         {/* Input Email */}
                         <div>
@@ -97,13 +53,11 @@ export default function Login() {
                                 </div>
                                 <input
                                     type="email"
-                                    name="email"
-                                    required
-                                    value={formData.email}
-                                    onChange={handleChange}
                                     className="block w-full pl-10 pr-3 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="nama@email.com"
+                                    {...loginForm('email', {required: 'Email wajib diisi'})}
                                 />
+                                {errorsLogin.email && <p className="absolute text-xs text-red-500">{errorsLogin.email.message}</p>}
                             </div>
                         </div>
 
@@ -118,13 +72,11 @@ export default function Login() {
                                 </div>
                                 <input
                                     type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    required
-                                    value={formData.password}
-                                    onChange={handleChange}
                                     className="block w-full pl-10 pr-10 py-3 border border-gray-700 rounded-xl bg-gray-950 text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-orange-500 focus:border-orange-500 sm:text-sm transition-colors"
                                     placeholder="••••••••"
+                                    {...loginForm('password', {required: 'Password wajib diisi'})}
                                 />
+                                {errorsLogin.password && <p className="absolute text-xs text-red-500">{errorsLogin.password.message}</p>}
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -162,10 +114,10 @@ export default function Login() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
-                                disabled={isLoading}
-                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                disabled={pendingLogin}
+                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${pendingLogin ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                {isLoading ? (
+                                {pendingLogin ? (
                                     <Loader2 className="animate-spin h-5 w-5 text-white" />
                                 ) : (
                                     "Masuk"

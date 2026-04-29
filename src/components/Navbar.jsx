@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
 import { useQuery } from "@tanstack/react-query"
 import { getCart } from "../utils/productApi.js"
-const MotionLink = motion.create(Link)
+
 const navLinks = [
     { name: 'Beranda', path: '/' },
     { name: 'Menu Seblak', path: '/menu' },
@@ -79,13 +79,13 @@ export default function Navbar(user) {
 
                     <div className="hidden md:flex items-center space-x-8">
                         {navLinks.map((link) => (
-                            <MotionLink
+                            <Link
                                 key={link.name}
                                 to={link.path}
                                 className="hover:text-orange-500 duration-300 text-gray-300 text-sm font-medium transition-colors"
                             >
                                 {link.name}
-                            </MotionLink>
+                            </Link>
                         ))}
                     </div>
 
@@ -97,7 +97,7 @@ export default function Navbar(user) {
                                 className="cursor-pointer relative text-gray-300 hover:text-orange-500 transition-colors"
                             >
                                 <ShoppingCart size={24} />
-                                {cartCount !== 0 && (
+                                {cartCount > 0 && (
                                     <motion.span
                                         initial={{ scale: 0 }}
                                         animate={{ scale: 1 }}
@@ -141,14 +141,14 @@ export default function Navbar(user) {
                     >
                         <div className="pt-2 pb-6 space-y-2">
                             {navLinks.map((link) => (
-                                <MotionLink
+                                <Link
                                     onClick={() => setIsOpen(false)}
                                     key={link.name}
                                     to={link.path}
                                     className="text-gray-300 block text-sm py-2 text-center font-medium"
                                 >
                                     {link.name}
-                                </MotionLink>
+                                </Link>
                             ))}
                             <div className="pt-4 border-t border-gray-800 flex items-center justify-center">
                                 <button
