@@ -4,6 +4,8 @@ import { ShoppingCart, Menu, X, User } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
+import { useQuery } from "@tanstack/react-query"
+import { getCart } from "../utils/productApi.js"
 const MotionLink = motion.create(Link)
 const navLinks = [
     { name: 'Beranda', path: '/' },
@@ -23,7 +25,13 @@ export default function Navbar(user) {
         return user.user?.name || 'ERROR'
     }
 
-    const cartCount = 3
+    const { data: cartResponse } = useQuery({
+        queryKey: ['cart'],
+        queryFn: getCart,
+        enabled: apakahUdhLogin
+    })
+
+    const cartCount = cartResponse?.data?.cartItems?.length
 
     const handleCartClick = (e) => {
         if (e) e.preventDefault()
@@ -89,13 +97,15 @@ export default function Navbar(user) {
                                 className="cursor-pointer relative text-gray-300 hover:text-orange-500 transition-colors"
                             >
                                 <ShoppingCart size={24} />
-                                <motion.span
-                                    initial={{ scale: 0 }}
-                                    animate={{ scale: 1 }}
-                                    className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
-                                >
-                                    {cartCount}
-                                </motion.span>
+                                {cartCount !== 0 && (
+                                    <motion.span
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"
+                                    >
+                                        {cartCount}
+                                    </motion.span>
+                                )}
                             </motion.button>
                         </div>
 

@@ -1,9 +1,10 @@
 import { motion, AnimatePresence } from "framer-motion"
-import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag, ReceiptText } from "lucide-react"
+import { Trash2, Plus, Minus, ShoppingBag, ReceiptText } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { getCart, deleteCart, updateCart } from "../utils/productApi.js"
+import { toast } from "sonner"
 
-// Dummy data untuk simulasi (nanti bisa diganti dengan State Management/Context)
 const initialCart = [
     {
         id: 1,
@@ -17,38 +18,66 @@ const initialCart = [
 ]
 
 export default function Cart() {
-    const [cartItems, setCartItems] = useState(initialCart)
     const navigate = useNavigate()
+    const queryClient = useQueryClient()
 
-    const updateQuantity = (id, delta) => {
-        setCartItems(prev => prev.map(item => 
-            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
-        ))
+    const { data: cartResponse, isLoading } = useQuery({
+        queryKey: ['cart'],
+        queryFn: getCart
+    })
+
+    const cartItems = cartResponse?.data?.cartItems || []
+    const subtotal = cartResponse?.data?.estimated_total || 0
+    const shipping = cartItems.length > 0 ? 10000 : 0
+    const total = subtotal
+
+    const updateMutation = useMutation({
+        mutationFn: ({ id, quantity }) => updateCart(id, { quantity }),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] })
+        },
+        onError: (error) => {
+            toast.error(error.message || "Gagal mengupdate keranjang")
+        }
+    })
+
+    const deleteMutation = useMutation({
+        mutationFn: (id) => deleteCart(id),
+        onSuccess: (res) => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] })
+            toast.success(res.message)
+        },
+        onError: (error) => {
+            toast.error(error.message || "Gagal menghapus item")
+        }
+    })
+
+    const updateQuantity = (id, currentQty, delta) => {
+        const newQty = Math.max(1, currentQty + delta)
+        if (newQty !== currentQty) {
+            updateMutation.mutate({ id, quantity: newQty })
+        }
     }
 
     const removeItem = (id) => {
-        setCartItems(prev => prev.filter(item => item.id !== id))
+        deleteMutation.mutate(id)
     }
 
-    const subtotal = cartItems.reduce((acc, item) => acc + (item.price * item.quantity), 0)
-    const shipping = cartItems.length > 0 ? 10000 : 0
-    const total = subtotal + shipping
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-950 pt-24 pb-12 flex justify-center items-center">
+                <div className="animate-pulse flex flex-col items-center">
+                    <div className="w-16 h-16 bg-gray-800 rounded-full mb-4"></div>
+                    <div className="h-4 bg-gray-800 rounded w-32"></div>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-950 pt-24 pb-12">
             <div className="max-w-5xl w-[95%] mx-auto">
                 
-                {/* Header */}
-                <div className="flex items-center space-x-4 mb-8">
-                    <button 
-                        onClick={() => navigate(-1)}
-                        className="p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
-                    >
-                        <ArrowLeft size={20} />
-                    </button>
-                    <h1 className="text-2xl md:text-3xl font-black text-white">Keranjang <span className="text-seblak-gradient">Kamu</span></h1>
-                </div>
-
                 {cartItems.length === 0 ? (
                     /* Tampilan Kosong */
                     <motion.div 
@@ -82,26 +111,27 @@ export default function Cart() {
                                         exit={{ opacity: 0, scale: 0.95 }}
                                         className="bg-gray-900 border border-gray-800 p-4 rounded-2xl flex items-center space-x-4"
                                     >
-                                        <img src={item.image_url} className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-xl shrink-0" alt={item.variant} />
+                                        <img src={item.product.image_url} className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-xl shrink-0" alt={item.product.variant} />
                                         
                                         <div className="flex-1 min-w-0">
-                                            <h3 className="text-white font-bold truncate">{item.variant}</h3>
-                                            <p className="text-orange-500 text-xs font-medium mb-1">Level {item.level} • {item.toppings.join(", ")}</p>
-                                            <p className="text-white font-black">Rp {item.price.toLocaleString('id-ID')}</p>
+                                            <h3 className="text-white font-bold truncate">{item.product.variant}</h3>
+                                            <p className="text-orange-500 text-xs font-medium mb-1">Level {item.spice_level}</p>
+                                            <p className="text-white font-black">Rp {item.product.price.toLocaleString('id-ID')}</p>
                                         </div>
 
                                         <div className="flex flex-col items-end justify-between self-stretch">
                                             <button 
                                                 onClick={() => removeItem(item.id)}
-                                                className="text-gray-500 hover:text-red-500 transition-colors"
+                                                disabled={deleteMutation.isPending}
+                                                className="text-gray-500 hover:text-red-500 transition-colors disabled:opacity-50"
                                             >
                                                 <Trash2 size={18} />
                                             </button>
                                             
                                             <div className="flex items-center bg-gray-800 rounded-lg border border-gray-700">
-                                                <button onClick={() => updateQuantity(item.id, -1)} className="p-1 text-gray-400 hover:text-white"><Minus size={14}/></button>
+                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, -1)} className="p-1 text-gray-400 hover:text-white disabled:opacity-50"><Minus size={14}/></button>
                                                 <span className="px-2 text-sm font-bold text-white">{item.quantity}</span>
-                                                <button onClick={() => updateQuantity(item.id, 1)} className="p-1 text-gray-400 hover:text-white"><Plus size={14}/></button>
+                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, 1)} className="p-1 text-gray-400 hover:text-white disabled:opacity-50"><Plus size={14}/></button>
                                             </div>
                                         </div>
                                     </motion.div>

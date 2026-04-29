@@ -6,7 +6,7 @@ export default function LogoutConfirmModal({ isOpen, onClose, onConfirm, isPendi
         <AnimatePresence>
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-[100] flex items-center justify-center px-4"
+                    className="fixed inset-0 z-100 flex items-center justify-center px-4"
                     onClick={onClose}
                 >
                     {/* Backdrop — langsung muncul tanpa animasi */}
@@ -18,7 +18,7 @@ export default function LogoutConfirmModal({ isOpen, onClose, onConfirm, isPendi
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="relative w-full max-w-sm bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-2xl"
+                        className="relative w-full max-w-sm bg-gray-950 border border-gray-900 rounded-2xl p-6 shadow-2xl"
                     >
                         {/* Glow effect */}
                         <div className="absolute -top-20 -right-20 w-40 h-40 bg-red-600/10 rounded-full blur-[80px] pointer-events-none" />

@@ -2,8 +2,9 @@ import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ShoppingCart, ShoppingBag, Flame, Plus, Minus, Check } from "lucide-react"
-import { getProductbyId } from "../utils/productApi.js"
-import { useQuery } from "@tanstack/react-query"
+import { getProductbyId, addToCart } from "../utils/productApi.js"
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 import { useIsMobile } from "../hooks/isMobile.js"
 
 const dummyProduct = [
@@ -47,9 +48,8 @@ export default function ProductDetail() {
         gcTime: 1000 * 60 * 30
     })
     
+    const queryClient = useQueryClient()
     const [quantity, setQuantity] = useState(1)
-    const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
-    const [selectedToppings, setSelectedToppings] = useState([])
 
     useEffect(() => {
         if (product && product.spice_level) {
@@ -57,11 +57,29 @@ export default function ProductDetail() {
         }
     }, [product])
     
+    const [spiceLevel, setSpiceLevel] = useState(product?.spice_level)
+    const [selectedToppings, setSelectedToppings] = useState([])
+
     const toggleTopping = (topping) => {
         setSelectedToppings(prev =>
             prev.includes(topping) ? prev.filter(t => t !== topping) : [...prev, topping]
         )
     }
+
+    const addMutation = useMutation({
+        mutationFn: () => addToCart({
+            productId: product.id,
+            quantity: quantity,
+            spice_level: spiceLevel || 1
+        }),
+        onSuccess: (res) => {
+            queryClient.invalidateQueries({ queryKey: ['cart'] })
+            toast.success(res.message)
+        },
+        onError: (error) => {
+            toast.error(error.message || "Gagal menambahkan ke keranjang")
+        }
+    })
 
     if (isLoading) {
         return (
@@ -220,11 +238,11 @@ export default function ProductDetail() {
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
+                                    <motion.button disabled={addMutation.isPending} whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50">
                                         <ShoppingBag size={24} />
                                         <span>Beli Sekarang</span>
                                     </motion.button>
-                                    <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                    <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
                                         <ShoppingCart size={24} />
                                     </motion.button>
                                 </div>
@@ -272,11 +290,11 @@ export default function ProductDetail() {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <motion.button whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20">
+                                <motion.button disabled={addMutation.isPending} whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50">
                                     <ShoppingBag size={24} />
                                     <span>Beli Sekarang</span>
                                 </motion.button>
-                                <motion.button whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center">
+                                <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
                                     <ShoppingCart size={24} />
                                 </motion.button>
                             </div>

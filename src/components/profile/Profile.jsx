@@ -171,10 +171,7 @@ export default function Profile() {
             new Promise((resolve, reject) => {
                 logoutMutation.mutate(undefined, {
                     onSuccess: (res) => {
-                        // 1. Pindah ke halaman Home dulu
                         navigate('/')
-                        
-                        // 2. Hapus token dan cache di antrean berikutnya (setelah pindah halaman selesai)
                         setTimeout(async () => {
                             localStorage.removeItem('token')
                             await queryClient.cancelQueries({ queryKey: ['user'] })
