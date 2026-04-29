@@ -18,7 +18,6 @@ const initialCart = [
 ]
 
 export default function Cart() {
-    const navigate = useNavigate()
     const queryClient = useQueryClient()
 
     const { data: cartResponse, isLoading } = useQuery({
@@ -129,9 +128,9 @@ export default function Cart() {
                                             </button>
                                             
                                             <div className="flex items-center bg-gray-800 rounded-lg border border-gray-700">
-                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, -1)} className="p-1 text-gray-400 hover:text-white disabled:opacity-50"><Minus size={14}/></button>
+                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, -1)} className="cursor-pointer p-1 text-gray-400 hover:text-white disabled:opacity-50"><Minus size={14}/></button>
                                                 <span className="px-2 text-sm font-bold text-white">{item.quantity}</span>
-                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, 1)} className="p-1 text-gray-400 hover:text-white disabled:opacity-50"><Plus size={14}/></button>
+                                                <button disabled={updateMutation.isPending} onClick={() => updateQuantity(item.id, item.quantity, 1)} className="cursor-pointer p-1 text-gray-400 hover:text-white disabled:opacity-50"><Plus size={14}/></button>
                                             </div>
                                         </div>
                                     </motion.div>

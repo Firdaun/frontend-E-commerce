@@ -1,135 +1,80 @@
 const BASE_URL = import.meta.env.VITE_API_URL
-const getAuthHeaders = () => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-        throw new Error('token tidak ada')
-    }
-    return {
-        'Content-Type': 'application/json',
-        'x-api-key': `Bearer ${token}`
-    }
-}
 
-export const getCurrentUser = async () => {
+const fetchWithAuth = async (endpoint, options = {}) => {
+    const token = localStorage.getItem('token')
+    
+    if (!token) {
+        throw new Error('Token tidak ada, silakan login kembali.')
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'x-api-key': `Bearer ${token}`,
+        ...options.headers
+    }
+
     try {
-        const response = await fetch(`${BASE_URL}/users/current`, {
-            method: 'GET',
-            headers: getAuthHeaders()
+        const response = await fetch(`${BASE_URL}${endpoint}`, {
+            ...options,
+            headers
         })
 
         const result = await response.json()
 
         if (!response.ok) {
-            throw new Error(result.errors || "Gagal mengambil data profil")
+            if (response.status === 401) {
+                localStorage.removeItem('token')
+                window.location.href = '/login' 
+            }
+            throw new Error(result.errors || "Terjadi kesalahan pada server")
         }
 
-        return result.data
+        return result
     } catch (e) {
-        console.error("Error di userApi (getCurrentUser):", e.message)
+        console.error(`Error di API (${endpoint}):`, e.message)
         throw e
     }
+}
+
+// =====================================================================
+// 2. KUMPULAN FUNGSI API (Sekarang jadi sangat ringkas dan rapi!)
+// =====================================================================
+
+export const getCurrentUser = async () => {
+    const result = await fetchWithAuth('/users/current', { method: 'GET' })
+    return result.data
 }
 
 export const updateProfile = async (formData) => {
-    try {
-        const response = await fetch(`${BASE_URL}/users/current`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            body: JSON.stringify(formData)
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            throw new Error(result.errors)
-        }
-
-        return result
-    } catch (e) {
-        console.error("Error di userApi (updateProfile):", e.message)
-        throw e
-    }
+    return await fetchWithAuth('/users/current', {
+        method: 'PATCH',
+        body: JSON.stringify(formData)
+    })
 }
 
 export const updatePassword = async (pw) => {
-    try {
-        const response = await fetch(`${BASE_URL}/users/current/password`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            body: JSON.stringify(pw)
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            throw new Error(result.errors)
-        }
-
-        return result
-    } catch (e) {
-        console.error("Error di userApi (updatePassword):", e.message)
-        throw e
-    }
+    return await fetchWithAuth('/users/current/password', {
+        method: 'PATCH',
+        body: JSON.stringify(pw)
+    })
 }
 
 export const updateEmail = async (data) => {
-    try {
-        const response = await fetch(`${BASE_URL}/users/current/email/request`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            body: JSON.stringify(data)
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            throw new Error(result.errors)
-        }
-
-        return result
-    } catch (e) {
-        console.error("Error di userApi (updateEmail):", e.message)
-        throw e
-    }
+    return await fetchWithAuth('/users/current/email/request', {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    })
 }
 
 export const verifyUpdateEmail = async (data) => {
-    try {
-        const response = await fetch(`${BASE_URL}/users/current/email/verify`, {
-            method: 'PATCH',
-            headers: getAuthHeaders(),
-            body: JSON.stringify(data)
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            throw new Error(result.errors)
-        }
-
-        return result
-    } catch (e) {
-        console.error("Error di userApi (verifyUpdateEmail):", e.message)
-        throw e
-    }
+    return await fetchWithAuth('/users/current/email/verify', {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+    })
 }
 
 export const logout = async () => {
-    try {
-        const response = await fetch(`${BASE_URL}/users/logout`, {
-            method: 'DELETE',
-            headers: getAuthHeaders()
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            throw new Error(result.errors)
-        }
-
-        return result
-    } catch (e) {
-        console.error("Error di userApi (logout):", e.message)
-        throw e
-    }
+    return await fetchWithAuth('/users/logout', {
+        method: 'DELETE'
+    })
 }
