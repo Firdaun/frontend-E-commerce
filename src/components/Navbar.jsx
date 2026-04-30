@@ -10,7 +10,7 @@ import { getCart } from "../utils/productApi.js"
 const navLinks = [
     { name: 'Beranda', path: '/' },
     { name: 'Menu Seblak', path: '/menu' },
-    { name: 'Promo', path: '/promo' },
+    { name: 'Pesanan Saya', path: '/orders' },
     { name: 'Kontak', path: '/kontak' },
 ]
 

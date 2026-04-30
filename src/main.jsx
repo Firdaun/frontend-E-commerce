@@ -14,6 +14,7 @@ import Layout from './components/Layout.jsx'
 import VerifikasiOtp from './components/auth/VerifikasiOtp.jsx'
 import { Toaster } from 'sonner'
 import Profile from './components/profile/Profile.jsx'
+import Orders from './components/Orders.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import GuestRoute from './components/GuestRoute.jsx'
 
@@ -35,7 +36,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Toaster richColors theme="dark" position="top-center" />
+        <Toaster duration={3000} closeButton richColors theme="dark" position="top-right" />
         <ScrollToTop />
 
         <Routes>
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')).render(
             <Route element={<ProtectedRoute />}>
               <Route path='/cart' element={<Cart />} />
               <Route path='/profile' element={<Profile />} />
+              <Route path='/orders' element={<Orders />} />
             </Route>
           </Route>
 
