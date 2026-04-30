@@ -1,80 +1,46 @@
-const BASE_URL = import.meta.env.VITE_API_URL
-
-const fetchWithAuth = async (endpoint, options = {}) => {
-    const token = localStorage.getItem('token')
-    
-    if (!token) {
-        throw new Error('Token tidak ada, silakan login kembali.')
-    }
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'x-api-key': `Bearer ${token}`,
-        ...options.headers
-    }
-
-    try {
-        const response = await fetch(`${BASE_URL}${endpoint}`, {
-            ...options,
-            headers
-        })
-
-        const result = await response.json()
-
-        if (!response.ok) {
-            if (response.status === 401) {
-                localStorage.removeItem('token')
-                window.location.href = '/login' 
-            }
-            throw new Error(result.errors || "Terjadi kesalahan pada server")
-        }
-
-        return result
-    } catch (e) {
-        console.error(`Error di API (${endpoint}):`, e.message)
-        throw e
-    }
-}
-
-// =====================================================================
-// 2. KUMPULAN FUNGSI API (Sekarang jadi sangat ringkas dan rapi!)
-// =====================================================================
+// src/utils/profileApi.js
+import { fetchAPI } from './fetcher.js'
 
 export const getCurrentUser = async () => {
-    const result = await fetchWithAuth('/users/current', { method: 'GET' })
-    return result.data
+    const result = await fetchAPI('/users/current', { method: 'GET', requireAuth: true })
+    return result.data 
 }
 
 export const updateProfile = async (formData) => {
-    return await fetchWithAuth('/users/current', {
+    return await fetchAPI('/users/current', {
         method: 'PATCH',
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        requireAuth: true
     })
 }
 
 export const updatePassword = async (pw) => {
-    return await fetchWithAuth('/users/current/password', {
+    return await fetchAPI('/users/current/password', {
         method: 'PATCH',
-        body: JSON.stringify(pw)
+        body: JSON.stringify(pw),
+        requireAuth: true
     })
 }
 
 export const updateEmail = async (data) => {
-    return await fetchWithAuth('/users/current/email/request', {
+    return await fetchAPI('/users/current/email/request', {
         method: 'PATCH',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        requireAuth: true
     })
 }
 
 export const verifyUpdateEmail = async (data) => {
-    return await fetchWithAuth('/users/current/email/verify', {
+    return await fetchAPI('/users/current/email/verify', {
         method: 'PATCH',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        requireAuth: true
     })
 }
 
 export const logout = async () => {
-    return await fetchWithAuth('/users/logout', {
-        method: 'DELETE'
+    return await fetchAPI('/users/logout', {
+        method: 'DELETE',
+        requireAuth: true
     })
 }
