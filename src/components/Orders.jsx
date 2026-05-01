@@ -2,6 +2,8 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Package, Clock, CheckCircle2, XCircle, ChevronRight, ShoppingBag, UtensilsCrossed, Truck } from "lucide-react"
 import { Link } from "react-router-dom"
+import { getOrder } from "../utils/orderApi"
+import { useQuery } from "@tanstack/react-query"
 
 const dummyOrders = [
     {
@@ -91,12 +93,16 @@ const getStatusIcon = (status) => {
 export default function Orders() {
     const [activeFilter, setActiveFilter] = useState("Semua")
 
-    const filteredOrders = activeFilter === "Semua" ? dummyOrders : dummyOrders.filter(order => order.status === activeFilter)
+    const { data: orderResponse, isLoading } = useQuery({
+        queryKey: ['order'],
+        queryFn: getOrder
+    })
 
-    // Hitung jumlah per status untuk statistik
+    const filteredOrders = activeFilter === "Semua" ? orderResponse : orderResponse.filter(order => order.status === activeFilter)
+
     const getCount = (status) => {
-        if (status === "Semua") return dummyOrders.length
-        return dummyOrders.filter(o => o.status === status).length
+        if (status === "Semua") return orderResponse?.length
+        return orderResponse?.filter(o => o.status === status).length
     }
 
     return (
@@ -174,8 +180,8 @@ export default function Orders() {
                             </div>
 
                             <div className="grid grid-cols-1 gap-4">
-                                <AnimatePresence mode="wait">
-                                    {filteredOrders.length > 0 ? (
+                                <AnimatePresence>
+                                    {filteredOrders?.length > 0 ? (
                                         filteredOrders.map((order) => (
                                             <motion.div
                                                 key={order.id}
@@ -195,17 +201,17 @@ export default function Orders() {
                                                         {order.status}
                                                     </div>
                                                 </div>
-
+                                                
                                                 <div className="border-t border-gray-800 py-4 flex flex-col gap-3 flex-1">
-                                                    {order.items.map((item, idx) => (
-                                                        <div key={idx} className="flex justify-between items-center text-sm">
+                                                    {order.orderItems?.map((item) => (
+                                                        <div key={item.id} className="flex justify-between items-center text-sm">
                                                             <div className="flex items-center gap-3">
                                                                 <div className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center text-orange-500">
                                                                     <ShoppingBag size={20} />
                                                                 </div>
                                                                 <div>
-                                                                    <p className="text-white font-medium">{item.name}</p>
-                                                                    <p className="text-gray-500 text-xs">{item.quantity} x Rp {item.price.toLocaleString('id-ID')}</p>
+                                                                    <p className="text-white font-medium">{item.product.variant}</p>
+                                                                    <p className="text-gray-500 text-xs">{item.quantity} x Rp {item.price_at_purchase.toLocaleString('id-ID')}</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -215,7 +221,7 @@ export default function Orders() {
                                                 <div className="border-t border-gray-800 pt-4 flex justify-between items-center mt-auto">
                                                     <div className="flex flex-col">
                                                         <span className="text-xs text-gray-500">Total Pembayaran</span>
-                                                        <span className="text-lg font-black text-orange-500">Rp {order.total.toLocaleString('id-ID')}</span>
+                                                        <span className="text-lg font-black text-orange-500">Rp {order.total_price?.toLocaleString('id-ID')}</span>
                                                     </div>
                                                     <Link 
                                                         to={`/orders/${order.id}`}
