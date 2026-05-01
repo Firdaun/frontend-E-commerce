@@ -107,12 +107,6 @@ export default function Orders() {
                     animate={{ opacity: 1, y: 0 }}
                     className="flex flex-col gap-8"
                 >
-                    {/* Header */}
-                    <div className="flex flex-col gap-2">
-                        <h1 className="text-3xl md:text-4xl font-black text-white">Pesanan Saya</h1>
-                        <p className="text-gray-400">Pantau dan kelola semua pesanan seblakmu dengan mudah.</p>
-                    </div>
-
                     <div className="flex flex-col lg:flex-row gap-8 items-start">
                         {/* Sidebar Filter - Left Side */}
                         <aside className="w-full lg:w-72 shrink-0 space-y-6 sticky top-24">

@@ -16,13 +16,13 @@ export default function ProfileSidebar(items) {
                     <div className="w-28 h-28 sm:w-32 sm:h-32 bg-seblak-gradient rounded-3xl rotate-3 absolute inset-0 blur-xl opacity-20 group-hover:opacity-40 transition-opacity"></div>
                     <div className="w-28 h-28 sm:w-32 sm:h-32 bg-gray-900 border-2 border-gray-800 rounded-3xl flex items-center justify-center relative z-10 overflow-hidden shadow-2xl">
                         <span className="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-seblak-gradient">
-                            {items.user?.name.charAt(0).toUpperCase()}
+                            {(items.user?.name || 'ERROR').charAt(0).toUpperCase()}
                         </span>
                     </div>
                 </div>
 
-                <h2 className="text-2xl sm:text-3xl font-black mb-1">{items.user?.name}</h2>
-                <p className="text-gray-400 text-sm mb-4">{items.user?.email}</p>
+                <h2 className="text-2xl sm:text-3xl font-black mb-1">{items.user?.name || 'ERROR'}</h2>
+                <p className="text-gray-400 text-sm mb-4">{items.user?.email || 'Server Error'}</p>
 
                 {items.user?.role === 'ADMIN' && (
                     <span className="inline-flex items-center px-3 py-1 bg-orange-500/10 text-orange-500 text-xs font-bold rounded-full border border-orange-500/20 mb-4">
