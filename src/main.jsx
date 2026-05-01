@@ -16,6 +16,7 @@ import { Toaster } from 'sonner'
 import Profile from './components/profile/Profile.jsx'
 import Orders from './components/Orders.jsx'
 import OrderDetail from './components/OrderDetail.jsx'
+import Checkout from './components/Checkout.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import GuestRoute from './components/GuestRoute.jsx'
 
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/product/:id' element={<ProductDetail />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/cart' element={<Cart />} />
+              <Route path='/checkout' element={<Checkout />} />
               <Route path='/profile' element={<Profile />} />
               <Route path='/orders' element={<Orders />} />
               <Route path='/orders/:id' element={<OrderDetail />} />

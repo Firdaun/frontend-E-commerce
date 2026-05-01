@@ -19,7 +19,7 @@ const initialCart = [
 
 export default function Cart() {
     const queryClient = useQueryClient()
-
+    const navigate = useNavigate()
     const { data: cartResponse, isLoading } = useQuery({
         queryKey: ['cart'],
         queryFn: getCart
@@ -161,7 +161,10 @@ export default function Cart() {
                                     </div>
                                 </div>
 
-                                <button className="w-full bg-seblak-gradient py-4 rounded-2xl font-black text-white shadow-lg shadow-red-500/20 active:scale-95 transition-transform">
+                                <button 
+                                    onClick={() => navigate('/checkout')}
+                                    className="w-full bg-seblak-gradient py-4 rounded-2xl font-black text-white shadow-lg shadow-red-500/20 active:scale-95 transition-transform"
+                                >
                                     Bayar Sekarang
                                 </button>
                                 

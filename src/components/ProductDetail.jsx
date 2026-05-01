@@ -66,6 +66,27 @@ export default function ProductDetail() {
         )
     }
 
+    const handleBuyNow = () => {
+        const token = localStorage.getItem('token')
+        if (!token) {
+            toast.error("Ups! Kamu harus login dulu untuk memesan 🛒")
+            navigate('/login')
+            return
+        }
+        
+        // Langsung ke checkout membawa data produk ini (Direct Order)
+        navigate('/checkout', { 
+            state: { 
+                directOrder: {
+                    productId: product.id,
+                    quantity: quantity,
+                    spice_level: spiceLevel || 1,
+                    product: product // Sertakan data produk untuk ringkasan di checkout
+                } 
+            } 
+        })
+    }
+
     const addMutation = useMutation({
         mutationFn: () => addToCart({
             productId: product.id,
@@ -238,7 +259,12 @@ export default function ProductDetail() {
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-3">
-                                    <motion.button disabled={addMutation.isPending} whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50">
+                                    <motion.button 
+                                        disabled={addMutation.isPending} 
+                                        onClick={handleBuyNow}
+                                        whileTap={{ scale: 0.92 }} 
+                                        className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
+                                    >
                                         <ShoppingBag size={24} />
                                         <span>Beli Sekarang</span>
                                     </motion.button>
@@ -290,7 +316,12 @@ export default function ProductDetail() {
                                 </div>
                             </div>
                             <div className="flex items-center space-x-3">
-                                <motion.button disabled={addMutation.isPending} whileTap={{ scale: 0.92 }} className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50">
+                                <motion.button 
+                                    disabled={addMutation.isPending} 
+                                    onClick={handleBuyNow}
+                                    whileTap={{ scale: 0.92 }} 
+                                    className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
+                                >
                                     <ShoppingBag size={24} />
                                     <span>Beli Sekarang</span>
                                 </motion.button>

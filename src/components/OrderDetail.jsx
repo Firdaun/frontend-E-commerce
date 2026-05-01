@@ -1,6 +1,8 @@
 import { useParams, Link } from "react-router-dom"
 import { motion } from "framer-motion"
-import { ArrowLeft, MapPin, User, Phone, Calendar, ShoppingBag, CreditCard, ChevronRight, CheckCircle2, Clock, Truck, UtensilsCrossed, XCircle } from "lucide-react"
+import { ArrowLeft, MapPin, User, Phone, Calendar, ShoppingBag, CreditCard, ChevronRight, CheckCircle2, Clock, Truck, UtensilsCrossed, XCircle, Loader2, AlertCircle } from "lucide-react"
+import { useQuery } from "@tanstack/react-query"
+import { getOrder } from "../utils/orderApi"
 
 // Helper functions for status
 const getStatusStyles = (status) => {
@@ -25,58 +27,51 @@ const getStatusIcon = (status) => {
     }
 }
 
-// Dummy data based on the provided JSON structure
-const dummyOrderDetail = {
-    id: 2,
-    userId: 136,
-    username: "joko",
-    no_wa: "085943251649",
-    address: "Jalan rajapolah",
-    total_price: 20000,
-    status: "Menunggu",
-    createdAt: "2026-04-29T08:25:37.146Z",
-    updatedAt: "2026-04-29T08:25:37.146Z",
-    orderItems: [
-        {
-            id: 3,
-            orderId: 2,
-            productId: 105,
-            quantity: 1,
-            spice_level: 4,
-            price_at_purchase: 10000,
-            product: {
-                id: 105,
-                variant: "Seblak ceker",
-                price: 10000,
-                spice_level: 5,
-                description: "Seblak ceker dengan kaldu kental dan ada manisnya",
-                image_url: "https://images.unsplash.com/photo-1653666322609-df808a84bc0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600",
-                is_available: true,
-                createdAt: "2026-04-28T22:26:24.788Z",
-                updatedAt: "2026-04-28T22:26:24.788Z"
-            }
-        },
-        {
-            id: 4,
-            orderId: 2,
-            productId: 106,
-            quantity: 2,
-            spice_level: 2,
-            price_at_purchase: 5000,
-            product: {
-                id: 106,
-                variant: "Es Teh Manis",
-                price: 5000,
-                description: "Segar dan manis",
-                image_url: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=600&auto=format&fit=crop",
-            }
-        }
-    ]
-}
 
 export default function OrderDetail() {
     const { id } = useParams()
-    const order = dummyOrderDetail // Use dummy for now
+
+    const { data: orders, isLoading, isError, error } = useQuery({
+        queryKey: ['orders'],
+        queryFn: getOrder
+    })
+
+    const order = orders?.find(o => String(o.id) === id)
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-950 flex flex-col justify-center items-center">
+                <Loader2 className="animate-spin h-10 w-10 text-orange-500 mb-4" />
+                <p className="text-gray-400 animate-pulse">Memuat detail pesanan...</p>
+            </div>
+        )
+    }
+
+    if (isError) {
+        return (
+            <div className="min-h-screen bg-gray-950 flex flex-col justify-center items-center p-4 text-center">
+                <AlertCircle className="h-16 w-16 text-red-500 mb-4" />
+                <h2 className="text-2xl font-black text-white mb-2">Gagal memuat pesanan</h2>
+                <p className="text-gray-400 mb-6 max-w-md">{error?.message || "Terjadi kesalahan saat mengambil data pesanan."}</p>
+                <Link to="/orders" className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all">
+                    Kembali ke Daftar Pesanan
+                </Link>
+            </div>
+        )
+    }
+
+    if (!order) {
+        return (
+            <div className="min-h-screen bg-gray-950 flex flex-col justify-center items-center p-4 text-center">
+                <ShoppingBag className="h-16 w-16 text-gray-700 mb-4" />
+                <h2 className="text-2xl font-black text-white mb-2">Pesanan tidak ditemukan</h2>
+                <p className="text-gray-400 mb-6">Maaf, pesanan dengan ID #{id} tidak ditemukan.</p>
+                <Link to="/orders" className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all">
+                    Kembali ke Daftar Pesanan
+                </Link>
+            </div>
+        )
+    }
 
     return (
         <div className="min-h-screen bg-gray-950 pt-24 pb-12">

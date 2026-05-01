@@ -7,3 +7,11 @@ export const getOrder = async () => {
     })
     return result.data
 }
+
+export const postOrder = async (data) => {
+    return await fetchAPI('/orders', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        requireAuth: true
+    })
+}
