@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "../../utils/profileApi.js";
+import Footer from "./Footer.jsx";
 
 export default function Layout() {
     const { data: user, isLoading, isError, refetch } = useQuery({
@@ -19,6 +20,7 @@ export default function Layout() {
             <main>
                 <Outlet context={{ user, isLoading, isError, refreshUser: refetch }} />
             </main>
+            <Footer />
         </>
     )
 }
