@@ -90,12 +90,44 @@ const getStatusIcon = (status) => {
     }
 }
 
+const OrderSkeleton = () => (
+    <div className="bg-gray-900/50 border border-gray-800 rounded-2xl p-5 shadow-sm flex flex-col h-full animate-pulse">
+        <div className="flex justify-between items-start mb-4">
+            <div className="flex flex-col gap-2">
+                <div className="h-3 w-20 bg-gray-800 rounded"></div>
+                <div className="h-4 w-32 bg-gray-700 rounded"></div>
+            </div>
+            <div className="h-6 w-24 bg-gray-800 rounded-full"></div>
+        </div>
+        <div className="border-t border-gray-800 py-4 flex flex-col gap-4 flex-1">
+            {[1, 2].map(i => (
+                <div key={i} className="flex gap-3 items-center">
+                    <div className="w-10 h-10 bg-gray-800 rounded-lg"></div>
+                    <div className="flex flex-col gap-2">
+                        <div className="h-4 w-40 bg-gray-700 rounded"></div>
+                        <div className="h-3 w-24 bg-gray-800 rounded"></div>
+                    </div>
+                </div>
+            ))}
+        </div>
+        <div className="border-t border-gray-800 pt-4 flex justify-between items-center mt-auto">
+            <div className="flex flex-col gap-2">
+                <div className="h-3 w-24 bg-gray-800 rounded"></div>
+                <div className="h-5 w-32 bg-gray-700 rounded"></div>
+            </div>
+            <div className="h-9 w-32 bg-gray-800 rounded-xl"></div>
+        </div>
+    </div>
+)
+
 export default function Orders() {
     const [activeFilter, setActiveFilter] = useState("Semua")
 
-    const { data: orderResponse, isLoading } = useQuery({
+    const { data: orderResponse, isLoading, isError } = useQuery({
         queryKey: ['order'],
-        queryFn: getOrder
+        queryFn: getOrder,
+        staleTime: 1000 * 60 * 5,
+        gcTime: 1000 * 60 * 15
     })
 
     const filteredOrders = activeFilter === "Semua" ? orderResponse : orderResponse.filter(order => order.status === activeFilter)
@@ -115,7 +147,7 @@ export default function Orders() {
                 >
                     <div className="flex flex-col lg:flex-row gap-8 items-start">
                         {/* Sidebar Filter - Left Side */}
-                        <aside className="w-full lg:w-72 shrink-0 space-y-6 sticky top-24">
+                        <aside className="hidden lg:block w-72 shrink-0 space-y-6 sticky top-24">
                             <div className="bg-gray-900/40 border border-gray-800 rounded-2xl overflow-hidden">
                                 <div className="p-5 border-b border-gray-800 bg-gray-900/20">
                                     <h2 className="text-white font-bold flex items-center gap-2">
@@ -178,7 +210,25 @@ export default function Orders() {
 
                             <div className="grid grid-cols-1 gap-4">
                                 <AnimatePresence>
-                                    {filteredOrders?.length > 0 ? (
+                                    {isLoading ? (
+                                        <>
+                                            <OrderSkeleton />
+                                            <OrderSkeleton />
+                                            <OrderSkeleton />
+                                        </>
+                                    ) : isError ? (
+                                        <motion.div
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            className="flex flex-col items-center justify-center py-20 text-center bg-gray-900/20 border border-dashed border-gray-800 rounded-3xl"
+                                        >
+                                            <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center text-red-500 mb-4">
+                                                <XCircle size={40} />
+                                            </div>
+                                            <h3 className="text-xl font-bold text-white mb-2">Gagal Memuat Pesanan</h3>
+                                            <p className="text-gray-400 mb-6 max-w-xs">Terjadi kesalahan koneksi atau masalah pada server kami.</p>
+                                        </motion.div>
+                                    ) : filteredOrders?.length > 0 ? (
                                         filteredOrders.map((order) => (
                                             <motion.div
                                                 key={order.id}
@@ -215,7 +265,7 @@ export default function Orders() {
                                                     ))}
                                                 </div>
 
-                                                <div className="border-t border-gray-800 pt-4 flex justify-between items-center mt-auto">
+                                                <div className="border-t border-gray-800 pt-4 flex flex-wrap gap-4 justify-between items-center mt-auto">
                                                     <div className="flex flex-col">
                                                         <span className="text-xs text-gray-500">Total Pembayaran</span>
                                                         <span className="text-lg font-black text-orange-500">Rp {order.total_price?.toLocaleString('id-ID')}</span>

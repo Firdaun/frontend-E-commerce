@@ -146,7 +146,7 @@ export default function Checkout() {
                             <motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8"
+                                className="bg-gray-900/70 border border-gray-900 rounded-3xl p-6 md:p-8"
                             >
                                 <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
                                     <MapPin className="text-orange-500" size={24} />
@@ -158,7 +158,7 @@ export default function Checkout() {
                                             <User size={14} /> Nama Penerima
                                         </label>
                                         <input
-                                            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                                            className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                                             placeholder="Nama lengkap penerima"
                                             {...registerCustomer('username', { required: 'Nama wajib di isi' })}
                                         />
@@ -169,7 +169,7 @@ export default function Checkout() {
                                             <Phone size={14} /> Nomor WhatsApp
                                         </label>
                                         <input
-                                            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
+                                            className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                                             placeholder="Contoh: 08123456789"
                                             {...registerCustomer('no_wa', { required: 'Nomor WhatsApp wajib di isi' })}
                                         />
@@ -181,7 +181,7 @@ export default function Checkout() {
                                         </label>
                                         <textarea
                                             rows="4"
-                                            className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
+                                            className="w-full bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                                             placeholder="Jl. Nama Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan, Kota"
                                             {...registerCustomer('address', { required: 'Alamat wajib di isi' })}
                                         />
@@ -203,7 +203,7 @@ export default function Checkout() {
                             <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="bg-gray-900 border border-gray-800 rounded-3xl p-6 sticky top-24"
+                                className="bg-gray-900/70 border border-gray-900 rounded-3xl p-6 sticky top-24"
                             >
                                 <h3 className="text-white font-bold mb-6 flex items-center gap-2">
                                     <ShoppingBag size={20} className="text-orange-500" />

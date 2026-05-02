@@ -4,22 +4,22 @@ import { Flame, Leaf, Truck, ShieldCheck } from "lucide-react"
 export default function WhyChooseUs() {
     const features = [
         {
-            icon: <Flame className="w-8 h-8 text-orange-500" />,
+            icon: <Flame className="w-6 h-6 lg:w-8 lg:h-8 text-orange-500" />,
             title: "Pedesnya Nendang",
             description: "Bumbu rempah kencur asli berpadu dengan cabai segar pilihan. Level pedas bisa disesuaikan seleramu!"
         },
         {
-            icon: <Leaf className="w-8 h-8 text-green-500" />,
+            icon: <Leaf className="w-6 h-6 lg:w-8 lg:h-8 text-green-500" />,
             title: "Bahan Selalu Segar",
             description: "Dimasak dadakan setiap ada pesanan. Tanpa pengawet, dijamin fresh dan kualitas rasa tetap terjaga."
         },
         {
-            icon: <Truck className="w-8 h-8 text-blue-500" />,
+            icon: <Truck className="w-6 h-6 lg:w-8 lg:h-8 text-blue-500" />,
             title: "Pengiriman Cepat",
             description: "Dikirim langsung ke depan pintumu saat masih panas dan nikmat. Santai di rumah, seblak datang."
         },
         {
-            icon: <ShieldCheck className="w-8 h-8 text-purple-500" />,
+            icon: <ShieldCheck className="w-6 h-6 lg:w-8 lg:h-8 text-purple-500" />,
             title: "Higienis & Halal",
             description: "Dapur kami menjamin kebersihan alat dan bahan 100% Halal untuk kenyamanan santapmu."
         }
@@ -69,21 +69,21 @@ export default function WhyChooseUs() {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
-                    className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+                    className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-6"
                 >
                     {features.map((feature, index) => (
                         <motion.div 
                             key={index}
                             variants={itemVariants}
-                            className="bg-gray-900 border border-gray-800 p-8 rounded-3xl hover:border-orange-500/50 transition-colors group cursor-default"
+                            className="bg-gray-900 border border-gray-800 p-4 lg:p-8 rounded-xl lg:rounded-3xl hover:border-orange-500/50 transition-colors group cursor-default"
                         >
-                            <div className="w-16 h-16 bg-gray-950 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-800 group-hover:border-orange-500/30">
+                            <div className="lg:w-16 lg:h-16 w-12 h-12 bg-gray-950 rounded-xl lg:rounded-2xl flex items-center justify-center mb-3 lg:mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-800 group-hover:border-orange-500/30">
                                 {feature.icon}
                             </div>
-                            <h3 className="text-xl font-bold text-white mb-3">
+                            <h3 className="text-base lg:text-xl font-bold text-white mb-2 lg:mb-3">
                                 {feature.title}
                             </h3>
-                            <p className="text-gray-400 text-sm leading-relaxed">
+                            <p className="text-gray-400 text-xs lg:text-sm leading-relaxed">
                                 {feature.description}
                             </p>
                         </motion.div>
