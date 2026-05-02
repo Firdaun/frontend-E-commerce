@@ -1,5 +1,5 @@
-import Hero from "./components/Hero.jsx"
-import Menu from "./components/Menu.jsx"
+import Hero from "./components/home/Hero.jsx"
+import Menu from "./components/home/Menu.jsx"
 
 
 export default function App() {

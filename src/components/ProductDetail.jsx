@@ -81,7 +81,7 @@ export default function ProductDetail() {
                     productId: product.id,
                     quantity: quantity,
                     spice_level: spiceLevel || 1,
-                    product: product // Sertakan data produk untuk ringkasan di checkout
+                    product: product
                 } 
             } 
         })

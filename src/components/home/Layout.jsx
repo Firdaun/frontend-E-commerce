@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import { useQuery } from "@tanstack/react-query";
-import { getCurrentUser } from "../utils/profileApi.js";
+import { getCurrentUser } from "../../utils/profileApi.js";
 
 export default function Layout() {
-    const { data: user, isLoading, isError, refetch} = useQuery({
+    const { data: user, isLoading, isError, refetch } = useQuery({
         queryKey: ['user'],
         queryFn: getCurrentUser,
         retry: false,
@@ -12,12 +12,12 @@ export default function Layout() {
         gcTime: 1000 * 60 * 30
     })
     const isLoggedIn = !!user || !!localStorage.getItem('token')
-    
+
     return (
         <>
-            <Navbar user={user} isLoggedIn={isLoggedIn}/>
+            <Navbar user={user} isLoggedIn={isLoggedIn} />
             <main>
-                <Outlet context={{user, isLoading, isError, refreshUser: refetch}} />
+                <Outlet context={{ user, isLoading, isError, refreshUser: refetch }} />
             </main>
         </>
     )

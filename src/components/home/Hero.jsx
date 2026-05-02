@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { ArrowRight, Flame } from "lucide-react"
-import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
+import useIsFirstVisit from "../../hooks/useIsFirstVisit.js"
 
 export default function Hero() {
     const isFirstVisit = useIsFirstVisit()

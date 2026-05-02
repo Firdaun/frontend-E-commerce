@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from "framer-motion"
 import { ShoppingCart, Menu, X, User } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import useIsFirstVisit from "../hooks/useIsFirstVisit.js"
+import useIsFirstVisit from "../../hooks/useIsFirstVisit.js"
 import { useQuery } from "@tanstack/react-query"
-import { getCart } from "../utils/productApi.js"
+import { getCart } from "../../utils/productApi.js"
 
 const navLinks = [
     { name: 'Beranda', path: '/' },

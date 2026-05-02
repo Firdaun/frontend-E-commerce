@@ -7,19 +7,27 @@ import { getCart } from "../utils/productApi.js"
 import { getCurrentUser } from "../utils/profileApi.js"
 import { postOrder } from "../utils/orderApi.js"
 import { toast } from "sonner"
+import { useForm } from "react-hook-form"
 
 export default function Checkout() {
     const navigate = useNavigate()
     const location = useLocation()
     const queryClient = useQueryClient()
-    
+
     // Cek apakah ini pesanan langsung (Direct Order) dari tombol "Beli Sekarang"
     const directOrder = location.state?.directOrder
+    // Fetch User Profile for pre-filling
+    const { data: user, isLoading: userLoading } = useQuery({
+        queryKey: ['user'],
+        queryFn: getCurrentUser
+    })
 
-    const [formData, setFormData] = useState({
-        username: "",
-        no_wa: "",
-        address: ""
+    const { register: registerCustomer, handleSubmit: handleSubmitCustomer, formState: { errors: customerErrors } } = useForm({
+        values: {
+            username: user?.name || "",
+            no_wa: user?.no_wa || "",
+            address: user?.address || ""
+        }
     })
 
     // Fetch Cart Data (Hanya jika bukan direct order)
@@ -29,21 +37,6 @@ export default function Checkout() {
         enabled: !directOrder
     })
 
-    // Fetch User Profile for pre-filling
-    const { data: user, isLoading: userLoading } = useQuery({
-        queryKey: ['user'],
-        queryFn: getCurrentUser
-    })
-
-    useEffect(() => {
-        if (user) {
-            setFormData({
-                username: user.name || "",
-                no_wa: user.no_wa || "",
-                address: user.address || ""
-            })
-        }
-    }, [user])
 
     // Tentukan item apa yang akan ditampilkan di ringkasan
     let displayItems = []
@@ -79,12 +72,7 @@ export default function Checkout() {
         }
     })
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (!formData.username || !formData.no_wa || !formData.address) {
-            toast.error("Mohon lengkapi semua data pengiriman")
-            return
-        }
+    const handleSubmit = (formData) => {
 
         const payload = {
             ...formData
@@ -134,8 +122,8 @@ export default function Checkout() {
                 <div className="flex flex-col gap-8">
                     {/* Header */}
                     <div className="flex flex-col gap-4">
-                        <button 
-                            onClick={() => navigate(-1)} 
+                        <button
+                            onClick={() => navigate(-1)}
                             className="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors w-fit group cursor-pointer"
                         >
                             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -150,7 +138,7 @@ export default function Checkout() {
                     <div className="grid lg:grid-cols-5 gap-8">
                         {/* Form Alamat */}
                         <div className="lg:col-span-3 space-y-6">
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, x: -20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 className="bg-gray-900 border border-gray-800 rounded-3xl p-6 md:p-8"
@@ -159,47 +147,42 @@ export default function Checkout() {
                                     <MapPin className="text-orange-500" size={24} />
                                     Informasi Pengiriman
                                 </h2>
-                                <form onSubmit={handleSubmit} className="space-y-5">
+                                <form id="checkoutForm" onSubmit={handleSubmitCustomer(handleSubmit)} className="space-y-5">
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-400 flex items-center gap-2">
                                             <User size={14} /> Nama Penerima
                                         </label>
-                                        <input 
-                                            type="text" 
-                                            required
-                                            value={formData.username}
-                                            onChange={(e) => setFormData({...formData, username: e.target.value})}
+                                        <input
                                             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                                             placeholder="Nama lengkap penerima"
+                                            {...registerCustomer('username', { required: 'Nama wajib di isi' })}
                                         />
+                                        {customerErrors.username && <p className="text-red-500 text-sm">{customerErrors.username.message}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-400 flex items-center gap-2">
                                             <Phone size={14} /> Nomor WhatsApp
                                         </label>
-                                        <input 
-                                            type="tel" 
-                                            required
-                                            value={formData.no_wa}
-                                            onChange={(e) => setFormData({...formData, no_wa: e.target.value})}
+                                        <input
                                             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors"
                                             placeholder="Contoh: 08123456789"
+                                            {...registerCustomer('no_wa', { required: 'Nomor WhatsApp wajib di isi' })}
                                         />
+                                        {customerErrors.no_wa && <p className="text-red-500 text-sm">{customerErrors.no_wa.message}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <label className="text-sm font-bold text-gray-400 flex items-center gap-2">
                                             <MapPin size={14} /> Alamat Lengkap
                                         </label>
-                                        <textarea 
-                                            required
+                                        <textarea
                                             rows="4"
-                                            value={formData.address}
-                                            onChange={(e) => setFormData({...formData, address: e.target.value})}
                                             className="w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-orange-500 transition-colors resize-none"
                                             placeholder="Jl. Nama Jalan, No. Rumah, RT/RW, Kelurahan, Kecamatan, Kota"
+                                            {...registerCustomer('address', { required: 'Alamat wajib di isi' })}
                                         />
+                                        {customerErrors.address && <p className="text-red-500 text-sm">{customerErrors.address.message}</p>}
                                     </div>
-                                    
+
                                     <div className="bg-orange-500/5 border border-orange-500/10 rounded-2xl p-4 flex gap-3 mt-4">
                                         <AlertCircle className="text-orange-500 shrink-0" size={20} />
                                         <p className="text-xs text-orange-500/80 leading-relaxed italic">
@@ -212,7 +195,7 @@ export default function Checkout() {
 
                         {/* Ringkasan & Submit */}
                         <div className="lg:col-span-2 space-y-6">
-                            <motion.div 
+                            <motion.div
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 className="bg-gray-900 border border-gray-800 rounded-3xl p-6 sticky top-24"
@@ -221,7 +204,7 @@ export default function Checkout() {
                                     <ShoppingBag size={20} className="text-orange-500" />
                                     <span>Ringkasan Pesanan</span>
                                 </h3>
-                                
+
                                 <div className="max-h-[250px] overflow-y-auto mb-6 pr-2 custom-scrollbar">
                                     {displayItems.map((item) => (
                                         <div key={item.id} className="flex gap-4 mb-4 items-center">
@@ -257,8 +240,9 @@ export default function Checkout() {
                                         <CreditCard size={14} />
                                         <span>Metode: Bayar di Tempat (COD)</span>
                                     </div>
-                                    <button 
-                                        onClick={handleSubmit}
+                                    <button
+                                        type="submit"
+                                        form="checkoutForm"
                                         disabled={orderMutation.isPending}
                                         className="w-full bg-seblak-gradient py-4 rounded-2xl font-black text-white shadow-lg shadow-red-500/20 active:scale-95 transition-all flex justify-center items-center disabled:opacity-50 cursor-pointer"
                                     >
