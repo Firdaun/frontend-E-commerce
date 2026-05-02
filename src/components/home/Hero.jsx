@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { ArrowRight, Flame } from "lucide-react"
 import useIsFirstVisit from "../../hooks/useIsFirstVisit.js"
+import { Link } from "react-router-dom"
 
 export default function Hero() {
     const isFirstVisit = useIsFirstVisit()
@@ -46,13 +47,10 @@ export default function Hero() {
                         </motion.p>
 
                         <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
-                            <button className="w-full sm:w-auto bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white px-5 py-3 lg:px-8 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-transform transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg shadow-red-500/30">
+                            <Link to="/menu" className="cursor-pointer w-full sm:w-auto bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white px-5 py-3 lg:px-8 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-transform transform hover:scale-105 flex items-center justify-center space-x-2 shadow-lg shadow-red-500/30">
                                 <span>Pesan Sekarang</span>
                                 <ArrowRight size={20} />
-                            </button>
-                            <button className="w-full sm:w-auto bg-gray-900 hover:bg-gray-800 text-gray-300 border border-gray-800 px-5 py-3 lg:px-8 lg:py-4 rounded-full font-bold text-sm lg:text-base transition-colors">
-                                Lihat Menu
-                            </button>
+                            </Link>
                         </motion.div>
                     </motion.div>
 

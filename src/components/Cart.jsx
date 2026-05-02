@@ -124,7 +124,7 @@ export default function Cart() {
                                             <button
                                                 onClick={() => removeItem(item.id)}
                                                 disabled={deleteMutation.isPending}
-                                                className="text-gray-500 hover:text-red-500 transition-colors disabled:opacity-50"
+                                                className="cursor-pointer text-gray-500 hover:text-red-500 transition-colors disabled:opacity-50"
                                             >
                                                 <Trash2 size={18} />
                                             </button>
