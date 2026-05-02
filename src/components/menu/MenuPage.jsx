@@ -1,12 +1,10 @@
 import { motion } from "framer-motion"
-import { ShoppingCart, ShoppingBag, Loader2, AlertTriangle, PackageOpen } from "lucide-react"
+import { Loader2, AlertTriangle, PackageOpen } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { getProducts } from "../../utils/productApi.js"
-import useIsFirstVisit from "../../hooks/useIsFirstVisit.js"
 
-export default function Menu() {
-    const isFirstVisit = useIsFirstVisit()
+export default function MenuPage() {
     const navigate = useNavigate()
 
     const { data: products, isLoading, isError } = useQuery({
@@ -17,20 +15,18 @@ export default function Menu() {
     })
 
     return (
-        <section className="py-20 border-t border-gray-800">
+        <div className="min-h-screen bg-gray-950 pt-28 pb-12">
             <div className="max-w-7xl w-[95%] mx-auto">
-
                 <motion.div
-                    initial={isFirstVisit ? { opacity: 0, y: 30 } : false}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
                     className="text-center mb-10"
                 >
-                    <h2 className="text-3xl lg:text-4xl xl:text-5xl font-black text-white mb-4">
-                        Pilih <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">Menu Favoritmu</span>
-                    </h2>
+                    <h1 className="text-3xl lg:text-4xl xl:text-5xl font-black text-white mb-4">
+                        Semua Varian <span className="text-transparent bg-clip-text bg-linear-to-r from-orange-500 to-red-600">Seblak Hot</span>
+                    </h1>
                     <p className="text-gray-400 max-w-2xl text-sm xl:text-base mx-auto">
-                        Semua varian dimasak dadakan dengan rempah kencur asli dan cabai segar.
+                        Jelajahi seluruh menu seblak kami, dimasak dadakan dengan rempah pilihan.
                     </p>
                 </motion.div>
 
@@ -74,12 +70,11 @@ export default function Menu() {
                         </motion.div>
 
                     ) : (
-                        products.slice(0, 4).map((product, index) => (
+                        products.map((product, index) => (
                             <motion.div
                                 key={product.id}
-                                initial={isFirstVisit ? { opacity: 0, y: 50 } : false}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-50px" }}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: index * 0.1 }}
                                 onClick={() => navigate(`/product/${product.id}`)}
                                 className="flex flex-col h-full bg-gray-900 rounded-xl overflow-hidden border border-gray-800 shadow-xl group cursor-pointer"
@@ -107,18 +102,7 @@ export default function Menu() {
                         ))
                     )}
                 </div>
-
-                {!isLoading && !isError && Array.isArray(products) && products.length > 0 && (
-                    <div className="mt-12 flex justify-center">
-                        <button 
-                            onClick={() => navigate('/menu')}
-                            className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-full font-bold transition-colors border border-gray-800 hover:border-orange-500 shadow-lg flex items-center space-x-2 group"
-                        >
-                            <span>Lihat Semua Menu</span>
-                        </button>
-                    </div>
-                )}
             </div>
-        </section>
+        </div>
     )
 }

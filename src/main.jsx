@@ -19,6 +19,7 @@ import ProtectedRoute from './components/guard/ProtectedRoute.jsx'
 import GuestRoute from './components/guard/GuestRoute.jsx'
 import Layout from './components/home/Layout.jsx'
 import ScrollToTop from './components/guard/ScrollToTop.jsx'
+import MenuPage from './components/menu/MenuPage.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route element={<Layout />}>
             <Route path='/' element={<App />} />
+            <Route path='/menu' element={<MenuPage />} />
             <Route path='/product/:id' element={<ProductDetail />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/cart' element={<Cart />} />

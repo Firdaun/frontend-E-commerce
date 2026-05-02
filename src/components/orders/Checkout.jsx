@@ -60,25 +60,13 @@ export default function Checkout() {
 
     const orderMutation = useMutation({
         mutationFn: postOrder,
-        onSuccess: (res) => {
-            // Invalidate queries agar data terbaru muncul
-            queryClient.invalidateQueries({ queryKey: ['cart'] })
-            queryClient.invalidateQueries({ queryKey: ['orders'] })
-            toast.success("Pesanan berhasil dibuat! Silakan tunggu konfirmasi admin.")
-            navigate('/orders')
-        },
-        onError: (error) => {
-            toast.error(error.message || "Gagal membuat pesanan")
-        }
     })
 
     const handleSubmit = (formData) => {
-
         const payload = {
             ...formData
         }
 
-        // Jika ini direct order, sertakan orderItems sesuai spek backend Flow B
         if (directOrder) {
             payload.orderItems = [
                 {
@@ -89,7 +77,24 @@ export default function Checkout() {
             ]
         }
 
-        orderMutation.mutate(payload)
+        toast.promise(
+            new Promise((resolve, reject) => {
+                orderMutation.mutate(payload, {
+                    onSuccess: (res) => {
+                        queryClient.invalidateQueries({ queryKey: ['cart'] })
+                        queryClient.invalidateQueries({ queryKey: ['orders'] })
+                        navigate('/orders')
+                        resolve(res)
+                    },
+                    onError: (error) => reject(error)
+                })
+            }),
+            {
+                loading: 'Membuat pesanan...',
+                success: (data) => data.message,
+                error: (error) => error.message
+            }
+        )
     }
 
     if ((cartLoading && !directOrder) || userLoading) {
