@@ -76,8 +76,8 @@ export default function Cart() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-950 pt-24 pb-12">
-            <div className="max-w-5xl w-[95%] mx-auto">
+        <div className="min-h-screen bg-gray-950 pt-24 pb-12 flex flex-col">
+            <div className="max-w-6xl w-[95%] mx-auto flex-1 flex flex-col">
 
                 {cartItems.length === 0 ? (
                     /* Tampilan Kosong */
@@ -99,10 +99,10 @@ export default function Cart() {
                         </Link>
                     </motion.div>
                 ) : (
-                    <div className="grid lg:grid-cols-3 gap-8">
+                    <div className="flex flex-col lg:flex-row gap-8 flex-1">
 
                         {/* Daftar Item */}
-                        <div className="lg:col-span-2 space-y-4">
+                        <div className="flex-2 space-y-3">
                             <AnimatePresence>
                                 {cartItems.map((item) => (
                                     <motion.div
@@ -141,8 +141,8 @@ export default function Cart() {
                         </div>
 
                         {/* Ringkasan Pesanan */}
-                        <div className="lg:col-span-1">
-                            <div className="bg-gray-900/70 border border-gray-900 rounded-3xl p-6 sticky top-24">
+                        <div className="flex-1 flex flex-col lg:block">
+                            <div className="bg-gray-900/70 border border-gray-900 rounded-3xl p-6 sticky top-24 mt-auto lg:mt-0">
                                 <h3 className="text-white font-bold mb-6 flex items-center space-x-2">
                                     <ReceiptText size={20} className="text-orange-500" />
                                     <span>Ringkasan Pesanan</span>
