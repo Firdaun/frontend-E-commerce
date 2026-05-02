@@ -124,7 +124,7 @@ export default function Orders() {
     const [activeFilter, setActiveFilter] = useState("Semua")
 
     const { data: orderResponse, isLoading, isError } = useQuery({
-        queryKey: ['order'],
+        queryKey: ['orders'],
         queryFn: getOrder,
         staleTime: 1000 * 60 * 5,
         gcTime: 1000 * 60 * 15
