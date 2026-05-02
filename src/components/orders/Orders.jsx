@@ -2,7 +2,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Package, Clock, CheckCircle2, XCircle, ChevronRight, ShoppingBag, UtensilsCrossed, Truck } from "lucide-react"
 import { Link } from "react-router-dom"
-import { getOrder } from "../utils/orderApi"
+import { getOrder } from "../../utils/orderApi"
 import { useQuery } from "@tanstack/react-query"
 
 const dummyOrders = [
@@ -128,19 +128,17 @@ export default function Orders() {
                                         <button
                                             key={status}
                                             onClick={() => setActiveFilter(status)}
-                                            className={`cursor-pointer flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${
-                                                activeFilter === status
+                                            className={`cursor-pointer flex items-center justify-between px-4 py-3 rounded-xl text-sm font-bold transition-all ${activeFilter === status
                                                     ? "bg-orange-600 text-white shadow-lg shadow-orange-600/20"
                                                     : "text-gray-400 hover:bg-gray-800/50 hover:text-white"
-                                            }`}
+                                                }`}
                                         >
                                             <div className="flex items-center gap-3">
                                                 {getStatusIcon(status)}
                                                 {status}
                                             </div>
-                                            <span className={`text-xs px-2 py-0.5 rounded-full ${
-                                                activeFilter === status ? "bg-white/20 text-white" : "bg-gray-800 text-gray-500"
-                                            }`}>
+                                            <span className={`text-xs px-2 py-0.5 rounded-full ${activeFilter === status ? "bg-white/20 text-white" : "bg-gray-800 text-gray-500"
+                                                }`}>
                                                 {getCount(status)}
                                             </span>
                                         </button>
@@ -168,11 +166,10 @@ export default function Orders() {
                                     <button
                                         key={status}
                                         onClick={() => setActiveFilter(status)}
-                                        className={`cursor-pointer px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all border ${
-                                            activeFilter === status
+                                        className={`cursor-pointer px-5 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all border ${activeFilter === status
                                                 ? "bg-orange-600 border-orange-600 text-white"
                                                 : "bg-gray-900 border-gray-800 text-gray-400"
-                                        }`}
+                                            }`}
                                     >
                                         {status}
                                     </button>
@@ -201,7 +198,7 @@ export default function Orders() {
                                                         {order.status}
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div className="border-t border-gray-800 py-4 flex flex-col gap-3 flex-1">
                                                     {order.orderItems?.map((item) => (
                                                         <div key={item.id} className="flex justify-between items-center text-sm">
@@ -223,7 +220,7 @@ export default function Orders() {
                                                         <span className="text-xs text-gray-500">Total Pembayaran</span>
                                                         <span className="text-lg font-black text-orange-500">Rp {order.total_price?.toLocaleString('id-ID')}</span>
                                                     </div>
-                                                    <Link 
+                                                    <Link
                                                         to={`/orders/${order.id}`}
                                                         className="cursor-pointer flex items-center gap-1 text-sm font-bold text-white bg-gray-800 hover:bg-orange-600 px-4 py-2 rounded-xl transition-colors shadow-lg"
                                                     >
@@ -234,7 +231,7 @@ export default function Orders() {
                                             </motion.div>
                                         ))
                                     ) : (
-                                        <motion.div 
+                                        <motion.div
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
                                             className="flex flex-col items-center justify-center py-20 text-center bg-gray-900/20 border border-dashed border-gray-800 rounded-3xl"
@@ -245,7 +242,7 @@ export default function Orders() {
                                             <h3 className="text-xl font-bold text-white mb-2">Tidak ada pesanan</h3>
                                             <p className="text-gray-400 mb-6 max-w-xs">Belum ada pesanan dengan status "{activeFilter}" saat ini.</p>
                                             {activeFilter !== "Semua" && (
-                                                <button 
+                                                <button
                                                     onClick={() => setActiveFilter("Semua")}
                                                     className="cursor-pointer bg-orange-600 hover:bg-orange-700 text-white px-6 py-2.5 rounded-xl font-bold transition-all shadow-lg shadow-orange-600/20"
                                                 >

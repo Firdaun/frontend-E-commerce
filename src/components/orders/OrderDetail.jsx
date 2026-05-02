@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom"
 import { motion } from "framer-motion"
 import { ArrowLeft, MapPin, User, Phone, Calendar, ShoppingBag, CreditCard, ChevronRight, CheckCircle2, Clock, Truck, UtensilsCrossed, XCircle, Loader2, AlertCircle } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
-import { getOrder } from "../utils/orderApi"
+import { getOrder } from "../../utils/orderApi"
 
 // Helper functions for status
 const getStatusStyles = (status) => {
@@ -78,14 +78,14 @@ export default function OrderDetail() {
             <div className="max-w-7xl w-[95%] mx-auto">
                 {/* Back Button & Title */}
                 <div className="flex flex-col gap-6 mb-8">
-                    <Link 
-                        to="/orders" 
+                    <Link
+                        to="/orders"
                         className="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors w-fit group"
                     >
                         <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
                         <span className="font-bold">Kembali ke Daftar Pesanan</span>
                     </Link>
-                    
+
                     <div className="flex flex-wrap justify-between items-end gap-4">
                         <div className="flex flex-col gap-2">
                             <h1 className="text-3xl md:text-4xl font-black text-white">Detail Pesanan</h1>
@@ -105,7 +105,7 @@ export default function OrderDetail() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     {/* Left Column: Items */}
                     <div className="lg:col-span-2 flex flex-col gap-6">
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden"
@@ -120,9 +120,9 @@ export default function OrderDetail() {
                                 {order.orderItems.map((item) => (
                                     <div key={item.id} className="p-6 flex gap-6 items-center group">
                                         <div className="w-20 h-20 shrink-0 rounded-2xl overflow-hidden border border-gray-800 relative">
-                                            <img 
-                                                src={item.product.image_url} 
-                                                alt={item.product.variant} 
+                                            <img
+                                                src={item.product.image_url}
+                                                alt={item.product.variant}
                                                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                             />
                                         </div>
@@ -147,7 +147,7 @@ export default function OrderDetail() {
                         </motion.div>
 
                         {/* Order Timeline (Simple) */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.1 }}
@@ -160,16 +160,15 @@ export default function OrderDetail() {
                             <div className="flex justify-between relative">
                                 {/* Line */}
                                 <div className="absolute top-5 left-0 right-0 h-0.5 bg-gray-800 z-0"></div>
-                                
+
                                 {["Menunggu", "Sedang Dimasak", "Dikirim", "Selesai"].map((step, idx) => {
                                     const isActive = order.status === step || idx < ["Menunggu", "Sedang Dimasak", "Dikirim", "Selesai"].indexOf(order.status)
                                     const isCurrent = order.status === step
 
                                     return (
                                         <div key={step} className="flex flex-col items-center gap-3 relative z-10 w-1/4">
-                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${
-                                                isActive ? "bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-600/30" : "bg-gray-900 border-gray-800 text-gray-600"
-                                            }`}>
+                                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all duration-500 ${isActive ? "bg-orange-600 border-orange-600 text-white shadow-lg shadow-orange-600/30" : "bg-gray-900 border-gray-800 text-gray-600"
+                                                }`}>
                                                 {getStatusIcon(step)}
                                             </div>
                                             <div className="text-center">
@@ -186,7 +185,7 @@ export default function OrderDetail() {
                     {/* Right Column: Info & Summary */}
                     <div className="flex flex-col gap-6">
                         {/* Customer & Shipping Info */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             className="bg-gray-900/40 border border-gray-800 rounded-3xl p-6 space-y-6"
@@ -229,7 +228,7 @@ export default function OrderDetail() {
                         </motion.div>
 
                         {/* Payment Summary */}
-                        <motion.div 
+                        <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 0.1 }}
