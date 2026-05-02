@@ -268,7 +268,7 @@ export default function ProductDetail() {
                                         <ShoppingBag size={24} />
                                         <span>Beli Sekarang</span>
                                     </motion.button>
-                                    <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
+                                    <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="cursor-pointer px-3 py-3 bg-gray-900 hover:bg-gray-800 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
                                         <ShoppingCart size={24} />
                                     </motion.button>
                                 </div>
@@ -325,7 +325,7 @@ export default function ProductDetail() {
                                     <ShoppingBag size={24} />
                                     <span>Beli Sekarang</span>
                                 </motion.button>
-                                <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="px-3 py-3 bg-gray-900 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
+                                <motion.button disabled={addMutation.isPending} onClick={() => addMutation.mutate()} whileTap={{ scale: 0.85 }} className="cursor-pointer px-3 py-3 bg-gray-900 border border-gray-800 hover:border-orange-500 text-gray-300 rounded-xl flex items-center justify-center disabled:opacity-50">
                                     <ShoppingCart size={24} />
                                 </motion.button>
                             </div>
