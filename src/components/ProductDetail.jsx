@@ -67,7 +67,7 @@ export default function ProductDetail() {
     }
 
     const handleBuyNow = () => {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token')
         if (!token) {
             toast.error("Ups! Kamu harus login dulu untuk memesan 🛒")
             navigate('/login')
@@ -205,7 +205,7 @@ export default function ProductDetail() {
                                         key={level.level}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => setSpiceLevel(level.level)}
-                                        className={`w-12 h-12 rounded-xl font-bold ${spiceLevel === level.level
+                                        className={`cursor-pointer w-12 h-12 rounded-xl font-bold ${spiceLevel === level.level
                                             ? 'bg-linear-to-br from-orange-500 to-red-600 text-white shadow-lg shadow-red-500/30 border-none'
                                             : 'bg-gray-900 text-gray-500 border border-gray-800 hover:border-orange-500'
                                             }`}
@@ -233,7 +233,7 @@ export default function ProductDetail() {
                                             key={topping}
                                             whileTap={{ scale: 0.95 }}
                                             onClick={() => toggleTopping(topping)}
-                                            className={`flex items-center justify-between p-3 rounded-xl border transition-colors ${selectedToppings.includes(topping)
+                                            className={`cursor-pointer flex items-center justify-between p-3 rounded-xl border transition-colors ${selectedToppings.includes(topping)
                                                 ? 'bg-orange-500/10 border-orange-500 text-orange-500'
                                                 : 'bg-gray-900 border-gray-800 text-gray-500 hover:border-gray-700'
                                                 }`}
@@ -248,12 +248,12 @@ export default function ProductDetail() {
                             <div className="space-y-3 md:space-y-5">
                                 <div className="flex items-center space-x-4">
                                     <span className="text-white font-bold">Jumlah:</span>
-                                    <div className="flex items-center bg-gray-900 rounded-xl border border-gray-700">
-                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                    <div className="flex items-center bg-gray-900 rounded-xl border border-gray-800">
+                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(Math.max(1, quantity - 1))} className="cursor-pointer w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                             <Minus size={18} />
                                         </motion.button>
                                         <span className="w-12 text-center text-white font-bold">{quantity}</span>
-                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(quantity + 1)} className="w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
+                                        <motion.button whileTap={{ scale: 0.8 }} onClick={() => setQuantity(quantity + 1)} className="cursor-pointer w-10 active:text-orange-500 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors">
                                             <Plus size={18} />
                                         </motion.button>
                                     </div>
@@ -263,7 +263,7 @@ export default function ProductDetail() {
                                         disabled={addMutation.isPending} 
                                         onClick={handleBuyNow}
                                         whileTap={{ scale: 0.92 }} 
-                                        className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
+                                        className="cursor-pointer flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
                                     >
                                         <ShoppingBag size={24} />
                                         <span>Beli Sekarang</span>
@@ -320,7 +320,7 @@ export default function ProductDetail() {
                                     disabled={addMutation.isPending} 
                                     onClick={handleBuyNow}
                                     whileTap={{ scale: 0.92 }} 
-                                    className="flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
+                                    className="cursor-pointer flex-1 bg-seblak-gradient hover:from-orange-600 hover:to-red-700 text-white py-3 rounded-xl font-bold text-lg flex items-center justify-center space-x-2 shadow-lg shadow-red-500/20 disabled:opacity-50"
                                 >
                                     <ShoppingBag size={24} />
                                     <span>Beli Sekarang</span>

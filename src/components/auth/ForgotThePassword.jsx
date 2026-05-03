@@ -8,7 +8,7 @@ export default function ForgotThePassword() {
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <Link
-                    to='/'
+                    to='/login'
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />
@@ -63,7 +63,7 @@ export default function ForgotThePassword() {
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={pendingPasswordReq}
-                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${pendingPasswordReq ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                className={`cursor-pointer w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${pendingPasswordReq ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                                 {pendingPasswordReq ? (
                                     <Loader2 className="animate-spin h-5 w-5 text-white" />
@@ -73,15 +73,6 @@ export default function ForgotThePassword() {
                             </motion.button>
                         </div>
                     </form>
-
-                    <div className="mt-6 text-center">
-                        <p className="text-sm text-gray-400">
-                            Sudah punya akun?{' '}
-                            <Link to='/login' className="font-bold text-orange-500 hover:text-orange-400 transition-colors">
-                                Masuk sekarang
-                            </Link>
-                        </p>
-                    </div>
                 </div>
             </motion.div>
         </>

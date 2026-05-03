@@ -92,8 +92,8 @@ export default function Cart() {
                         <h2 className="text-xl font-bold text-white mb-2">Keranjangmu masih kosong</h2>
                         <p className="text-gray-400 mb-8">Wah, perut keroncongan nih! Yuk isi dengan seblak pedas favoritmu.</p>
                         <Link
-                            to="/"
-                            className="inline-flex items-center space-x-2 bg-seblak-gradient px-8 py-3 rounded-xl font-bold text-white shadow-lg shadow-red-500/20"
+                            to="/menu"
+                            className="cursor-pointer inline-flex items-center space-x-2 bg-seblak-gradient px-8 py-3 rounded-xl font-bold text-white shadow-lg shadow-red-500/20"
                         >
                             <span>Cari Seblak</span>
                         </Link>
@@ -110,7 +110,7 @@ export default function Cart() {
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         exit={{ opacity: 0, scale: 0.95 }}
-                                        className="bg-gray-900/70 border border-gray-900 p-4 rounded-2xl flex items-center space-x-4"
+                                        className="bg-gray-900/70 border border-gray-900 p-4 md:p-5 rounded-2xl flex items-center space-x-4"
                                     >
                                         <img src={item.product.image_url} className="w-20 h-20 md:w-24 md:h-24 object-cover rounded-xl shrink-0" alt={item.product.variant} />
 

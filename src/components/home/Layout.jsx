@@ -12,7 +12,7 @@ export default function Layout() {
         staleTime: 1000 * 60 * 15,
         gcTime: 1000 * 60 * 30
     })
-    const isLoggedIn = !!user || !!localStorage.getItem('token')
+    const isLoggedIn = !!user || !!localStorage.getItem('token') || !!sessionStorage.getItem('token')
 
     return (
         <>

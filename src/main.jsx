@@ -42,7 +42,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <Toaster duration={3000} closeButton richColors theme="dark" position="top-right" />
+        <Toaster duration={3000} closeButton richColors theme="dark" position="top-center" />
         <ScrollToTop />
 
         <Routes>

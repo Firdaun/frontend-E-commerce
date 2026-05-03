@@ -174,6 +174,7 @@ export default function Profile() {
                         navigate('/')
                         setTimeout(async () => {
                             localStorage.removeItem('token')
+                            sessionStorage.removeItem('token')
                             await queryClient.cancelQueries({ queryKey: ['user'] })
                             queryClient.setQueryData(['user'], null)
                             queryClient.removeQueries({ queryKey: ['cart'] })

@@ -48,11 +48,17 @@ export default function AuthLayout() {
     })
 
     const handleLogin = (formLogin) => {
+        const { remember, ...loginPayload } = formLogin;
+
         toast.promise(
             new Promise((resolve, reject) => {
-                loginSubmit.mutate(formLogin, {
+                loginSubmit.mutate(loginPayload, {
                     onSuccess: (result) => {
-                        localStorage.setItem('token', result.data.token)
+                        if (formLogin.remember) {
+                            localStorage.setItem('token', result.data.token)
+                        } else {
+                            sessionStorage.setItem('token', result.data.token)
+                        }
                         queryClient.invalidateQueries({ queryKey: ['user'] })
                         setTimeout(() => navigate('/'), 300)
                         resolve(result)

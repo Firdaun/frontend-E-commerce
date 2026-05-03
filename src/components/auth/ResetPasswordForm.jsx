@@ -11,7 +11,7 @@ export default function ResetPasswordForm() {
         <>
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <Link
-                    to='/'
+                    to='/request-reset-password'
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />
@@ -118,15 +118,6 @@ export default function ResetPasswordForm() {
                             </motion.button>
                         </div>
                     </form>
-
-                    <div className="mt-6 text-center">
-                        <p className="text-sm text-gray-400">
-                            Sudah punya akun?{' '}
-                            <Link to='/login' className="cursor-pointer font-bold text-orange-500 hover:text-orange-400 transition-colors">
-                                Masuk di sini
-                            </Link>
-                        </p>
-                    </div>
                 </div>
             </motion.div>
         </>

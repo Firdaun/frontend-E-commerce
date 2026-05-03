@@ -12,7 +12,7 @@ export default function Register() {
 
             <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
                 <Link
-                    to='/'
+                    to='/login'
                     className="absolute -top-12 left-0 p-2 bg-gray-900 border border-gray-800 rounded-full text-gray-400 hover:text-white transition-colors"
                 >
                     <ArrowLeft size={20} />

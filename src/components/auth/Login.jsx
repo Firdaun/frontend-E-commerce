@@ -92,9 +92,9 @@ export default function Login() {
                             <div className="flex items-center">
                                 <input
                                     id="remember-me"
-                                    name="remember-me"
                                     type="checkbox"
-                                    className="h-4 w-4 bg-gray-950 border-gray-700 rounded text-orange-500 focus:ring-orange-500"
+                                    className="cursor-pointer h-4 w-4 bg-gray-950 border-gray-700 rounded text-orange-500 focus:ring-orange-500"
+                                    {...loginForm('remember')}
                                 />
                                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-400">
                                     Ingat saya

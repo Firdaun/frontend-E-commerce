@@ -8,7 +8,7 @@ export const fetchAPI = async ( endpoint, options = {} ) => {
     }
 
     if (requireAuth) {
-        const token = localStorage.getItem('token')
+        const token = localStorage.getItem('token') || sessionStorage.getItem('token')
         if (!token) {
             throw new Error('Token tidak ditemukan, silahkan login kembali')
         }
@@ -26,6 +26,7 @@ export const fetchAPI = async ( endpoint, options = {} ) => {
         if (!response.ok) {
             if (requireAuth && response.status === 401) {
                 localStorage.removeItem('token')
+                sessionStorage.removeItem('token')
                 window.location.href = '/login'
             }
             throw new Error(result.errors || result.message || "Terjadi kesalahan pada server")

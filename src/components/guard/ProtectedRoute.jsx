@@ -1,7 +1,7 @@
 import { Navigate, Outlet, useOutletContext } from "react-router-dom"
 
 export default function ProtectedRoute() {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
     const context = useOutletContext()
 
     if (!token) {
