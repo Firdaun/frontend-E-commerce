@@ -21,6 +21,8 @@ import Layout from './components/home/Layout.jsx'
 import ScrollToTop from './components/guard/ScrollToTop.jsx'
 import MenuPage from './components/menu/MenuPage.jsx'
 import Contact from './components/contact/Contact.jsx'
+import ForgotThePassword from './components/auth/ForgotThePassword.jsx'
+import ResetPasswordForm from './components/auth/ResetPasswordForm.jsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +65,8 @@ createRoot(document.getElementById('root')).render(
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/verifikasi' element={<VerifikasiOtp />} />
+              <Route path='/request-reset-password' element={<ForgotThePassword />} />
+              <Route path='/reset-password' element={<ResetPasswordForm />} />
             </Route>
           </Route>
         </Routes>

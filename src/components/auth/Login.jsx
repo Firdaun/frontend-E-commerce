@@ -102,9 +102,9 @@ export default function Login() {
                             </div>
 
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-orange-500 hover:text-orange-400 transition-colors">
+                                <Link to="/request-reset-password" className="font-medium text-orange-500 hover:text-orange-400 transition-colors">
                                     Lupa password?
-                                </a>
+                                </Link>
                             </div>
                         </div>
 
@@ -115,7 +115,7 @@ export default function Login() {
                                 whileTap={{ scale: 0.98 }}
                                 type="submit"
                                 disabled={pendingLogin}
-                                className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${pendingLogin ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                className={`cursor-pointer w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-lg shadow-red-500/20 text-sm font-bold text-white bg-seblak-gradient hover:from-orange-600 hover:to-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-orange-500 transition-all ${pendingLogin ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                                 {pendingLogin ? (
                                     <Loader2 className="animate-spin h-5 w-5 text-white" />

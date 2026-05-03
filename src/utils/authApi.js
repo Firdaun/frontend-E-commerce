@@ -20,3 +20,17 @@ export const login = async (data) => {
         body: JSON.stringify(data)
     })
 }
+
+export const resetPasswordRequest = async (data) => {
+    return await fetchAPI('/users/reset-password/request', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+}
+
+export const resetPassword = async (data) => {
+    return await fetchAPI('/users/reset-password', {
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+}
