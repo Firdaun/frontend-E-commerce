@@ -120,8 +120,8 @@ export default function Profile() {
             }),
             {
                 loading: 'Memperbarui email...',
-                success: (data) => data.message || 'Email berhasil diperbarui!',
-                error: (error) => error.message || 'Gagal memperbarui email'
+                success: (data) => data.message,
+                error: (error) => error.message
             }
         )
     }
@@ -157,7 +157,7 @@ export default function Profile() {
             {
                 loading: 'Memverifikasi OTP...',
                 success: (res) => res.message,
-                error: (error) => error.message || 'OTP salah atau kadaluarsa'
+                error: (error) => error.message
             }
         )
     }
@@ -186,8 +186,8 @@ export default function Profile() {
             }),
             {
                 loading: 'Sedang logout...',
-                success: (res) => res.message || 'Berhasil logout!',
-                error: (error) => error.message || 'Gagal logout'
+                success: (res) => res.message,
+                error: (error) => error.message
             }
         )
     }
