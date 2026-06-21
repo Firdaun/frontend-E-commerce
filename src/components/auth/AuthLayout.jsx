@@ -152,7 +152,7 @@ export default function AuthLayout() {
         )
     }
 
-    const pendingPasswordReq = forgotPasswordRequest.isPending
+    const pendingPasswordReq = resetPasswordReq.isPending
 
     // reset password submit
     const resetPasswordSubmit = useMutation({
